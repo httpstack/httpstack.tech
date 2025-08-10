@@ -1,0 +1,9 @@
+{
+    "appName": "httpSTACK",
+    "appSlogan": "Whats in your stack?",
+    "appCopyright": "© 2025 Chris McIntosh. All rights reserved.",
+    "heroTitle": "Chris McIntosh - Developer of httpstack",
+    "heroDescription": "Welcome! I'm Chris McIntosh, the creator of httpstack – a revolutionary project designed to simplify web development. httpstack empowers you to build stunning web components, designs, forms, and even entire web pages, either from AI-generated suggestions or pre-built presets. It intelligently breaks down every element into its core HTML, CSS, and JavaScript, giving you unparalleled control and clarity.",
+    "heroCtaLabel": "For Potential Employers: View My Resume",
+    "heroCtaUri": "/resume"
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTpsTACK</title>
+    <script src="/public/assets/enabled/vendor/js/required-jquery.js"></script>
+    <link rel="stylesheet" href="/public/assets/enabled/css/style.css" />
+    <link rel="stylesheet" href="/public/assets/enabled/vendor/css/bootstrap.css" />
+    <link rel="stylesheet" href="/public/assets/enabled/vendor/css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="/public/assets/enabled/css/style.css" />
+</head>
+
+<body>
+    <div class="app-frame">
+        <header class="frame-header">
+            <div class="header-brand">
+                <span class="brand-logo">
+                    <i class="bi bi-gem animated-icon"></i>
+
+                </span>
+                <span class="brand-title">HttPStaCK</span>
+                <span class="brand-slogan"><sub>whats in your stack?</sub></span>
+            </div>
+            <button class="hamburger-menu" aria-label="Toggle navigation">
+                <i class="bi bi-list"></i>
+            </button>
+            <nav class="header-nav nav-closed">
+                <ul class="nav-list" data-repeat="links as link">
+                    <li class="nav-item" data-repeat-item="link">
+                        <a href="/home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item" data-repeat-item="link">
+                        <a href="/resume" class="nav-link">Resume</a>
+                    </li>
+                    <li class="nav-item" data-repeat-item="link">
+                        <a href="/services" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item" data-repeat-item="link">
+                        <a href="/projects" class="nav-link">Projects</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section class="frame-hero">
+            <div class="hero-content">
+                <h1>Crafting Experiences, One Pixel at a Time</h1>
+                <p>Welcome to a beautifully designed web experience built just for you.</p>
+                <a href="#" class="hero-cta">Explore Features</a>
+            </div>
+        </section>
+        <div data-key="view"></div>
+        <main class="frame-main">
+            <div class="card-layout">
+                <section class="frame-view">
+                    <h2>Modern & Responsive Design</h2>
+                    <p>This section showcases your primary application content, now within a sleek card structure. The
+                        layout adapts seamlessly across all devices, ensuring a premium user experience.</p>
+                    <p>Each element is crafted with attention to detail, from the vibrant color scheme to subtle
+                        animations, making your application truly stand out.</p>
+                    <h3>Key Features</h3>
+                    <ul>
+                        <li>Dynamic, responsive layout</li>
+                        <li>Engaging hero section with subtle motion</li>
+                        <li>Interactive navigation links</li>
+                        <li>"Living" animated logo icon</li>
+                        <li>Fluid card design for main content</li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+        <footer class="frame-footer">
+            <div class="footer-content">
+                <div class="footer-function">{{ myFunc(data) }}</div>
+                <div class="footer-copyright">{{appCopyright}}</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Hamburger menu functionality
+            const $hamburger = $('.hamburger-menu');
+            const $nav = $('.header-nav');
+
+            $hamburger.on('click', function () {
+                $nav.toggleClass('.nav-open');
+            });
+        });
+    </script>
+</body>
+
+</html>

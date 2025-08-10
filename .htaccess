@@ -1,0 +1,19 @@
+RewriteEngine On
+
+# Prevent directory listing
+Options -Indexes
+
+# Redirect localhost and localhost/ to localhost/home
+
+# RewriteCond %{HTTP_HOST} ^httpstack.tech$ [NC]
+RewriteCond %{HTTP_HOST} ^localhost$ [NC]
+RewriteRule ^(|/)$ /prod/home [R=301,L]
+
+
+# Redirect root URL (e.g., http://example.com or http://example.com/) to index.php
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^ public/index.php [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ public/index.php [L]

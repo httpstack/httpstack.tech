@@ -1,0 +1,81 @@
+<main class="frame-main">
+    <div class="card-layout">
+        <section class="frame-view resume-section">
+            <h2>My Professional Journey & Expertise</h2>
+            <p>As a highly organized individual with a strong focus on customer support and help desk, I bring a diverse
+                skill set in IT systems administration, network support, and web development. Below are some highlights
+                of my career and a convenient way to access my full resume.</p>
+
+            <div class="resume-highlights">
+                <h3>Key Highlights</h3>
+                <div class="highlight-grid">
+                    <div class="highlight-card">
+                        <h4>Technical Support Excellence</h4>
+                        <ul>
+                            <li>Assisted D-Link customers with installation, configuration, and troubleshooting of a
+                                wide array of networking products (routers, WiFi adapters, IP cameras).</li>
+                            <li>Provided step-by-step support for Windows and macOS platforms, resolving connectivity,
+                                compatibility, and performance issues.</li>
+                            <li>Maintained clear, concise, and accurate case notes within CRM systems.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight-card">
+                        <h4>Systems & Network Administration</h4>
+                        <ul>
+                            <li>Supported over 200 users across a Wide Area Network (WAN), handling hardware, software
+                                installations, and user account management.</li>
+                            <li>Recovered Windows Server 2000-based network using Veritas Backup Exec after a critical
+                                system compromise, demonstrating strong disaster recovery skills.</li>
+                            <li>Administered Microsoft Outlook/Exchange and managed Citrix access for remote employees.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="highlight-card">
+                        <h4>Web Development & IT Documentation</h4>
+                        <ul>
+                            <li>Developed and maintained company website using Classic ASP, enhancing internal and
+                                external visibility.</li>
+                            <li>Conducted staff training and presentations during software rollouts, improving adoption
+                                rates.</li>
+                            <li>Maintained comprehensive documentation for system procedures, software inventory, and IT
+                                policies.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resume-download-section">
+                <h3>Download My Full Resume</h3>
+                <p>For a detailed overview of my qualifications and experience, please download my resume in your
+                    preferred format:</p>
+                <form class="download-form">
+                    <div class="form-group">
+                        <label for="resumeFormat">Choose Format:</label>
+                        <select id="resumeFormat" name="format" class="form-control">
+                            <option value="pdf">PDF (.pdf)</option>
+                            <option value="docx">Microsoft Word (.docx)</option>
+                            <option value="odt">OpenDocument Text (.odt)</option>
+                            <option value="txt">Plain Text (.txt)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="cta-button download-button"><i class="fas fa-download"></i> Download
+                        Resume</button>
+                </form>
+
+                <div class="resume-embed-option">
+                    <h4>Or View Embedded:</h4>
+                    <button id="viewResumeLightbox" class="cta-button view-button"><i class="fas fa-eye"></i> View
+                        Resume (Lightbox)</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Lightbox Modal Structure -->
+<div id="resumeLightbox" class="lightbox-modal">
+    <div class="lightbox-content">
+        <span class="close-button">&times;</span>
+        <iframe name="resumePdfViewer" id="resumePdfViewer" src="" frameborder="0"></iframe>
+    </div>
+</div>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Builder</title>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const htmlEditor = document.getElementById('htmlEditor');
+            const cssEditor = document.getElementById('cssEditor');
+            const jsEditor = document.getElementById('jsEditor');
+            const previewFrame = document.getElementById('previewFrame');
+
+            const layoutDefaultBtn = document.getElementById('layoutDefault');
+            const layoutEditorsBtn = document.getElementById('layoutEditors');
+            const layoutStacksPreviewBtn = document.getElementById('layoutStacksPreview');
+            const mainContentRows = document.getElementById('mainContentRows');
+
+            const topRowContent = document.getElementById('top-row-content');
+            const bottomRowContent = document.getElementById('bottom-row-content');
+            const toggleTopRowBtn = document.getElementById('toggleTopRow');
+            const toggleBottomRowBtn = document.getElementById('toggleBottomRow');
+
+            const exportBtn = document.getElementById('exportBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const aiPrompt = document.getElementById('aiPrompt');
+            const generateBtn = document.getElementById('generateBtn');
+            const stackButtonsContainer = document.getElementById('stackButtons');
+
+            // --- Live Preview Functionality ---
+            function updatePreview() {
+                const htmlContent = htmlEditor.value;
+                const cssContent = cssEditor.value;
+                const jsContent = jsEditor.value;
+
+                // Create the full HTML document for the iframe
+                const previewDoc = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Preview</title>
+                <style>${cssContent}</style>
+            </head>
+            <body>
+                ${htmlContent}
+                <script>${jsContent}<\/script>
+            </body>
+            </html>
+        `;
+                previewFrame.srcdoc = previewDoc;
+            }
+
+            // Update preview on input changes
+            htmlEditor.addEventListener('input', updatePreview);
+            cssEditor.addEventListener('input', updatePreview);
+            jsEditor.addEventListener('input', updatePreview);
+
+            // Initial preview load
+            updatePreview();
+
+            // --- Layout Switching Functionality ---
+            function activateLayoutButton(button) {
+                document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            }
+
+            layoutDefaultBtn.addEventListener('click', () => {
+                activateLayoutButton(layoutDefaultBtn);
+                mainContentRows.style.flexDirection = 'column'; // Stack rows
+                topRowContent.style.display = 'flex'; // Ensure top row is visible
+                bottomRowContent.style.display = 'flex'; // Ensure bottom row is visible
+                topRowContent.classList.remove('collapsed');
+                bottomRowContent.classList.remove('collapsed');
+                topRowContent.style.flex = '1'; // Reset flex
+                bottomRowContent.style.flex = '1'; // Reset flex
+            });
+
+            layoutEditorsBtn.addEventListener('click', () => {
+                activateLayoutButton(layoutEditorsBtn);
+                mainContentRows.style.flexDirection = 'column'; // Still columns, but top one hidden
+                topRowContent.style.display = 'none'; // Hide the top row (stacks/preview)
+                bottomRowContent.style.display = 'flex'; // Show editors
+                bottomRowContent.classList.remove('collapsed');
+                bottomRowContent.style.flex = '1'; // Let editors take full space
+            });
+
+            layoutStacksPreviewBtn.addEventListener('click', () => {
+                activateLayoutButton(layoutStacksPreviewBtn);
+                mainContentRows.style.flexDirection = 'column'; // Still columns, but bottom one hidden
+                topRowContent.style.display = 'flex'; // Show stacks/preview
+                bottomRowContent.style.display = 'none'; // Hide editors
+                topRowContent.classList.remove('collapsed');
+                topRowContent.style.flex = '1'; // Let stacks/preview take full space
+            });
+
+            // --- Row Collapsing Functionality ---
+            toggleTopRowBtn.addEventListener('click', () => {
+                topRowContent.classList.toggle('collapsed');
+            });
+
+            toggleBottomRowBtn.addEventListener('click', () => {
+                bottomRowContent.classList.toggle('collapsed');
+            });
+
+            // --- Placeholder Stack Data (Simulating Database) ---
+            const stacks = {
+                'hero-section': {
+                    html: `
+<section class="hero">
+    <h1>Welcome to Stack Builder!</h1>
+    <p>Build, preview, and export web components with ease.</p>
+    <button class="cta-button">Get Started</button>
+</section>`,
+                    css: `
+.hero {
+    background-color: #007bff;
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+.cta-button {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+.cta-button:hover {
+    background-color: #218838;
+}`,
+                    js: `
+document.querySelector('.cta-button').addEventListener('click', () => {
+    alert('You clicked the Call to Action button!');
+});`
+                },
+                'call-to-action': {
+                    html: `
+<div class="cta-banner">
+    <h2>Ready to build something amazing?</h2>
+    <p>Sign up today and unleash your creativity.</p>
+    <a href="#" class="signup-button">Sign Up Now</a>
+</div>`,
+                    css: `
+.cta-banner {
+    background-color: #ffc107;
+    color: #333;
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.cta-banner h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+.cta-banner p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+.signup-button {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.signup-button:hover {
+    background-color: #c82333;
+}`
+                    ,
+                    js: `
+document.querySelector('.signup-button').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('Sign Up button clicked!');
+    // In a real app, this would redirect to a signup page or open a modal
+});`
+                }
+            };
+
+            // --- Load Stack Content into Editors ---
+            function loadStack(stackId) {
+                const stack = stacks[stackId];
+                if (stack) {
+                    htmlEditor.value = stack.html.trim();
+                    cssEditor.value = stack.css.trim();
+                    jsEditor.value = stack.js.trim();
+                    updatePreview(); // Update preview after loading
+                } else {
+                    console.warn(`Stack with ID "${stackId}" not found.`);
+                }
+            }
+
+            // Attach click listeners to stack buttons
+            stackButtonsContainer.addEventListener('click', (event) => {
+                if (event.target.classList.contains('stack-item')) {
+                    const stackId = event.target.dataset.stackId;
+                    loadStack(stackId);
+                }
+            });
+
+            // Load a default stack on initial page load
+            loadStack('hero-section');
+
+
+            // --- Export Functionality (Placeholder) ---
+            exportBtn.addEventListener('click', () => {
+                const htmlBlob = new Blob([htmlEditor.value], { type: 'text/html' });
+                const cssBlob = new Blob([cssEditor.value], { type: 'text/css' });
+                const jsBlob = new Blob([jsEditor.value], { type: 'text/javascript' });
+
+                // For simplicity, we'll create download links directly.
+                // In a real app, you'd use a library like JSZip to create a zip file
+                // and offer it for download.
+
+                const downloadFile = (blob, filename) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                };
+
+                const baseFilename = 'stack_export';
+                downloadFile(htmlBlob, `${baseFilename}.html`);
+                downloadFile(cssBlob, `${baseFilename}.css`);
+                downloadFile(jsBlob, `${baseFilename}.js`);
+
+                alert('Export initiated! Check your downloads.');
+            });
+
+            // --- Save Functionality (Placeholder) ---
+            saveBtn.addEventListener('click', () => {
+                alert('Save functionality coming soon! (Will save to your httpstack database)');
+                // Here you would send the htmlEditor.value, cssEditor.value, jsEditor.value
+                // along with user authentication details to your backend API.
+            });
+
+            // --- AI Generation (Placeholder) ---
+            generateBtn.addEventListener('click', () => {
+                const promptText = aiPrompt.value.trim();
+                if (promptText) {
+                    alert(`AI generation requested for: "${promptText}"\n(Integration with Gemini API to be implemented!)`);
+                    // Here you would make an API call to Gemini with the promptText
+                    // and then update the editor values with the AI's response.
+                } else {
+                    alert('Please enter a prompt for AI generation.');
+                }
+            });
+        });
+    </script>
+    <style>
+        /* General Body and Container Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* Ensure body takes full viewport height */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            /* Allows main content to take up remaining space */
+            display: flex;
+            flex-direction: column;
+            /* Stacks children vertically */
+            padding: 20px;
+            gap: 20px;
+            /* Space between control panel and main content rows */
+        }
+
+        .layout-control-panel {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            /* Allow wrapping on smaller screens */
+        }
+
+        .layout-control-panel h4 {
+            margin: 0;
+            margin-right: 10px;
+        }
+
+        .layout-btn,
+        .toggle-btn,
+        #exportBtn,
+        #saveBtn,
+        #generateBtn {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .layout-btn:hover,
+        .toggle-btn:hover,
+        #exportBtn:hover,
+        #saveBtn:hover,
+        #generateBtn:hover {
+            background-color: #e9e9e9;
+            border-color: #ccc;
+        }
+
+        .layout-btn.active {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .layout-btn img {
+            height: 30px;
+            /* Small icons for layout buttons */
+            vertical-align: middle;
+        }
+
+        .ai-controls {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+            /* Allows AI controls to take available space */
+        }
+
+        #aiPrompt {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            /* Allow vertical resizing */
+            min-height: 38px;
+            /* Match button height */
+        }
+
+        .main-content-rows {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            /* Default: stacked rows */
+            gap: 20px;
+        }
+
+        .content-row {
+            flex: 1;
+            /* Each row takes equal space initially */
+            display: flex;
+            gap: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: all 0.3s ease-in-out;
+            /* For collapsing */
+        }
+
+        .content-row.collapsed {
+            flex: 0 0 0;
+            /* Collapse height to 0 */
+            padding: 0;
+            overflow: hidden;
+            /* Hide content */
+            min-height: 0;
+        }
+
+        /* Specific Layout Styles */
+        .content-row>div {
+            flex: 1;
+            /* Distribute space equally within a row */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stacks-list,
+        .live-preview {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fdfdfd;
+        }
+
+        #stackButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stack-item {
+            padding: 8px 15px;
+            border: 1px solid #007bff;
+            background-color: #e0f2ff;
+            color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .stack-item:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        #previewFrame {
+            width: 100%;
+            height: 100%;
+            /* Take full height of its container */
+            min-height: 200px;
+            /* Minimum height for the preview */
+            border: 1px solid #ddd;
+            background-color: #fff;
+        }
+
+        .editors-row {
+            min-height: 300px;
+            /* Ensure editors have enough space */
+        }
+
+        .editor-panel {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fdfdfd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-panel h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .editor-panel textarea {
+            flex-grow: 1;
+            /* Take all available vertical space */
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            resize: vertical;
+            /* Allow vertical resizing for individual editors */
+            box-sizing: border-box;
+            /* Include padding and border in the element's total width and height */
+            min-height: 150px;
+            /* Minimum height for editors */
+        }
+
+        /* Footer Styles */
+        .app-footer {
+            background-color: #333;
+            color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            /* Allow wrapping for responsiveness */
+        }
+
+        .app-footer p {
+            margin: 0;
+        }
+
+        .app-footer nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .app-footer nav ul li {
+            margin-left: 20px;
+        }
+
+        .app-footer nav ul li a {
+            color: #f4f4f4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .app-footer nav ul li a:hover {
+            color: #61dafb;
+        }
+
+        .social-links a {
+            color: #f4f4f4;
+            margin-left: 15px;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #61dafb;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .header-content,
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            app-header nav ul,
+            .app-footer nav ul {
+                flex-direction: column;
+                gap: 5px;
+                margin-top: 10px;
+            }
+
+            app-header nav ul li,
+            .app-footer nav ul li {
+                margin-left: 0;
+            }
+
+            .content-row {
+                flex-direction: column;
+                /* Stack columns vertically on smaller screens */
+            }
+
+            .editor-panel textarea {
+                min-height: 100px;
+                /* Adjust min-height for smaller screens */
+            }
+
+            .layout-control-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .layout-control-panel button {
+                width: 100%;
+                /* Full width buttons */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <app-header></app-header>
+        <main class="main-content">
+            <div class="layout-control-panel">
+                <h4>Layout Schemes</h4>
+                <button id="layoutDefault" class="layout-btn active" title="Stacks/Preview Top, Editors Bottom">
+
+                </button>
+                <button id="layoutEditors" class="layout-btn" title="Editors Only">
+
+                </button>
+                <button id="layoutStacksPreview" class="layout-btn" title="Stacks/Preview Only">
+
+                </button>
+                <button id="toggleTopRow" class="toggle-btn" data-target="top-row-content">Toggle
+                    Stacks/Preview</button>
+                <button id="toggleBottomRow" class="toggle-btn" data-target="bottom-row-content">Toggle Editors</button>
+                <button id="exportBtn">Export Stack</button>
+                <button id="saveBtn">Save Stack</button>
+                <div class="ai-controls">
+                    <textarea id="aiPrompt" placeholder="Describe your component..."></textarea>
+                    <button id="generateBtn">Generate with AI</button>
+                </div>
+            </div>
+
+            <div id="mainContentRows" class="main-content-rows">
+                <div id="top-row-content" class="content-row">
+                    <div class="stacks-list">
+                        <h3>Stacks Library</h3>
+                        <div id="stackButtons">
+                            <button class="stack-item" data-stack-id="hero-section">Hero Section</button>
+                            <button class="stack-item" data-stack-id="call-to-action">Call to Action</button>
+                        </div>
+                    </div>
+                    <div class="live-preview">
+                        <h3>Live Preview</h3>
+                        <iframe id="previewFrame" srcdoc="Loading preview..." frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <div id="bottom-row-content" class="content-row editors-row">
+                    <div class="editor-panel html-editor">
+                        <h3>HTML</h3>
+                        <textarea id="htmlEditor" spellcheck="false"></textarea>
+                    </div>
+                    <div class="editor-panel css-editor">
+                        <h3>CSS</h3>
+                        <textarea id="cssEditor" spellcheck="false"></textarea>
+                    </div>
+                    <div class="editor-panel js-editor">
+                        <h3>JavaScript</h3>
+                        <textarea id="jsEditor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Stack Builder. All rights reserved.</p>
+                <nav>
+                    <ul>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </nav>
+                <div class="social-links">
+                    <a href="#"></a>
+                    <a href="#"></a>
+                    <a href="#"></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

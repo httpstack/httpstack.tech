@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTpsTACK</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=http" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-frame">
+        <header class="frame-header">
+            <div class="header-brand">
+                <span class="brand-logo">
+                    <i class="fas fa-align-center animated-icon"></i>
+
+                </span>
+                <span class="brand-title">{{appName}}</span>
+                <span class="brand-slogan"><sub>{{appSlogan}}</sub></span>
+            </div>
+            <div class="header-controls">
+                <!-- Theme Toggle Button -->
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-sun theme-icon-sun"></i>
+                    <i class="fas fa-moon theme-icon-moon"></i>
+                </button>
+                <!-- Hamburger Menu Button (for mobile) -->
+                <button class="hamburger-menu" aria-label="Open navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="header-nav nav-closed">
+                <ul class="nav-list" data-repeat="links as link">
+                    <li class="nav-item" data-repeat-item="link">
+                        <a href="link[uri]" class="nav-link">link[label]</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Hero Section - This will be dynamically loaded by the controller for the homepage -->
+        <!-- The content of home.html's hero section will be rendered here -->
+        <section class="frame-hero">
+            <div class="hero-content">
+                <h1>{{heroTitle}}</h1>
+                <p>{{heroDescription}}</p>
+                <a href="{{heroCtaUri}}" class="hero-cta">{{heroCtaLabel}}</a>
+            </div>
+        </section>
+        <div id="view" data-key="view"></div>
+
+        <footer class="frame-footer">
+            <div class="footer-content">
+                <div class="footer-function">{{ myFunc(data) }}</div>
+                <div class="footer-copyright">{{appCopyright}}</div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Hamburger menu functionality
+            const $hamburger = $('.hamburger-menu');
+            const $nav = $('.header-nav');
+
+            $hamburger.on('click', function () {
+                $nav.toggleClass('nav-open'); // Removed the dot from .nav-open here
+                // Toggle hamburger icon for visual feedback (e.g., X icon)
+                $(this).find('i').toggleClass('fa-bars fa-times');
+            });
+
+            // Close navigation when a link is clicked (for mobile)
+            $nav.find('.nav-link').on('click', function () {
+                if ($nav.hasClass('nav-open')) {
+                    $nav.removeClass('nav-open');
+                    $hamburger.find('i').removeClass('fa-times').addClass('fa-bars');
+                }
+            });
+
+            // Close navigation if clicking outside on mobile
+            $(document).on('click', function (event) {
+                if (!$nav.is(event.target) && $nav.has(event.target).length === 0 &&
+                    !$hamburger.is(event.target) && $hamburger.has(event.target).length === 0 &&
+                    $nav.hasClass('nav-open')) {
+                    $nav.removeClass('nav-open');
+                    $hamburger.find('i').removeClass('fa-times').addClass('fa-bars');
+                }
+            });
+
+
+            // --- Theme Toggle Logic (now using jQuery) ---
+            const $themeToggle = $('.theme-toggle');
+
+            // Function to set the theme
+            function setTheme(theme) {
+                $('html').attr('data-theme', theme);
+                localStorage.setItem('theme', theme); // Save user preference
+            }
+
+            // Check for saved theme preference on load
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                // Default to light theme if no preference is saved
+                setTheme('light');
+            }
+
+            // Toggle theme on button click
+            $themeToggle.on('click', function () {
+                const currentTheme = $('html').attr('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        });
+    </script>
+</body>
+
+</html>

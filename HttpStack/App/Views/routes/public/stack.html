@@ -1,0 +1,56 @@
+<div class="container">
+    <main class="main-content">
+        <div class="layout-control-panel">
+            <h4>Layout Schemes</h4>
+            <button id="layoutDefault" class="layout-btn active" title="Stacks/Preview Top, Editors Bottom">
+
+            </button>
+            <button id="layoutEditors" class="layout-btn" title="Editors Only">
+
+            </button>
+            <button id="layoutStacksPreview" class="layout-btn" title="Stacks/Preview Only">
+
+            </button>
+            <button id="toggleTopRow" class="toggle-btn" data-target="top-row-content">Toggle
+                Stacks/Preview</button>
+            <button id="toggleBottomRow" class="toggle-btn" data-target="bottom-row-content">Toggle Editors</button>
+            <button id="exportBtn">Export Stack</button>
+            <button id="saveBtn">Save Stack</button>
+            <div class="ai-controls">
+                <textarea id="aiPrompt" placeholder="Describe your component..."></textarea>
+                <button id="generateBtn">Generate with AI</button>
+            </div>
+        </div>
+
+        <div id="mainContentRows" class="main-content-rows">
+            <div id="top-row-content" class="content-row">
+                <div class="stacks-list">
+                    <h3>Stacks Library</h3>
+                    <div id="stackButtons">
+                        <button class="stack-item" data-stack-id="hero-section">Hero Section</button>
+                        <button class="stack-item" data-stack-id="call-to-action">Call to Action</button>
+                    </div>
+                </div>
+                <div class="live-preview">
+                    <h3>Live Preview</h3>
+                    <iframe id="previewFrame" srcdoc="Loading preview..." frameborder="0"></iframe>
+                </div>
+            </div>
+
+            <div id="bottom-row-content" class="content-row editors-row">
+                <div class="editor-panel html-editor">
+                    <h3>HTML</h3>
+                    <textarea id="htmlEditor" spellcheck="false"></textarea>
+                </div>
+                <div class="editor-panel css-editor">
+                    <h3>CSS</h3>
+                    <textarea id="cssEditor" spellcheck="false"></textarea>
+                </div>
+                <div class="editor-panel js-editor">
+                    <h3>JavaScript</h3>
+                    <textarea id="jsEditor" spellcheck="false"></textarea>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

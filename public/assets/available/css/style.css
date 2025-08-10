@@ -1,0 +1,681 @@
+/* --- Base Variables (YOURS, with semantic color names for theming) --- */
+:root {
+    /* Base Font Size */
+    --font-size: 14px;
+    --font-size-rem: calc(var(--font-size) / 16 * 1rem); /* Normalize px to rem */
+    --default-font: 'Segoe UI', sans-serif;
+    --app-frame-width: 90%; /* Default width for app frame, overridden by media queries */
+
+    /* Light Theme Color Palette (Default) */
+    --theme-primary: #7d3c98; /* Deep Violet - main branding color */
+    --theme-accent-1: #f39c12; /* Vibrant Orange-Yellow - for links, CTAs */
+    --theme-accent-2: #80c05a; /* Fresh Green-Yellow - for highlights, checkmarks */
+
+    --theme-text-main: #34495e; /* Default text color for body/cards */
+    --theme-text-light: #ecf0f1; /* Text on dark backgrounds (header/footer) */
+    --theme-text-darker: #212529; /* A darker text variant if needed */
+
+    --theme-bg-body: #ecf0f1; /* Overall page background */
+    --theme-bg-card: #ffffff; /* Main content card background */
+    --theme-bg-header-footer: #2c3e50; /* Header and footer background */
+
+    --theme-border-subtle: rgba(0, 0, 0, 0.1); /* Subtle border color */
+    --theme-shadow-light: rgba(0, 0, 0, 0.1); /* Lighter shadow for inner elements */
+    --theme-shadow-medium: rgba(0, 0, 0, 0.2); /* Stronger shadow for cards */
+
+    /* Hero Section specific gradients (light mode) */
+    --theme-hero-gradient-start: var(--theme-primary);
+    --theme-hero-gradient-end: var(--theme-accent-1);
+
+    /* Theme Toggle Icon Colors (visible/hidden based on theme) */
+    --theme-icon-sun-color: var(--theme-accent-1); /* Sun visible in light mode */
+    --theme-icon-moon-color: rgba(255, 255, 255, 0); /* Moon hidden (transparent) in light mode */
+
+    /* Card Specifics */
+    --card-border-radius: 12px;
+}
+
+/* --- Dark Theme Variables (Overrides for html[data-theme="dark"]) --- */
+html[data-theme="dark"] {
+    --theme-primary: #a367c0; /* Lighter violet for dark mode */
+    --theme-accent-1: #f7b731; /* Slightly brighter orange-yellow */
+    --theme-accent-2: #9fd27c; /* Slightly brighter green-yellow */
+
+    --theme-text-main: #ecf0f1; /* Light text for dark backgrounds */
+    --theme-text-light: #f0f8ff; /* Even lighter text on dark backgrounds */
+    --theme-text-darker: #cccccc; /* Adjusted for dark mode */
+
+    --theme-bg-body: #242424; /* Very dark grey for overall body */
+    --theme-bg-card: #333333; /* Dark grey for the main content card */
+    --theme-bg-header-footer: #1c2730; /* Even darker blue-grey */
+
+    --theme-border-subtle: rgba(255, 255, 255, 0.1); /* Lighter border for dark mode */
+    --theme-shadow-light: rgba(0, 0, 0, 0.3); /* Shadows can be more pronounced on dark */
+    --theme-shadow-medium: rgba(0, 0, 0, 0.5);
+
+    /* Hero Section specific gradients (dark mode) */
+    --theme-hero-gradient-start: #1a0033; /* Darker primary for hero */
+    --theme-hero-gradient-end: #3d0066; /* Darker accent for hero */
+
+    /* Theme Toggle Icon Colors (for dark mode) */
+    --theme-icon-sun-color: rgba(255, 255, 255, 0); /* Sun hidden in dark mode */
+    --theme-icon-moon-color: var(--theme-accent-1); /* Moon visible in dark mode */
+}
+
+
+/* --- YOUR MEDIA BREAKPOINTS - FONT SIZE AND APP FRAME WIDTH (Unchanged, as per your request) --- */
+
+/* Breakpoint 1: ≤767px (Default) */
+html {
+    font-size: var(--font-size-rem); /* Uses the 14px from :root */
+}
+.app-frame {
+    width: 100%; /* Full width for very small screens */
+    border-left: none;
+    border-right: none;
+}
+
+/* Breakpoint 2: ≥768px */
+@media (min-width: 768px) {
+  :root {
+    --font-size: 15px;
+    --app-frame-width: 85%;
+  }
+  .app-frame { /* Apply app-frame-width and borders here */
+      width: var(--app-frame-width);
+      border-left: 1px solid var(--theme-border-subtle);
+      border-right: 1px solid var(--theme-border-subtle);
+  }
+}
+
+/* Breakpoint 3: ≥920px */
+@media (min-width: 920px) {
+  :root {
+    --font-size: 16px;
+    --app-frame-width: 80%;
+  }
+}
+
+/* Breakpoint 4: ≥1200px */
+@media (min-width: 1200px) {
+  :root {
+    --font-size: 17px;
+    --app-frame-width: 75%;
+  }
+}
+
+/* Breakpoint 5: ≥1400px */
+@media (min-width: 1400px) {
+  :root {
+    --font-size: 18px;
+    --app-frame-width: 70%;
+  }
+}
+
+/* Breakpoint 6: >1400px */
+@media (min-width: 1401px) {
+  :root {
+    --font-size: 19px;
+    --app-frame-width: 65%;
+  }
+}
+
+/* --- General Resets and Base Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease; /* Smooth transition for body background */
+}
+
+body {
+    display: flex;
+    flex-direction: row; /* Your original direction */
+    justify-content: center; /* Center the whole frame horizontally */
+    align-items: flex-start; /* Align frame to the top */
+    min-height: 100vh;
+    background-color: var(--theme-bg-body); /* Uses theme-dependent variable */
+    font-size: 1rem;
+    font-family: var(--default-font);
+    color: var(--theme-text-main); /* Uses theme-dependent variable */
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px 0; /* Add vertical padding, horizontal is handled by app-frame */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for body */
+}
+
+/* --- App Frame (The Card Layout) --- */
+.app-frame {
+    /* `width` and `border` handled by media queries above */
+    margin: 0 auto;
+    padding: 0px; /* Your original padding */
+    background-color: var(--theme-bg-card); /* Uses theme-dependent variable */
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 15px 40px var(--theme-shadow-medium);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-width: 1600px; /* Optional: cap max width on very large screens */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- Header Section --- */
+.frame-header {
+    background-color: var(--theme-bg-header-footer); /* Uses theme-dependent variable */
+    padding: 1.5rem 2rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+    box-shadow: 0 2px 10px var(--theme-shadow-light);
+    position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 0.8rem;
+}
+
+.brand-logo {
+    font-size: 2.2rem;
+    color: var(--theme-accent-2); /* Uses theme-dependent variable */
+}
+
+/* --- BS-Icon Live Gradient Effect (Font Icons) --- */
+.animated-icon {
+    display: inline-block;
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, var(--theme-accent-2) 0%, var(--theme-primary) 50%, var(--theme-accent-1) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 6s linear infinite;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+    transition: filter 0.3s ease;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: -200% 50%; }
+}
+
+/* --- Animated Gradient Effect for SVGs (Keep your specific path here) --- */
+/* IMPORTANT: For the SVG to animate, the mask-image URL below MUST contain your SVG's path data with fill="white" */
+.animated-icon-container {
+    display: inline-block;
+    width: 2.2rem; /* Match font icon size */
+    height: 2.2rem; /* Match font icon size */
+    overflow: hidden;
+    position: relative;
+}
+
+.animated-icon-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor; /* Base fill color of the SVG itself */
+    stroke: none; /* Remove stroke if you want gradient to fill entire shape */
+}
+
+.animated-icon-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--theme-accent-2) 0%, var(--theme-primary) 50%, var(--theme-accent-1) 100%);
+    mix-blend-mode: screen; /* Or multiply, overlay, etc. Experiment for best blend */
+    animation: svg-gradient-slide 6s linear infinite;
+
+    /* REPLACE THIS WITH YOUR SVG PATH DATA (fill="white" inside URL) */
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg height="200" width="200" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M22 12s-.993.89-2.979 1.685l-2.808 1.123C14.227 15.604 13.233 16 12 16c-1.234 0-2.227-.397-4.213-1.191L4.98 13.684C2.993 12.891 2 12 2 12m0 4s.993.89 2.979 1.685l2.808 1.123C9.773 19.604 10.767 20 12 20c.954 0 1.764-.237 3-.712m4.021-1.603C21.007 16.891 22 16 22 16M4.979 6.315C2.993 7.109 2 7.506 2 8s.993.89 2.979 1.685l2.808 1.123C9.773 11.604 10.767 12 12 12c1.234 0 2.227-.397 4.213-1.191l2.808-1.124C21.007 8.891 22 8.494 22 8s-.993-.89-2.979-1.685l-2.808-1.123C14.227 4.397 13.233 4 12 4c-.954 0-1.764.237-3 .712" /></svg>');
+    mask-image: url('data:image/svg+xml;utf8,<svg height="200" width="200" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M22 12s-.993.89-2.979 1.685l-2.808 1.123C14.227 15.604 13.233 16 12 16c-1.234 0-2.227-.397-4.213-1.191L4.98 13.684C2.993 12.891 2 12 2 12m0 4s.993.89 2.979 1.685l2.808 1.123C9.773 19.604 10.767 20 12 20c.954 0 1.764-.237 3-.712m4.021-1.603C21.007 16.891 22 16 22 16M4.979 6.315C2.993 7.109 2 7.506 2 8s.993.89 2.979 1.685l2.808 1.123C9.773 11.604 10.767 12 12 12c1.234 0 2.227-.397 4.213-1.191l2.808-1.124C21.007 8.891 22 8.494 22 8s-.993-.89-2.979-1.685l-2.808-1.123C14.227 4.397 13.233 4 12 4c-.954 0-1.764.237-3 .712" /></svg>');
+    
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
+@keyframes svg-gradient-slide {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+
+.brand-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+}
+
+.brand-slogan {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7); /* Can keep static or make a variable */
+    margin-left: 0.5rem;
+}
+
+/* --- Header Controls (for hamburger and theme toggle) --- */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Space between toggle and hamburger */
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.8rem; /* Size of sun/moon icons */
+    padding: 0.5rem;
+    display: flex; /* To align icons side by side for transition */
+    position: relative; /* For icon positioning */
+    overflow: hidden; /* Hide the icon that's not active */
+    width: 2rem; /* Fixed width for consistent button size */
+    height: 2rem; /* Fixed height for consistent button size */
+    justify-content: center;
+    align-items: center;
+    color: var(--theme-text-light); /* Base color for the button itself */
+}
+
+.theme-toggle i {
+    position: absolute;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity; /* Optimize animation */
+}
+
+/* Sun icon (visible in light mode, hidden in dark mode) */
+.theme-icon-sun {
+    color: var(--theme-icon-sun-color);
+}
+
+/* Moon icon (hidden in light mode, visible in dark mode) */
+.theme-icon-moon {
+    color: var(--theme-icon-moon-color);
+}
+
+/* Initial state for light mode: Sun visible, Moon hidden */
+html[data-theme="light"] .theme-icon-sun {
+    opacity: 1;
+    transform: translateX(0);
+}
+html[data-theme="light"] .theme-icon-moon {
+    opacity: 0;
+    transform: translateX(100%); /* Move moon off-screen right */
+}
+
+/* State for dark mode: Moon visible, Sun hidden */
+html[data-theme="dark"] .theme-icon-sun {
+    opacity: 0;
+    transform: translateX(-100%); /* Move sun off-screen left */
+}
+html[data-theme="dark"] .theme-icon-moon {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* --- Hamburger Menu (Small Screens, < 768px) --- */
+.hamburger-menu {
+    display: block; /* Show by default on small screens */
+    background: none;
+    border: none;
+    font-size: 2.5rem; /* Slightly larger for touch */
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 100;
+    transition: transform 0.2s ease-out, color 0.3s ease;
+}
+.hamburger-menu:hover {
+    transform: scale(1.1);
+}
+
+/* --- Navigation Links --- */
+.header-nav {
+    position: absolute; /* Position off-screen by default */
+    top: 100%; /* Below the header */
+    left: 0;
+    width: 100%;
+    background-color: var(--theme-bg-header-footer); /* Uses theme-dependent variable */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    box-shadow: 0 4px 8px var(--theme-shadow-light);
+    transform: translateY(-100%); /* Start hidden above the header */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for theme */
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.header-nav.nav-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.nav-item {
+    margin: 0;
+    padding: 0.8rem 0;
+}
+
+.nav-link {
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    display: block;
+    position: relative;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* --- Link Hover Animation: Glowing, Sliding Underline --- */
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: var(--theme-accent-1); /* Uses theme-dependent variable */
+    transform: translateX(-50%);
+    transition: width 0.3s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 8px var(--theme-accent-1); /* Uses theme-dependent variable */
+}
+
+.nav-link:hover {
+    color: var(--theme-accent-1); /* Use theme variable for hover */
+    transform: translateY(-2px);
+}
+
+.nav-link:hover::before {
+    width: 100%;
+}
+
+/* --- Desktop Navigation (No Hamburger for >= 768px) --- */
+@media (min-width: 768px) {
+    .hamburger-menu {
+        display: none;
+    }
+    .header-nav {
+        position: static;
+        top: auto;
+        left: auto;
+        width: auto;
+        background-color: transparent;
+        flex-direction: row;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        padding: 0;
+    }
+    .nav-list {
+        display: flex;
+        gap: 1.5rem;
+        width: auto;
+    }
+    .nav-item {
+        padding: 0;
+    }
+    .nav-link {
+        color: var(--theme-text-light); /* Links remain light on dark header */
+    }
+}
+
+/* --- Hero Section --- */
+.frame-hero {
+    background: linear-gradient(45deg, var(--theme-hero-gradient-start), var(--theme-hero-gradient-end)); /* Uses theme-dependent variables */
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white; /* Hero text remains white for contrast */
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--theme-border-subtle);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fade-in-up 1s ease-out forwards;
+}
+
+.frame-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif; /* Uses a different font for impact */
+    text-shadow: 3px 3px 8px var(--theme-shadow-medium);
+    animation: text-pop-in 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+    opacity: 0;
+    transition: text-shadow 0.3s ease;
+}
+
+.frame-hero p {
+    font-size: 1.3rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    animation: fade-in-up 1.5s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.hero-cta {
+    display: inline-block;
+    background-color: var(--theme-accent-2); /* Uses theme-dependent variable */
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 20px var(--theme-shadow-medium);
+    animation: scale-in 1s ease-out forwards;
+    animation-delay: 0.4s;
+    opacity: 0;
+}
+
+.hero-cta:hover {
+    background-color: var(--theme-accent-2); /* Use the updated accent color for hover */
+    filter: brightness(0.9);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 25px var(--theme-shadow-medium);
+}
+
+/* --- Hero Section Cool Effect: Animated Background Shapes/Particles --- */
+.frame-hero::before,
+.frame-hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Organic, blob-like shape */
+    background: rgba(255, 255, 255, 0.08); /* Very subtle white translucency */
+    animation: blob-move 20s infinite ease-in-out alternate;
+    z-index: 0;
+    filter: blur(10px);
+}
+
+.frame-hero::before {
+    width: 250px;
+    height: 250px;
+    top: 5%;
+    left: 5%;
+    animation-duration: 25s;
+    animation-delay: 0s;
+}
+
+.frame-hero::after {
+    width: 180px;
+    height: 180px;
+    bottom: 10%;
+    right: 10%;
+    animation-duration: 22s;
+    animation-delay: 1s;
+}
+
+@keyframes blob-move {
+    0% { transform: translate(0, 0) scale(1); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    25% { transform: translate(30px, -20px) scale(1.05); border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%; }
+    50% { transform: translate(0, 40px) scale(1); border-radius: 70% 30% 50% 50% / 70% 50% 50% 30%; }
+    75% { transform: translate(-20px, -10px) scale(0.95); border-radius: 30% 70% 50% 50% / 50% 70% 30% 50%; }
+    100% { transform: translate(0, 0) scale(1); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+}
+/*  */
+
+
+/* --- Entrance Animations for Hero Content --- */
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes text-pop-in {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px); }
+    60% { opacity: 1; transform: scale(1.05) translateY(-5px); }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+/* --- Main Content Area (Card Layout) --- */
+/* Your original 'main' selector was impacting the layout. Removed explicit 'main' styles
+   and integrated into '.frame-main' and '.card-layout' for better control */
+
+.frame-main {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: var(--theme-bg-card); /* Uses theme-dependent variable */
+    transition: background-color 0.3s ease;
+}
+
+.card-layout {
+    padding: 1.5rem;
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 8px 25px var(--theme-shadow-light);
+    border: 1px solid var(--theme-border-subtle);
+    background-color: var(--theme-bg-card); /* Uses theme-dependent variable */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.frame-view h2 {
+    font-size: 2rem;
+    color: var(--theme-primary); /* Uses theme-dependent variable */
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--theme-accent-2); /* Uses theme-dependent variable */
+    padding-bottom: 0.5rem;
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.frame-view p, .frame-view ul li {
+    color: var(--theme-text-main); /* Uses theme-dependent variable */
+    transition: color 0.3s ease;
+}
+
+.frame-view ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.frame-view ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.frame-view ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--theme-accent-2); /* Uses theme-dependent variable */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+
+/* --- Footer --- */
+.frame-footer {
+    background-color: var(--theme-bg-header-footer); /* Uses theme-dependent variable */
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid var(--theme-border-subtle);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.footer-function, .footer-copyright {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-copyright {
+    text-align: right;
+}
+
+@media (max-width: 767px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .footer-function, .footer-copyright {
+        text-align: center;
+    }
+}
+
+/* --- Utility Classes (Your original ones, just ensuring they use new variables if applicable) --- */
+pre{
+  display:flex;
+  flex-grow:1;
+  flex-direction:column;
+}
+.social-links a {
+    margin: 0 10px;
+    color: var(--theme-text-light); /* Uses theme-dependent variable */
+    transition: color 0.3s ease;
+}
+.social-links a:hover {
+    color: var(--theme-accent-1); /* Uses theme-dependent variable */
+}
+
+
+
+
+
+/*==CUSTOM HEADER==*/

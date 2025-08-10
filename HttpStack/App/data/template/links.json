@@ -1,0 +1,36 @@
+{
+    "main": [
+        {
+            "label": "Home",
+            "uri": "\/prod\/home",
+            "icon": "bi bi-file-binary-fill"
+        },
+        {
+            "label": "Resume",
+            "uri": "\/prod\/resume",
+            "icon": "fas fas-watch"
+        },
+        {
+            "label": "Stacks",
+            "uri": "\/prod\/stacks",
+            "icon": "fas fas-stack"
+        }
+    ],
+    "social": [
+        {
+            "label": "FaceBook",
+            "uri": "facebook.com\/prod\/httpstack",
+            "icon": "bxl-facebook"
+        },
+        {
+            "label": "LinkdIn",
+            "uri": "linkdin.com\/prod\/httpstack",
+            "icon": "linkdin"
+        },
+        {
+            "label": "Instagram",
+            "uri": "instagram.com\/prod\/httpstack",
+            "icon": "bs-"
+        }
+    ]
+}

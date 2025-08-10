@@ -1,0 +1,47 @@
+/* Styling for the custom element itself and its internal structure */
+app-header {
+    display: block; /* Custom elements are inline by default */
+    width: 100%;
+    background-color: #282c34;
+    color: #61dafb;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+app-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Max width for content */
+    margin: 0 auto; /* Center the content */
+}
+
+app-header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+app-header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+app-header nav ul li {
+    margin-left: 20px;
+}
+
+app-header nav ul li a {
+    color: #61dafb;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+app-header nav ul li a:hover {
+    color: #fff;
+}

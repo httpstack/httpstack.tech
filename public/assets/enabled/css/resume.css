@@ -1,0 +1,270 @@
+
+
+   /* Resume Section Specific Styles */
+    .resume-section {
+        padding: 2rem;
+    }
+
+    .resume-highlights {
+        margin-top: 2.5rem;
+        background-color: var(--theme-bg-body);
+        /* Lighter background for highlights */
+        border-radius: var(--card-border-radius);
+        padding: 2rem;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        /* Subtle inner shadow */
+        border: 1px solid var(--theme-border-subtle);
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .resume-highlights h3 {
+        color: var(--theme-primary);
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .highlight-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .highlight-card {
+        background-color: var(--theme-bg-card);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 4px 15px var(--theme-shadow-light);
+        padding: 1.5rem;
+        border: 1px solid var(--theme-border-subtle);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px var(--theme-shadow-medium);
+    }
+
+    .highlight-card h4 {
+        color: var(--theme-accent-1);
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px dashed var(--theme-border-subtle);
+        padding-bottom: 0.5rem;
+        transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .highlight-card ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .highlight-card ul li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--theme-text-main);
+        transition: color 0.3s ease;
+    }
+
+    .highlight-card ul li::before {
+        content: '•';
+        /* Simple bullet point */
+        position: absolute;
+        left: 0;
+        color: var(--theme-accent-2);
+        font-weight: bold;
+        font-size: 1.2em;
+        line-height: 1;
+        transition: color 0.3s ease;
+    }
+
+    .resume-download-section {
+        margin-top: 3rem;
+        text-align: center;
+        padding: 2rem;
+        background-color: var(--theme-bg-body);
+        /* Match highlight section background */
+        border-radius: var(--card-border-radius);
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--theme-border-subtle);
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .resume-download-section h3 {
+        color: var(--theme-primary);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .download-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: var(--theme-text-main);
+        transition: color 0.3s ease;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--theme-border-subtle);
+        border-radius: 8px;
+        background-color: var(--theme-bg-card);
+        color: var(--theme-text-main);
+        font-size: 1rem;
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--theme-accent-1);
+        box-shadow: 0 0 0 3px rgba(var(--theme-accent-1-rgb), 0.2);
+    }
+
+    .download-button,
+    .view-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: var(--theme-accent-2);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .download-button:hover,
+    .view-button:hover {
+        background-color: var(--theme-accent-2);
+        filter: brightness(0.9);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .download-button i,
+    .view-button i {
+        font-size: 1.2em;
+    }
+
+    .resume-embed-option {
+        margin-top: 2rem;
+    }
+
+    .resume-embed-option h4 {
+        color: var(--theme-text-main);
+        margin-bottom: 1rem;
+    }
+
+    /* Lightbox Modal Styles */
+    .lightbox-modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1000;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.8);
+        /* Black w/ opacity */
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .lightbox-modal.open {
+        display: flex;
+        /* Show when open */
+        opacity: 1;
+    }
+
+    .lightbox-content {
+        background-color: var(--theme-bg-card);
+        margin: auto;
+        padding: 20px;
+        border-radius: var(--card-border-radius);
+        width: 90%;
+        max-width: 900px;
+        height: 90%;
+        max-height: 90vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+        transform: scale(0.9);
+        opacity: 0;
+        animation: modal-pop-in 0.3s forwards cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: background-color 0.3s ease;
+    }
+
+    .lightbox-modal.open .lightbox-content {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    @keyframes modal-pop-in {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .lightbox-content iframe {
+        width: 100%;
+        flex-grow: 1;
+        /* Take all available space */
+        border: 1px solid var(--theme-border-subtle);
+        border-radius: 8px;
+        margin-top: 1rem;
+    }
+
+    .close-button {
+        color: var(--theme-text-main);
+        position: absolute;
+        top: 15px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+        color: var(--theme-accent-1);
+        text-decoration: none;
+        cursor: pointer;
+    }
