@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  This XML file contains the hero section data for the key pages of the
+  httpstack website. Each page's data includes a title, a description
+  for the hero section, and a call-to-action (CTA) button with a URI
+  and a label.
+-->
+<pages>
+ <!-- Hero data for the Home page. -->
+  <home>
+    <title>What We Do</title>
+    <description><![CDATA[Ready to build something amazing together? Whether you're interested in httpstack, a potential employer, or just want to chat about web development, I'd love to hear from you.]]></description>
+    <ctaLink>
+      <uri>/services/quote</uri>
+      <label>Get a Quote</label>
+    </ctaLink>
+  </home>
+  <!-- Hero data for the Contact page. -->
+  <contact>
+    <title>Get In Touch</title>
+    <description><![CDATA[Ready to build something amazing together? Whether you're interested in httpstack, a potential employer, or just want to chat about web development, I'd love to hear from you.]]></description>
+    <ctaLink>
+      <uri>mailto:chris.mcintosh@example.com</uri>
+      <label>Send Me an Email</label>
+    </ctaLink>
+  </contact>
+
+  <!-- Hero data for the Resume page. -->
+  <resume>
+    <title>My Professional Journey</title>
+    <description><![CDATA[This page is a snapshot of my skills, experience, and the passion that drives my work. It's a deep dive into the projects and roles that have shaped me into the developer I am today.]]></description>
+    <ctaLink>
+      <uri>/files/Chris_McIntosh_Resume.pdf</uri>
+      <label>Download PDF</label>
+    </ctaLink>
+  </resume>
+
+  <!-- Hero data for the Stacks page. -->
+  <stacks>
+    <title>My Toolkit</title>
+    <description><![CDATA[Explore the technologies, frameworks, and languages I use to bring ideas to life. From the foundational elements of web development to the latest and greatest tools, this is the stack that powers my work and httpstack.]]></description>
+    <ctaLink>
+      <uri>/services</uri>
+      <label>See My Services</label>
+    </ctaLink>
+  </stacks>
+
+  <!-- Hero data for the Services page. -->
+  <services>
+    <title>What I Offer</title>
+    <description><![CDATA[As the creator of httpstack, I specialize in building custom web solutions with unparalleled clarity and control. My services range from creating bespoke components to developing full-stack applications.]]></description>
+    <ctaLink>
+      <uri>/contact</uri>
+      <label>Request a Quote</label>
+    </ctaLink>
+  </services>
+
+</pages>

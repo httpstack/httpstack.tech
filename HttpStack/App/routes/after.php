@@ -1,11 +1,17 @@
 <?php
-use HttpStack\App\Controllers\Routes\PublicController;
-use HttpStack\Routing\Route;
 
-$root = new Route("GET","/", box()->makeCallable(["HttpStack\App\Controllers\Routes\PublicController", "index"]),"after");
-$home = new Route("GET","/home", box()->makeCallable(["HttpStack\App\Controllers\Routes\PublicController", "index"]),"after");
-$resume = new Route("GET","/resume", box()->makeCallable(["HttpStack\App\Controllers\Routes\PublicController", "resume"]),"after");
-$contact = new Route("GET", "/stacks", box()->makeCallable(['HttpStack\App\Controllers\Routes\PublicController', "stacks"]), "after");
-$about = new Route("GET", "/about", box()->makeCallable(["HttpStack\App\Controllers\Routes\PublicController", "about"]), "after");
-return [$home,$resume,$contact,$about];
-?>
+use HttpStack\Routing\Route;
+use HttpStack\App\Controllers\Routes\PublicController;
+
+$fncCtrlServices = box()->makeCallable(["HttpStack\App\Controllers\Routes\ServicesController", "index"]);
+$fncCtrlHome = box()->makeCallable(["HttpStack\App\Controllers\Routes\HomeController", "index"]);
+$fncCtrlResume = box()->makeCallable(["HttpStack\App\Controllers\Routes\ResumeController", "index"]);
+$fncCtrlStack = box()->makeCallable(["HttpStack\App\Controllers\Routes\StackController", "index"]);
+$fncCtrlContact = box()->makeCallable(["HttpStack\App\Controllers\Routes\ContactController", "index"]);
+
+$services = new Route("GET", "/services", $fncCtrlServices, "after");
+$home = new Route("GET", "/home", $fncCtrlHome, "after");
+$resume = new Route("GET", "/resume", $fncCtrlResume, "after");
+$stack = new Route("GET", "/stacks", $fncCtrlStack, "after");
+$contact = new Route("GET", "/contact", $fncCtrlContact, "after");
+return [$home, $resume, $contact, $stack, $services];

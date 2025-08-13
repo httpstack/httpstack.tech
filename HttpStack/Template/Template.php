@@ -39,7 +39,7 @@ class Template extends DOMDocument{
             $strType = pathinfo($asset, PATHINFO_EXTENSION);
             $filename = pathinfo($asset, PATHINFO_BASENAME); 
             $required = str_contains($filename, "required");
-            $src = str_replace(DOC_ROOT, "/prod", $asset);
+            $src = str_replace(DOC_ROOT, "", $asset);
             $imagesToPreload = [];
             switch($strType){
                 case "js":

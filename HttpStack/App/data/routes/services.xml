@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+  <hero>
+    <title>My Expertise &amp; Services</title>
+    <description><![CDATA[
+      I offer a range of comprehensive solutions tailored to your needs, spanning from web development to IT infrastructure.
+    ]]></description>
+    <ctaLink>
+      <uri>/contact</uri>
+      <label>Get a Quote</label>
+    </ctaLink>
+  </hero>
+  <view>
+    <heading>
+      <![CDATA[
+        <h4>Explore My Professional Solutions</h4>
+        <p class="tagline">From design to diagnostics, discover how I can help your business succeed.</p>
+      ]]>
+    </heading>
+    <summary>
+      <![CDATA[
+        <h3>Services Offered</h3>
+        <p>I leverage years of experience in diverse technological domains to provide a comprehensive suite of services. Each service is designed to be scalable, efficient, and tailored to your specific project requirements.</p>
+      ]]>
+    </summary>
+    <cta>
+      <![CDATA[
+        <h3>Ready to Transform Your Ideas into Reality?</h3>
+        <p>Contact me to discuss a custom solution that fits your business goals.</p>
+        <a href="/contact" class="cta-button">Get a Quote</a>
+        <a href="/resume" class="cta-button" style="margin-left: 15px;">View My Resume</a>
+      ]]>
+    </cta>
+  </view>
+</page>

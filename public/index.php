@@ -1,8 +1,8 @@
 <?php
 
 //SWITCH THESE REQUIRES FOR ONLINE AND LOCAL CONFIGS
-//require_once(__DIR__ . "/../HttpStack/App/init_prod.php");
-require_once(__DIR__ . "/../HttpStack/App/init_dev.php");
+require_once(__DIR__ . "/../HttpStack/App/init_prod.php");
+//require_once(__DIR__ . "/../HttpStack/App/init_dev.php");
 
 
 
@@ -18,5 +18,8 @@ if(!$app->getRequest()->getUri()){
 };
 $app->loadRoutes();
 //[function(){return new class}]
+
+
+
 $app->run();
 ?>

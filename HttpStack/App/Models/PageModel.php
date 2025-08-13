@@ -1,4 +1,5 @@
 <?php
+
 namespace HttpStack\App\Models;
 
 use Stringable;
@@ -41,7 +42,7 @@ class PageModel extends AbstractModel implements Stringable
     public function __toString(): string
     {
         // Access the table name via getTableName() and the ID via the inherited get() method.
-        return "PageModel: Table '" . $this->getTableName() . "' (ID: " . ($this->get('id') ?? 'N/A') . ")";
+        return "PageModel";
     }
 
     // You can add specific methods here for common page operations,

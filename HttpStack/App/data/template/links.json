@@ -2,34 +2,44 @@
     "main": [
         {
             "label": "Home",
-            "uri": "\/prod\/home",
+            "uri": "\/home",
+            "icon": "fas fas-stack"
+        },
+        {
+            "label": "Services",
+            "uri": "\/services",
             "icon": "bi bi-file-binary-fill"
         },
         {
             "label": "Resume",
-            "uri": "\/prod\/resume",
+            "uri": "\/resume",
             "icon": "fas fas-watch"
         },
         {
             "label": "Stacks",
-            "uri": "\/prod\/stacks",
+            "uri": "\/stacks",
+            "icon": "fas fas-stack"
+        },
+        {
+            "label": "Contact",
+            "uri": "\/contact",
             "icon": "fas fas-stack"
         }
     ],
     "social": [
         {
             "label": "FaceBook",
-            "uri": "facebook.com\/prod\/httpstack",
+            "uri": "facebook.com\/httpstack",
             "icon": "bxl-facebook"
         },
         {
             "label": "LinkdIn",
-            "uri": "linkdin.com\/prod\/httpstack",
+            "uri": "linkdin.com\/httpstack",
             "icon": "linkdin"
         },
         {
             "label": "Instagram",
-            "uri": "instagram.com\/prod\/httpstack",
+            "uri": "instagram.com\/httpstack",
             "icon": "bs-"
         }
     ]

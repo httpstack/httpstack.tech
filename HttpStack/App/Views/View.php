@@ -1,4 +1,5 @@
 <?php
+
 namespace HttpStack\App\Views;
 
 
@@ -11,14 +12,16 @@ use HttpStack\Container\Container;
 use HttpStack\Model\AbstractModel;
 use HttpStack\App\Models\TemplateModel;
 
-class View {
+class View
+{
 
     protected Template $template;
     protected Response $response;
     protected string $view;
     protected Container $container;
 
-    public function __construct(Request $req, Response $res, Container $container){
+    public function __construct(Container $container, Request $req, Response $res)
+    {
         // make sure templateModel is foing the logic of preparing the model since 
         // it is the concrete model 
         //box(abstract) is a helper for $container->make(abstract);
@@ -36,7 +39,8 @@ class View {
         });
         */
     }
-    public function loadView(string $filePath){
+    public function loadView(string $filePath)
+    {
         $fl = $this->container->make(FileLoader::class);
         $fileContent = $fl->readFile($filePath);
         $viewNode = $this->toDomObject($fileContent);
@@ -48,7 +52,8 @@ class View {
         $targetNode = $this->template->getMap()->query('//*[@data-key="view"]')->item(0);
         $targetNode->appendChild($frag);
     }
-    protected function toDomObject($str){
+    protected function toDomObject($str)
+    {
         $dom = new \DOMDocument();
         libxml_use_internal_errors(true);
         @$dom->loadHTML($str, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOWARNING);
@@ -56,18 +61,21 @@ class View {
         return $dom;
     }
 
-    public function render(){
+    public function render()
+    {
         $html = $this->template->render();
         $this->response->setContentType("text/html")->setBody($html);
     }
-    public function getView(){
+    public function getView()
+    {
         return $this->view;
     }
-    public function getTemplate(){
+    public function getTemplate()
+    {
         return $this->template;
     }
-    public function importView(string $filePath){
+    public function importView(string $filePath)
+    {
         $this->template->importView($filePath);
     }
 }
-?>
