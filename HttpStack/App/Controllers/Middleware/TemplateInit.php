@@ -8,7 +8,7 @@ use HttpStack\IO\FileLoader;
 use HttpStack\App\Views\View;
 use HttpStack\Template\Template;
 use HttpStack\Container\Container;
-use HttpStack\App\Models\PageModel;
+use HttpStack\App\Models\ViewModel;
 
 class TemplateInit
 {
@@ -27,8 +27,9 @@ class TemplateInit
    */
   public function process(Request $req, Response $res, Container $container)
   {
-    $pm = $container->make(PageModel::class);
-    var_dump($pm);
+    $pm = $container->make(ViewModel::class);
+
+    //var_dump($pm);
     $v = new View($container, $req, $res);
     //register the view namespace agian, returning this view
     // that has the template object within it.

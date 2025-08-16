@@ -1,9 +1,13 @@
 <?php
+
 namespace HttpStack\Traits;
-use DOMDocument;
-use DOMElement;
+
 use DOMXPath;
-trait ProcessTemplate{
+use DOMElement;
+use DOMDocument;
+
+trait ProcessTemplate
+{
 
     /**
      * Renders the template content, processing data-repeat loops, variables, and function calls.
@@ -11,10 +15,10 @@ trait ProcessTemplate{
     public function render(): string
     {
 
-
+        //log(type: "debug", message: $this->variables);
         // --- Step 1: Process data-repeat loops using DOMXPath ---
         // This part remains the same as it operates on the DOM structure.
-         // Ensure DOM is loaded for XPath queries
+        // Ensure DOM is loaded for XPath queries
         $this->map = new DOMXPath($this);
         $repeatElements = $this->map->query("//*[@data-repeat]");
 
@@ -23,7 +27,7 @@ trait ProcessTemplate{
         $elementsToProcess = [];
         foreach ($repeatElements as $element) {
             $elementsToProcess[] = $element;
-        }  
+        }
 
         foreach ($elementsToProcess as $repeatElement) {
             /** @var DOMElement $repeatElement */
@@ -67,7 +71,7 @@ trait ProcessTemplate{
                 } else {
                     // Collection data not found or not iterable, remove the data-repeat element
                     if ($repeatElement->parentNode) { // Ensure parent exists before attempting to remove
-                         $repeatElement->parentNode->removeChild($repeatElement);
+                        $repeatElement->parentNode->removeChild($repeatElement);
                     }
                 }
             } else {
@@ -127,25 +131,25 @@ trait ProcessTemplate{
     /**
      * Replaces placeholders like 'item[key]' in a string.
      */
-protected function replaceDataAttributePlaceholders(string $content, string $itemVarName, array|object $itemData): string
-{
-    //echo("\nProcessing content: " . $content . " for item: " . $itemVarName); // Add this
-    $pattern = '/' . preg_quote($itemVarName) . '\[([a-zA-Z0-9_]+)\]/';
+    protected function replaceDataAttributePlaceholders(string $content, string $itemVarName, array|object $itemData): string
+    {
+        //echo("\nProcessing content: " . $content . " for item: " . $itemVarName); // Add this
+        $pattern = '/' . preg_quote($itemVarName) . '\[([a-zA-Z0-9_]+)\]/';
 
-    return preg_replace_callback($pattern, function($matches) use ($itemData) {
-        $key = $matches[1];
-        //echo("\nMatched key: " . $key); // Add this
-        if (is_array($itemData) && isset($itemData[$key])) {
-            //echo("\nFound array data for key " . $key . ": " . $itemData[$key]); // Add this
-            return (string)$itemData[$key];
-        } elseif (is_object($itemData) && property_exists($itemData, $key)) {
-            //echo("\nFound object data for key " . $key . ": " . $itemData->$key); // Add this
-            return (string)$itemData->$key;
-        }
-        //echo("\nKey " . $key . " not found in data. Returning original: " . $matches[0]); // Add this
-        return $matches[0]; // Return original if not found
-    }, $content);
-}
+        return preg_replace_callback($pattern, function ($matches) use ($itemData) {
+            $key = $matches[1];
+            //echo("\nMatched key: " . $key); // Add this
+            if (is_array($itemData) && isset($itemData[$key])) {
+                //echo("\nFound array data for key " . $key . ": " . $itemData[$key]); // Add this
+                return (string)$itemData[$key];
+            } elseif (is_object($itemData) && property_exists($itemData, $key)) {
+                //echo("\nFound object data for key " . $key . ": " . $itemData->$key); // Add this
+                return (string)$itemData->$key;
+            }
+            //echo("\nKey " . $key . " not found in data. Returning original: " . $matches[0]); // Add this
+            return $matches[0]; // Return original if not found
+        }, $content);
+    }
 
 
     /**
@@ -220,14 +224,11 @@ protected function replaceDataAttributePlaceholders(string $content, string $ite
                     return (string)$result; // Return the result as a string
                 } catch (\Exception $e) {
                     // Handle errors during function execution (e.g., log, return empty string)
-                    echo("\nTemplate function '{$functionName}' failed: " . $e->getMessage());
+                    echo ("\nTemplate function '{$functionName}' failed: " . $e->getMessage());
                     return ''; // Or return an error message placeholder
                 }
             }
             return $matches[0]; // If function not found, return the original placeholder
         }, $content);
     }
-
 }
-
-?>

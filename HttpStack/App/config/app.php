@@ -10,18 +10,19 @@ $settings = [
     "appPaths" => [
         "configDir" => APP_ROOT . "/config",
         "dataDir" => APP_ROOT . "/data",
+        "routeDataDir" => APP_ROOT . "/data/routes",
         "viewsDir" => APP_ROOT . "/Views/routes",
         "templatesDir" => APP_ROOT . "/Views/templates",
         "routeViewsDir" => APP_ROOT . "/Views/routes",
         "vendorAssetsDir" => DOC_ROOT . "/public/assets/enabled/vendor",
         "assetsDir" => DOC_ROOT . "/public/assets/enabled",
-        "routesDir" => APP_ROOT . "/routes"
+        "routesDir" => APP_ROOT . "/routes",
+        "logs" => APP_ROOT . "/logs"
     ],
     "routeDefs" => "/routes/public.php",
-    "template" =>[
+    "template" => [
         "baseLayout" => "base.html",
         "baseTemplatePath" => APP_ROOT . "/Views/templates/_base.html"
     ]
 ];
 return $settings;
-?>

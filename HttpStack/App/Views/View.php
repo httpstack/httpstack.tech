@@ -10,6 +10,7 @@ use HttpStack\IO\FileLoader;
 use HttpStack\Template\Template;
 use HttpStack\Container\Container;
 use HttpStack\Model\AbstractModel;
+use HttpStack\App\Models\ViewModel;
 use HttpStack\App\Models\TemplateModel;
 
 class View
@@ -20,6 +21,8 @@ class View
     protected string $view;
     protected Container $container;
 
+    protected ViewModel $viewModel;
+
     public function __construct(Container $container, Request $req, Response $res)
     {
         // make sure templateModel is foing the logic of preparing the model since 
@@ -29,6 +32,13 @@ class View
         $this->response = $res;
         $assetTypes = ["js", "css", "woff", "woff2", "otf", "ttf", "jpg", "jsx"];
         $this->template = $container->make("template");
+
+        flog("debug",$assetTypes);
+        $this->template->setVar("data", "a value for this parameter");
+        $this->template->addFunction("myFunc", function ($myparam) {
+            return date("y m");
+        });
+
         $fl = $container->make(FileLoader::class);
         $assets = $fl->findFilesByExtension($assetTypes, null);
         $this->template->bindAssets($assets);
@@ -51,6 +61,7 @@ class View
         }
         $targetNode = $this->template->getMap()->query('//*[@data-key="view"]')->item(0);
         $targetNode->appendChild($frag);
+        $this->template->setMap();
     }
     protected function toDomObject($str)
     {
@@ -60,7 +71,11 @@ class View
         libxml_clear_errors();
         return $dom;
     }
-
+    public function model(ViewModel $dataModel)
+    {
+        $this->viewModel = $dataModel;
+        $this->template->setVars($dataModel->getAll());
+    }
     public function render()
     {
         $html = $this->template->render();

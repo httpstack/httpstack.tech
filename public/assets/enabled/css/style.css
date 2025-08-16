@@ -152,6 +152,7 @@ body {
 .app-frame {
     /* `width` and `border` handled by media queries above */
     margin: 0 auto;
+    border:1px solid black;
     padding: 0px; /* Your original padding */
     background-color: var(--theme-bg-card); /* Uses theme-dependent variable */
     border-radius: var(--card-border-radius);
@@ -166,7 +167,7 @@ body {
 /* --- Header Section --- */
 .frame-header {
     background-color: var(--theme-bg-header-footer); /* Uses theme-dependent variable */
-    padding: 1.5rem 2rem;
+    padding: 1rem;
 
     display: flex;
     justify-content: space-between;
@@ -630,6 +631,49 @@ html[data-theme="dark"] .theme-icon-moon {
     transition: color 0.3s ease;
 }
 
+.highlight {
+        margin-top: 2.5rem;
+        background-color: var(--theme-bg-body);
+        /* Lighter background for highlights */
+        border-radius: var(--card-border-radius);
+        padding: 2rem;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        /* Subtle inner shadow */
+        border: 1px solid var(--theme-border-subtle);
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.highlight-card {
+    background-color: var(--theme-bg-card);
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 4px 15px var(--theme-shadow-light);
+    padding: 1.5rem;
+    border: 1px solid var(--theme-border-subtle);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--theme-shadow-medium);
+}
+    .highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.highlight-card {
+    background-color: var(--theme-bg-card);
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 4px 15px var(--theme-shadow-light);
+    padding: 1.5rem;
+    border: 1px solid var(--theme-border-subtle);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--theme-shadow-medium);
+}
 /* --- Services Section Specific Styles --- */
 .services-section {
     margin-top: 3rem;

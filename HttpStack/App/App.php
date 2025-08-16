@@ -13,7 +13,7 @@ use HttpStack\Template\Template;
 use HttpStack\DataBase\DBConnect;
 use HttpStack\Container\Container;
 use HttpStack\DocEngine\DocEngine;
-use HttpStack\App\Models\PageModel;
+use HttpStack\App\Models\ViewModel;
 use HttpStack\App\Models\TemplateModel;
 use HttpStack\Datasource\FileDatasource;
 use HttpStack\App\Datasources\FS\XmlFile;
@@ -135,13 +135,7 @@ class App
 
         // --- 3. Bind Models and Views (use `bind` for non-singletons) ---
 
-        // Use `bind` because a PageModel is specific to a request
-        $this->container->bind(PageModel::class, function (Container $c) {
-            // The container will automatically create the DBConnect instance for you!
-            $dbDatasource = new ActiveTable($c->make(DBConnect::class), "pages", false);
-            return new PageModel($dbDatasource);
-        });
-
+        // Use `bind` because a ViewModel is specific to a request
         $this->container->singleton(FileLoader::class, function (Container $c) {
 
             // We need the 'config' service to get the application settings
@@ -171,9 +165,12 @@ class App
             $t = new TemplateModel($dataSource);
             return $t;
         });
-        $this->container->singleton(PageModel::class, function () {
-            $dataSource = new XmlFile("/var/www/html/HttpStack/App/data/routes/home.xml", true);
-            $pm = new PageModel($dataSource, []);
+        $this->container->bind(ViewModel::class, function () {
+            $viewData = $this->container->make("viewData");
+            $fl = $this->container->make(FileLoader::class);
+            $file = $fl->findFile($viewData, null, "xml");
+            $dataSource = new XmlFile($file, false);
+            $pm = new ViewModel($dataSource, []);
             return $pm;
         });
     }
