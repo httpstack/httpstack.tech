@@ -1,0 +1,32 @@
+<signup>
+    <heroTitle>Join Us</heroTitle>
+    <heroDescription><![CDATA[Create a new account to unlock full access to our services and features.]]></heroDescription>
+    <ctaLabel>Create Account</ctaLabel>
+    <ctaUri>#signup-form</ctaUri>
+    <viewHeading><![CDATA[<h3 class="view-title">Create Your Account</h3><sub>Get started with httpStack today</sub>]]></viewHeading>
+    <signupForm><![CDATA[
+        <div class="card-layout">
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signup-name">Full Name:</label>
+                    <input type="text" id="signup-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email:</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password:</label>
+                    <input type="password" id="signup-confirm-password" name="confirm-password" required>
+                </div>
+                <button type="submit" class="cta-button">Sign Up</button>
+            </form>
+            <p style="margin-top: 1.5rem; text-align: center;">Already have an account? <a href="#" data-page="login" class="nav-link">Log In</a></p>
+        </div>
+    ]]></signupForm>
+    <viewCta><![CDATA[<h3>Why Join?</h3><p>Gain access to project management tools, personalized quotes, and a seamless development experience.</p><a href="/services" class="cta-button">Explore Services</a>]]></viewCta>
+</signup>

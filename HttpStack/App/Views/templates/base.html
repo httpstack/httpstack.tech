@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTTpsTACK</title>
+    <link rel="stylesheet" href="/public/assets/enabled/css/style.css" type="text/css" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=http" />
     <style>
@@ -60,70 +61,26 @@
         </section>
         <div id="view" data-key="view"></div>
 
+
         <footer class="frame-footer">
             <div class="footer-content">
-                <div class="footer-function">{{ myFunc(data) }}</div>
-                <div class="footer-copyright">{{appCopyright}}</div>
+                <div class="footer-function">
+                    <span class="copyright">&copy; 2025 httpStack.tech</span>
+                </div>
+                <div class="footer-copyright">
+                    <div class="social-links">
+                        <a href="https://github.com/your-username" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com/in/your-username" target="_blank"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://twitter.com/your-username" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
 
     <script>
-        $(document).ready(function () {
-            // Hamburger menu functionality
-            const $hamburger = $('.hamburger-menu');
-            const $nav = $('.header-nav');
 
-            $hamburger.on('click', function () {
-                $nav.toggleClass('nav-open'); // Removed the dot from .nav-open here
-                // Toggle hamburger icon for visual feedback (e.g., X icon)
-                $(this).find('i').toggleClass('fa-bars fa-times');
-            });
-
-            // Close navigation when a link is clicked (for mobile)
-            $nav.find('.nav-link').on('click', function () {
-                if ($nav.hasClass('nav-open')) {
-                    $nav.removeClass('nav-open');
-                    $hamburger.find('i').removeClass('fa-times').addClass('fa-bars');
-                }
-            });
-
-            // Close navigation if clicking outside on mobile
-            $(document).on('click', function (event) {
-                if (!$nav.is(event.target) && $nav.has(event.target).length === 0 &&
-                    !$hamburger.is(event.target) && $hamburger.has(event.target).length === 0 &&
-                    $nav.hasClass('nav-open')) {
-                    $nav.removeClass('nav-open');
-                    $hamburger.find('i').removeClass('fa-times').addClass('fa-bars');
-                }
-            });
-
-
-            // --- Theme Toggle Logic (now using jQuery) ---
-            const $themeToggle = $('.theme-toggle');
-
-            // Function to set the theme
-            function setTheme(theme) {
-                $('html').attr('data-theme', theme);
-                localStorage.setItem('theme', theme); // Save user preference
-            }
-
-            // Check for saved theme preference on load
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else {
-                // Default to light theme if no preference is saved
-                setTheme('light');
-            }
-
-            // Toggle theme on button click
-            $themeToggle.on('click', function () {
-                const currentTheme = $('html').attr('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                setTheme(newTheme);
-            });
-        });
     </script>
 </body>
 

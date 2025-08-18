@@ -1,0 +1,38 @@
+<contact>
+    <heroTitle>Get In Touch</heroTitle>
+    <heroDescription><![CDATA[Ready to build something great together? I'm excited to hear about your project and discuss how I can help.]]></heroDescription>
+    <ctaLabel>Send a Message</ctaLabel>
+    <ctaUri>#contact-form</ctaUri>
+    <viewHeading><![CDATA[<h3 class="view-title">Let's Connect</h3><sub>Reach Out and Say Hello</sub>]]></viewHeading>
+    <viewSummary><![CDATA[<p>Whether you're looking to hire, collaborate, or simply have a question, feel free to contact me using the form below or through my social links.</p>]]></viewSummary>
+    <contactForm><![CDATA[
+        <div class="card-layout">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Send Message</button>
+            </form>
+        </div>
+    ]]></contactForm>
+    <contactInfo><![CDATA[
+        <div class="highlight">
+            <h3><i class="fa-solid fa-info-circle"></i> Direct Contact Info</h3>
+            <p style="margin-top: 10px;">
+                <strong>Email:</strong> <a href="mailto:info@httpstack.tech" class="cta-button" style="margin-left: 10px;">info@httpstack.tech</a>
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>Phone:</strong> <a href="tel:+15551234567" class="cta-button" style="margin-left: 10px;">(555) 123-4567</a>
+            </p>
+        </div>
+    ]]></contactInfo>
+</contact>

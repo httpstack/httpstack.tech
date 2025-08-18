@@ -1,0 +1,28 @@
+<projects>
+    <heroTitle>Our Work</heroTitle>
+    <heroDescription><![CDATA[A showcase of projects that highlight our technical expertise and commitment to creative problem-solving.]]></heroDescription>
+    <ctaLabel>View More</ctaLabel>
+    <ctaUri>/projects</ctaUri>
+    <viewHeading><![CDATA[<h3 class="view-title">Innovation in Action</h3><sub>Case Studies and Portfolio Highlights</sub>]]></viewHeading>
+    <viewSummary><![CDATA[<p>We take pride in building solutions that are not only functional but also elegant and future-proof. Each project is a testament to our dedication to craftsmanship and our passion for technology.</p>]]></viewSummary>
+    <projectList><![CDATA[
+        <div class="highlight-grid">
+            <div class="highlight-card">
+                <h3><i class="fa-solid fa-project-diagram"></i> Project Alpha</h3>
+                <p>A scalable e-commerce platform built with Node.js and React, featuring a custom payment gateway and a robust admin dashboard.</p>
+                <a href="#" class="cta-button">View Case Study</a>
+            </div>
+            <div class="highlight-card">
+                <h3><i class="fa-solid fa-mobile-screen-button"></i> Mobile App Beta</h3>
+                <p>A cross-platform mobile app for a fitness company, integrated with wearable devices and social sharing features.</p>
+                <a href="#" class="cta-button">View Case Study</a>
+            </div>
+            <div class="highlight-card">
+                <h3><i class="fa-solid fa-microchip"></i> IoT Dashboard</h3>
+                <p>A real-time data visualization dashboard for an IoT network, handling thousands of data points per second with WebSockets.</p>
+                <a href="#" class="cta-button">View Case Study</a>
+            </div>
+        </div>
+    ]]></projectList>
+    <viewCta><![CDATA[<h3>Have a Project in Mind?</h3><p>We're always excited to collaborate on new and challenging ventures. Let's make something great.</p><a href="/contact" class="cta-button">Get in Touch</a>]]></viewCta>
+</projects>
