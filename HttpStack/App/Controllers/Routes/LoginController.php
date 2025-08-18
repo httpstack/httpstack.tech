@@ -9,13 +9,13 @@ use HttpStack\Model\AbstractModel;
 use HttpStack\App\Models\ViewModel;
 
 //use HttpStack\Template\Template;
-class HomeController
+class LoginController
 {
 
     public function __construct()
     {
         app()->getContainer()->bind("viewData", function () {
-            return "public/home";
+            return "public/login";
         });
     }
     public function index(Request $req, Response $res, Container $container, $matches)
@@ -23,15 +23,15 @@ class HomeController
         //bind the view data to the container so its available
         //within the ViewModel make
         $container->bind("viewData", function () {
-            return "public/home";
+            return "public/login";
         });
-        $this->home($req, $res, $container, $matches);
+        $this->login($req, $res, $container, $matches);
     }
-    public function home($req, $res, $container, $matches)
+    public function login($req, $res, $container, $matches)
     {
         $m = $container->make(ViewModel::class);
 
-        $v = $container->make("view", "public/home");
+        $v = $container->make("view", "public/login");
         $v->model($m);
 
         $v->render();

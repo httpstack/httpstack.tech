@@ -1,0 +1,37 @@
+<login>
+    <!-- Hero data for the Login page. -->
+
+    <heroTitle>Member Login</heroTitle>
+    <heroDescription>
+        <![CDATA[
+            Welcome back! Please sign in to access your dashboard, projects, and exclusive member content.
+        ]]>
+    </heroDescription>
+    <ctaLabel>Login to Account</ctaLabel>
+    <ctaUri>/login</ctaUri>
+
+    <viewHeading>
+    <![CDATA[
+        <h3 class="view-title">Access Your Account</h3>
+        <sub>Welcome Back, Developer</sub>
+        <p class="view-tagline">
+            Securely sign in to your HttpStack.tech account.
+        </p>
+    ]]>   
+    </viewHeading>
+    <viewSummary>
+    <![CDATA[
+        <p>
+            Your digital presence is just one step away. Please enter your credentials below to continue to your personal dashboard and manage your services.
+        </p>
+    ]]>
+    </viewSummary>
+    <viewCta>
+    <![CDATA[
+        <p>Don't have an account?</p>
+        <a href="/register" class="cta-button">Create New Account</a>
+        <a href="/login/forgot-password" class="cta-button" style="margin-left: 15px;">Forgot Password?</a>
+    ]]>
+    </viewCta>
+    
+</login>

@@ -9,8 +9,9 @@ class Route implements RouteInterface
     protected string $type; // 'route' or 'mw'
     protected array $handlers = [];
 
-    public function __construct(string $method, string $uri, callable $handler, string $type = 'route')
+    public function __construct(string $method, string $uri, array $handler, string $type = 'route')
     {
+        $handler = box()->makeCallable($handler);
         $this->method = strtoupper($method);
         $this->uri = $uri;
         $this->type = $type;
