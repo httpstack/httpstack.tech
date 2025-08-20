@@ -1,49 +1,27 @@
-  <home>
-    <!-- Hero data for the Home page. -->
-
-    <heroTitle>What We Do</heroTitle>
-    <heroDescription>
-        <![CDATA[
-            Ready to build something amazing together? 
-            Whether you're interested in httpstack, a potential employer, 
-            or just want to chat about web development, 
-            I'd love to hear from you.
-        ]]>
-    </heroDescription>
-    <ctaLabel>Get Quote</ctaLabel>
-    <ctaUri>/services/quote</ctaUri>
-
-    <viewHeading>
-    <![CDATA[
-        <h3 class="view-title">Welcome to HttpStack.tech</h3>
-        <sub>Empowering Your Digital Presence</sub>
-        <p class="view-tagline">
-        Your Partner in Cutting-Edge Web Solutions & IT Infrastructure.
-        </p>
-    ]]>   
-    </viewHeading>
-    <viewSummary>
-    <![CDATA[
-      
-
-        <p>
-            At HttpStack.tech, we specialize in delivering 
-            robust and innovative technology solutions designed 
-            to propel your business forward.
-            Our expertise spans a wide array of platforms and 
-            technologies, ensuring that whether you're a startup 
-            or an established enterprise, you receive tailored 
-            services that are both efficient and scalable.
-        </p>
-    ]]>
-    </viewSummary>
-    <viewCta>
-    <![CDATA[
-        <h3>Ready to Transform Your Ideas into Reality?</h3>
-        <p>Explore our services or get in touch to discuss your next project.</p>
-        <a href="/services" class="cta-button">Explore Services</a>
-        <a href="/contact" class="cta-button" style="margin-left: 15px;">Get in Touch</a>
-    ]]>
-    </viewCta>
-    
-  </home>
+<home>
+    <header>
+        <siteTitle>HttpStack.tech</siteTitle>
+        <siteTagline>Empowering Your Digital Presence</siteTagline>
+    </header>
+    <intro>
+        At HttpStack.tech, we specialize in delivering robust and innovative technology solutions designed to propel your business forward.
+        Our expertise spans a wide array of platforms and technologies, ensuring that whether you're a startup or an established enterprise, you receive tailored services that are both efficient and scalable.
+    </intro>
+    <ctas>
+        <cta>
+            <heading>Working Together</heading>
+            <text>Interested in collaborating or hiring? Learn more about the developer and discover how we can work together to achieve your goals.</text>
+            <link label="Find Out More" uri="/about/developer"/>
+        </cta>
+        <cta>
+            <heading>Our Services</heading>
+            <text>We offer web &amp; graphic development, networking solutions, and computer/server repair &amp; installation. Get reliable, modern IT services for your business or personal needs.</text>
+            <link label="Explore Services" uri="/services"/>
+        </cta>
+        <cta>
+            <heading>Projects &amp; Open Source</heading>
+            <text>Check out our latest projects and open source contributions on GitHub. See what we've built and how we support the developer community.</text>
+            <link label="View Projects" uri="https://github.com/your-github-username"/>
+        </cta>
+    </ctas>
+</home>

@@ -1,955 +1,150 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<style>
+	.frame-main {
+		outline: 1px solid black;
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>httpStack</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap"
-		rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<style>
-		/* --- Base Variables (YOURS, with semantic color names for theming) --- */
-		:root {
-			/* Base Font Size */
-			--font-size: 14px;
-			--font-size-rem: calc(var(--font-size) / 16 * 1rem);
-			--default-font: 'Inter', sans-serif;
-			--app-frame-width: 90%;
-
-			/* Light Theme Color Palette (Default) */
-			--theme-primary: #6a0572;
-			--theme-accent-1: #e67e22;
-			--theme-accent-2: #27ae60;
-
-			--theme-text-main: #2c3e50;
-			--theme-text-light: #f8f9fa;
-			--theme-text-darker: #1a1a1a;
-
-			--theme-bg-body: #f0f4f7;
-			--theme-bg-card: #ffffff;
-			--theme-bg-header-footer: #34495e;
-
-			--theme-border-subtle: rgba(0, 0, 0, 0.12);
-			--theme-shadow-light: rgba(0, 0, 0, 0.1);
-			--theme-shadow-medium: rgba(0, 0, 0, 0.25);
-
-			/* Hero Section specific gradients (light mode) */
-			--theme-hero-gradient-start: var(--theme-primary);
-			--theme-hero-gradient-end: var(--theme-accent-1);
-
-			/* Theme Toggle Icon Colors (visible/hidden based on theme) */
-			--theme-icon-sun-color: var(--theme-accent-1);
-			--theme-icon-moon-color: rgba(255, 255, 255, 0);
-
-			/* Card Specifics */
-			--card-border-radius: 12px;
+		/* START CARD*/
+		.grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-rows: auto auto;
+			grid-column: span 3;
 		}
 
-		/* --- Dark Theme Variables (Overrides for html[data-theme="dark"]) --- */
-		html[data-theme="dark"] {
-			--theme-primary: #bb86fc;
-			--theme-accent-1: #ffab40;
-			--theme-accent-2: #69f0ae;
-
-			--theme-text-main: #e0e0e0;
-			--theme-text-light: #f0f0f0;
-			--theme-text-darker: #cccccc;
-
-			--theme-bg-body: #121212;
-			--theme-bg-card: #1e1e1e;
-			--theme-bg-header-footer: #212121;
-
-			--theme-border-subtle: rgba(255, 255, 255, 0.15);
-			--theme-shadow-light: rgba(0, 0, 0, 0.4);
-			--theme-shadow-medium: rgba(0, 0, 0, 0.6);
-
-			/* Hero Section specific gradients (dark mode) */
-			--theme-hero-gradient-start: #3a004a;
-			--theme-hero-gradient-end: #5a2c00;
-
-			/* Theme Toggle Icon Colors (for dark mode) */
-			--theme-icon-sun-color: rgba(255, 255, 255, 0);
-			--theme-icon-moon-color: var(--theme-accent-1);
+		.grid-row {
+			grid-column: span 3;
 		}
+	}
 
-		/* --- YOUR MEDIA BREAKPOINTS - FONT SIZE AND APP FRAME WIDTH --- */
-		html {
-			font-size: var(--font-size-rem);
-		}
+	.animated-color {
+		animation: colorCycle 20s linear infinite;
+		transition: font-size 1s;
+	}
 
-		.app-frame {
-			width: 100%;
-			border-left: none;
-			border-right: none;
-		}
-
-		@media (min-width: 768px) {
-			:root {
-				--font-size: 15px;
-				--app-frame-width: 85%;
-			}
-
-			.app-frame {
-				width: var(--app-frame-width);
-				border-left: 1px solid var(--theme-border-subtle);
-				border-right: 1px solid var(--theme-border-subtle);
-			}
-		}
-
-		@media (min-width: 920px) {
-			:root {
-				--font-size: 16px;
-				--app-frame-width: 80%;
-			}
-		}
-
-		@media (min-width: 1200px) {
-			:root {
-				--font-size: 17px;
-				--app-frame-width: 75%;
-			}
-		}
-
-		@media (min-width: 1400px) {
-			:root {
-				--font-size: 18px;
-				--app-frame-width: 70%;
-			}
-		}
-
-		@media (min-width: 1401px) {
-			:root {
-				--font-size: 19px;
-				--app-frame-width: 65%;
-			}
-		}
-
-		/* --- General Resets and Base Styles --- */
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-
-		html {
-			scroll-behavior: smooth;
-			transition: background-color 0.3s ease;
-		}
-
-		body {
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			min-height: 100vh;
-			background-color: var(--theme-bg-body);
-			font-size: 1rem;
-			font-family: var(--default-font);
-			color: var(--theme-text-main);
-			line-height: 1.6;
-			margin: 0;
-			padding: 20px 0;
-			transition: background-color 0.3s ease, color 0.3s ease;
-		}
-
-		.app-frame {
-			margin: 0 auto;
-			padding: 0px;
-			background-color: var(--theme-bg-card);
-			border-radius: var(--card-border-radius);
-			box-shadow: 0 15px 40px var(--theme-shadow-medium);
-			display: flex;
-			flex-direction: column;
-			overflow: hidden;
-			max-width: 1600px;
-			transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-		}
-
-		/* --- Header Section --- */
-		.frame-header {
-			background-color: var(--theme-bg-header-footer);
-			padding: 1rem;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			color: var(--theme-text-light);
-			box-shadow: 0 2px 10px var(--theme-shadow-light);
-			position: relative;
-			transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-		}
-
-		.header-brand {
-			display: flex;
-			align-items: center;
-			gap: 0.8rem;
-		}
-
-		.brand-logo {
-			font-size: 2.2rem;
-			color: var(--theme-accent-2);
-		}
-
-		.white-1px-outline {
+	/* Example: 4 colors, change as needed */
+	@keyframes colorCycle {
+		0% {
 			color: black;
-			text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-		}
-
-		/* BS-Icon Live Gradient Effect */
-		.animated-icon {
-			display: inline-block;
-			font-size: 2.2rem;
-			background: linear-gradient(90deg, white 0%, grey 50%, var(--theme-accent-1) 100%);
-			background-size: 200% 100%;
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			animation: gradient-shift 6s linear infinite;
-			filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
-			transition: filter 0.3s ease;
-		}
-
-		@keyframes gradient-shift {
-			0% {
-				background-position: 0% 50%;
-			}
-
-			100% {
-				background-position: -200% 50%;
-			}
-		}
-
-		.brand-title {
-			font-size: 1.8rem;
-			font-weight: bold;
-			color: var(--theme-text-light);
-		}
-
-		.brand-slogan {
-			font-size: 0.9rem;
-			color: rgba(255, 255, 255, 0.7);
-			margin-left: 0.5rem;
-		}
-
-		.header-controls {
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-		}
-
-		.theme-toggle {
-			background: none;
-			border: none;
-			cursor: pointer;
-			font-size: 1.8rem;
-			padding: 0.5rem;
-			display: flex;
-			position: relative;
-			overflow: hidden;
-			width: 2rem;
-			height: 2rem;
-			justify-content: center;
-			align-items: center;
-			color: var(--theme-text-light);
-		}
-
-		.theme-toggle i {
-			position: absolute;
-			transition: transform 0.3s ease, opacity 0.3s ease;
-			will-change: transform, opacity;
-		}
-
-		.theme-icon-sun {
-			color: var(--theme-icon-sun-color);
-		}
-
-		.theme-icon-moon {
-			color: var(--theme-icon-moon-color);
-		}
-
-		html[data-theme="light"] .theme-icon-sun {
-			opacity: 1;
-			transform: translateX(0);
-		}
-
-		html[data-theme="light"] .theme-icon-moon {
-			opacity: 0;
-			transform: translateX(100%);
-		}
-
-		html[data-theme="dark"] .theme-icon-sun {
-			opacity: 0;
-			transform: translateX(-100%);
-		}
-
-		html[data-theme="dark"] .theme-icon-moon {
-			opacity: 1;
-			transform: translateX(0);
-		}
-
-		.hamburger-menu {
-			display: block;
-			background: none;
-			border: none;
-			font-size: 2.5rem;
-			color: var(--theme-text-light);
-			cursor: pointer;
-			padding: 0.5rem;
-			z-index: 100;
-			transition: transform 0.2s ease-out, color 0.3s ease;
-		}
-
-		.hamburger-menu:hover {
-			transform: scale(1.1);
-		}
-
-		.header-nav {
-			position: absolute;
-			top: 100%;
-			left: 0;
-			width: 100%;
-			background-color: var(--theme-bg-header-footer);
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			padding: 1rem 0;
-			box-shadow: 0 4px 8px var(--theme-shadow-light);
-			transform: translateY(-100%);
-			transition: transform 0.3s ease-out, opacity 0.3s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
-			z-index: 90;
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		.header-nav.nav-open {
-			transform: translateY(0);
-			opacity: 1;
-			pointer-events: auto;
-		}
-
-		.nav-list {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-			text-align: center;
-			width: 100%;
-		}
-
-		.nav-item {
-			margin: 0;
-			padding: 0.8rem 0;
-		}
-
-		.nav-link {
-			color: var(--theme-text-light);
-			text-decoration: none;
-			font-weight: bold;
-			font-size: .75rem;
-			padding: 0.5rem 1rem;
-			display: block;
-			position: relative;
-			transition: color 0.3s ease, transform 0.2s ease;
-		}
-
-		.nav-link::before {
-			content: '';
-			position: absolute;
-			bottom: 0;
-			left: 50%;
-			width: 0;
-			height: 3px;
-			background-color: var(--theme-accent-1);
-			transform: translateX(-50%);
-			transition: width 0.3s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
-			box-shadow: 0 0 8px var(--theme-accent-1);
-		}
-
-		.nav-link:hover {
-			color: var(--theme-accent-1);
-			transform: translateY(-2px);
-		}
-
-		.nav-link:hover::before {
-			width: 100%;
-		}
-
-		@media (min-width: 920px) {
-			.hamburger-menu {
-				display: none;
-			}
-
-			.header-nav {
-				position: static;
-				top: auto;
-				left: auto;
-				width: auto;
-				background-color: transparent;
-				flex-direction: row;
-				box-shadow: none;
-				transform: none;
-				opacity: 1;
-				pointer-events: auto;
-				padding: 0;
-			}
-
-			.nav-list {
-				display: flex;
-				gap: 1.5rem;
-				list-style: none;
-				width: auto;
-			}
-
-			.nav-item {
-				padding: 0;
-				list-style: none;
-			}
-
-			.nav-link {
-				color: var(--theme-text-light);
-			}
-		}
-
-		/* --- Hero Section --- */
-		.frame-hero {
-			background: linear-gradient(45deg, var(--theme-hero-gradient-start), var(--theme-hero-gradient-end));
-			padding: 4rem 2rem;
-			text-align: center;
-			color: white;
-			position: relative;
-			overflow: hidden;
-			border-bottom: 1px solid var(--theme-border-subtle);
-			transition: background 0.3s ease, border-color 0.3s ease;
-		}
-
-		.hero-content {
-			position: relative;
-			z-index: 1;
-			max-width: 900px;
-			margin: 0 auto;
-			animation: fade-in-up 1s ease-out forwards;
-		}
-
-		.frame-hero h1 {
-			font-size: 3.5rem;
-			margin-bottom: 1rem;
-			font-family: 'Playfair Display', serif;
-			text-shadow: 3px 3px 8px var(--theme-shadow-medium);
-			animation: text-pop-in 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-			opacity: 0;
-			transition: text-shadow 0.3s ease;
-		}
-
-		.frame-hero p {
-			font-size: 1.3rem;
-			margin-bottom: 2.5rem;
-			opacity: 0.9;
-			animation: fade-in-up 1.5s ease-out forwards;
-			animation-delay: 0.2s;
-		}
-
-		.hero-cta {
-			display: inline-block;
-			background-color: var(--theme-accent-2);
-			color: white;
-			padding: 1rem 3rem;
-			border-radius: 50px;
-			text-decoration: none;
-			font-weight: bold;
-			font-size: 1.2rem;
-			letter-spacing: 1px;
-			transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-			box-shadow: 0 8px 20px var(--theme-shadow-medium);
-			animation: scale-in 1s ease-out forwards;
-			animation-delay: 0.4s;
-			opacity: 0;
-		}
-
-		.hero-cta:hover {
-			filter: brightness(0.9);
-			transform: translateY(-5px) scale(1.02);
-			box-shadow: 0 12px 25px var(--theme-shadow-medium);
-		}
-
-		.frame-hero::before,
-		.frame-hero::after {
-			content: '';
-			position: absolute;
-			border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-			background: rgba(255, 255, 255, 0.08);
-			animation: blob-move 20s infinite ease-in-out alternate;
-			z-index: 0;
-			filter: blur(10px);
-		}
-
-		.frame-hero::before {
-			width: 250px;
-			height: 250px;
-			top: 5%;
-			left: 5%;
-			animation-duration: 25s;
-		}
-
-		.frame-hero::after {
-			width: 180px;
-			height: 180px;
-			bottom: 10%;
-			right: 10%;
-			animation-duration: 22s;
-			animation-delay: 1s;
-		}
-
-		@keyframes blob-move {
-			0% {
-				transform: translate(0, 0) scale(1);
-				border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-			}
-
-			50% {
-				transform: translate(0, 40px) scale(1);
-				border-radius: 70% 30% 50% 50% / 70% 50% 50% 30%;
-			}
-
-			100% {
-				transform: translate(0, 0) scale(1);
-				border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-			}
-		}
-
-		@keyframes fade-in-up {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
-
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-		@keyframes text-pop-in {
-			0% {
-				opacity: 0;
-				transform: scale(0.8) translateY(20px);
-			}
-
-			60% {
-				opacity: 1;
-				transform: scale(1.05) translateY(-5px);
-			}
-
-			100% {
-				transform: scale(1) translateY(0);
-				opacity: 1;
-			}
-		}
-
-		@keyframes scale-in {
-			from {
-				opacity: 0;
-				transform: scale(0.8);
-			}
-
-			to {
-				opacity: 1;
-				transform: scale(1);
-			}
-		}
-
-		/* --- Main Content Area (Card Layout) --- */
-		.frame-main {
-			flex-grow: 1;
-			padding: 2rem;
-			background-color: var(--theme-bg-card);
-			transition: background-color 0.3s ease;
-		}
-
-		.card-layout {
-			padding: 1.5rem;
-			border-radius: var(--card-border-radius);
-			box-shadow: 0 8px 25px var(--theme-shadow-light);
-			border: 1px solid var(--theme-border-subtle);
-			background-color: var(--theme-bg-card);
-			transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-		}
-
-		.frame-view h2 {
-			font-size: 2rem;
-			color: var(--theme-primary);
-			margin-bottom: 1rem;
-			border-bottom: 2px solid var(--theme-accent-2);
-			padding-bottom: 0.5rem;
-			transition: color 0.3s ease, border-color 0.3s ease;
-		}
-
-		.frame-view p,
-		.frame-view ul li {
-			color: var(--theme-text-main);
-			transition: color 0.3s ease;
-		}
-
-		.frame-view ul {
-			list-style: none;
-			padding-left: 0;
-			margin-top: 1rem;
-		}
-
-		.frame-view ul li {
-			position: relative;
-			padding-left: 1.5rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.frame-view ul li::before {
-			content: '✓';
-			position: absolute;
-			left: 0;
-			color: var(--theme-accent-2);
-			font-weight: bold;
-			transition: color 0.3s ease;
-		}
-
-		.highlight {
-			margin-top: 2.5rem;
-			background-color: var(--theme-bg-body);
-			border-radius: var(--card-border-radius);
-			padding: 2rem;
-			box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-			border: 1px solid var(--theme-border-subtle);
-			transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-		}
-
-		.highlight-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-			gap: 1.5rem;
-		}
-
-		.highlight-card {
-			background-color: var(--theme-bg-card);
-			border-radius: var(--card-border-radius);
-			box-shadow: 0 4px 15px var(--theme-shadow-light);
-			padding: 1.5rem;
-			border: 1px solid var(--theme-border-subtle);
-			transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-		}
-
-		.highlight-card:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 8px 20px var(--theme-shadow-medium);
-		}
-
-		/* Services Section Specific Styles */
-		.services-section {
-			margin-top: 3rem;
-		}
-
-		.services-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-			gap: 1.5rem;
-			margin-top: 2rem;
-		}
-
-		.service-card {
-			background-color: var(--theme-bg-card);
-			border-radius: var(--card-border-radius);
-			box-shadow: 0 5px 15px var(--theme-shadow-light);
-			padding: 1.5rem;
-			text-align: center;
-			transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-			border: 1px solid var(--theme-border-subtle);
-		}
-
-		.service-card:hover {
-			transform: translateY(-8px);
-			box-shadow: 0 10px 25px var(--theme-shadow-medium);
-		}
-
-		.service-card h3 {
-			font-size: 1.5rem;
-			color: var(--theme-primary);
-			margin-bottom: 0.8rem;
-			transition: color 0.3s ease;
-		}
-
-		.service-card p {
-			font-size: 1rem;
-			color: var(--theme-text-main);
-			margin-bottom: 1.5rem;
-			transition: color 0.3s ease;
-		}
-
-		/* --- Footer --- */
-		.frame-footer {
-			background-color: var(--theme-bg-header-footer);
-			color: var(--theme-text-light);
-			padding: 1.5rem 2rem;
-			text-align: center;
-			font-size: 0.9rem;
-			border-top: 1px solid var(--theme-border-subtle);
-			transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-		}
-
-		.footer-content {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			flex-wrap: wrap;
-			gap: 1rem;
-		}
-
-		.footer-function,
-		.footer-copyright {
-			flex: 1;
-			min-width: 200px;
-		}
-
-		.footer-copyright {
-			text-align: right;
-		}
-
-		@media (max-width: 767px) {
-			.footer-content {
-				flex-direction: column;
-				align-items: center;
-			}
-
-			.footer-function,
-			.footer-copyright {
-				text-align: center;
-			}
-		}
-
-		/* Form and button styles */
-		.form-group {
-			margin-bottom: 1.5rem;
-		}
-
-		.form-group label {
-			display: block;
-			margin-bottom: 0.5rem;
-			font-weight: bold;
-		}
-
-		.form-group input,
-		.form-group textarea {
-			width: 100%;
-			padding: 0.75rem;
-			border: 1px solid var(--theme-border-subtle);
-			border-radius: 8px;
-			background-color: var(--theme-bg-body);
-			color: var(--theme-text-main);
-			transition: border-color 0.3s ease;
-		}
-
-		.form-group textarea {
-			min-height: 150px;
-			resize: vertical;
-		}
-
-		.form-group input:focus,
-		.form-group textarea:focus {
-			outline: none;
-			border-color: var(--theme-accent-1);
-		}
-
-		.cta-button {
-			background-color: #4c1d95;
-			color: #ffffff;
-			border: none;
-			padding: 0.75rem 1.5rem;
-			border-radius: 50px;
-			font-weight: bold;
-			text-decoration: none;
-			display: inline-block;
-			transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-		}
-
-		.cta-button:hover {
-			background-color: #3f187a;
-			transform: translateY(-2px);
-		}
-
-		html[data-theme="dark"] .cta-button {
-			background-color: #8b5cf6;
-			color: #1f2937;
-		}
-
-		html[data-theme="dark"] .cta-button:hover {
-			background-color: #a78bfa;
-		}
-
-		.copy-feedback {
-			display: none;
-			position: absolute;
-			bottom: 0.5rem;
-			left: 50%;
-			transform: translateX(-50%);
-			background-color: rgba(0, 128, 0, 0.8);
-			color: white;
-			padding: 0.2rem 0.5rem;
-			border-radius: 5px;
-			font-size: 0.8rem;
-			opacity: 0;
-			transition: opacity 0.3s ease;
-		}
-
-		.copy-feedback.show {
-			display: block;
-			opacity: 1;
-		}
-
-		.lightbox-overlay {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.85);
-			z-index: 1000;
-			justify-content: center;
-			align-items: center;
-			padding: 20px;
-		}
-
-		.lightbox-content {
-			background: var(--theme-bg-card);
-			padding: 20px;
-			border-radius: 10px;
-			max-width: 800px;
-			max-height: 90vh;
-			overflow: auto;
-			position: relative;
-		}
-
-		.lightbox-close {
-			position: absolute;
-			top: 10px;
-			right: 15px;
-			font-size: 2rem;
-			cursor: pointer;
-			color: var(--theme-text-main);
-			transition: color 0.3s ease;
-		}
-
-		.lightbox-close:hover {
-			color: var(--theme-accent-1);
-		}
-
-		.lightbox-content h2,
-		.lightbox-content h3 {
-			color: var(--theme-primary);
-		}
-
-		.lightbox-content p {
-			color: var(--theme-text-main);
-		}
-
-		body.no-scroll {
-			overflow: hidden;
-		}
-
-		@media (max-width: 768px) {
-			.highlight-grid {
-				grid-template-columns: 1fr;
-			}
-
-			.resume-download-section {
-				padding: 1.5rem;
-			}
-
-			.download-form {
-				max-width: 100%;
-			}
-
-			.lightbox-content {
-				width: 95%;
-				height: 95%;
-			}
-		}
-
-		pre {
-			display: flex;
-			flex-grow: 1;
-			flex-direction: column;
-		}
-
-		.social-links a {
-			margin: 0 10px;
-			color: var(--theme-text-light);
-			transition: color 0.3s ease;
-		}
-
-		.social-links a:hover {
-			color: var(--theme-accent-1);
-		}
-	</style>
-</head>
-
-<body>
-
-	<div class="app-frame" id="app-frame">
-		<header class="frame-header">
-			<div class="header-brand">
-				<i class="fa-solid fa-code animated-icon"></i>
-				<h1 class="brand-title">httpStack</h1>
-			</div>
-			<div class="header-controls">
-				<button class="theme-toggle" id="theme-toggle">
-					<i class="fas fa-sun theme-icon-sun"></i>
-					<i class="fas fa-moon theme-icon-moon"></i>
-				</button>
-				<button class="hamburger-menu" id="hamburger-menu">
-					<i class="fas fa-bars"></i>
-				</button>
-			</div>
-			<nav class="header-nav" id="header-nav">
-				<ul class="nav-list">
-					<li class="nav-item"><a href="#" class="nav-link" data-page="home">Home</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="services">Services</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="projects">Projects</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="stacks">Stacks</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="resume">Resume</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="contact">Contact</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="login">Login</a></li>
-					<li class="nav-item"><a href="#" class="nav-link" data-page="signup">Signup</a></li>
-				</ul>
-			</nav>
-		</header>
-
-		<main id="main-content" class="frame-main">
-		</main>
-
-		<footer class="frame-footer">
-			<div class="footer-content">
-				<div class="footer-function">
-					<span class="copyright">&copy; 2025 httpStack.tech</span>
-				</div>
-				<div class="footer-copyright">
-					<div class="social-links">
-						<a href="https://github.com/your-username" target="_blank"><i class="fab fa-github"></i></a>
-						<a href="https://linkedin.com/in/your-username" target="_blank"><i
-								class="fab fa-linkedin"></i></a>
-						<a href="https://twitter.com/your-username" target="_blank"><i class="fab fa-twitter"></i></a>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</div>
-
-	<div id="lightbox-modal" class="lightbox-overlay">
-		<div class="lightbox-content">
-			<span class="lightbox-close" id="lightbox-close">&times;</span>
-			<div id="lightbox-content-inner">
-				<h2>Resume</h2>
-				<p>A full-sized view of the resume would go here, possibly as a PDF embed or an HTML version.</p>
-				<div style="margin-top: 20px;">
-					<a href="#" class="cta-button" target="_blank">Download PDF</a>
-				</div>
-			</div>
+			font-size: xx-large;
+		}
+
+		/* Red */
+		33% {
+			color: orange;
+		}
+
+		/* Green */
+		66% {
+			color: black;
+		}
+
+		/* Blue */
+		100% {
+			color: orange;
+		}
+
+		/* Back to Red */
+	}
+
+	.t1 {
+		font-size: xxx-large;
+	}
+
+	.t2 {
+		font-size: large;
+	}
+
+	.align-2 {
+		text-align: center;
+	}
+
+	.cta-card {
+		background: #f8f9fa;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+		padding: 1.5em;
+		margin: 1em 0;
+		text-align: center;
+	}
+
+	.cta-card h3 {
+		margin-top: 0;
+		color: #222;
+		font-size: 1.3em;
+	}
+
+	.cta-card p {
+		color: #444;
+		margin-bottom: 1em;
+	}
+
+	.cta-btn {
+		display: inline-block;
+		padding: 0.75em 1.5em;
+		background: #222;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		font-size: 1rem;
+		text-decoration: none;
+		transition: background 0.2s, box-shadow 0.2s;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+		cursor: pointer;
+		margin: 0.5em 0;
+	}
+
+	.cta-btn:hover,
+	.cta-btn:focus {
+		background: #0056b3;
+		color: #fff;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	}
+</style>
+<div class="frame-main">
+	<header class="main-header">
+		<h1 class="site-title">HttpStack.tech</h1>
+		<div class="site-tagline">
+			Empowering Your Digital Presence
+		</div>
+	</header>
+	<div class="grid">
+		<div class="grid-row page-intro align-2">
+			<p>
+				At HttpStack.tech, we specialize in delivering robust and innovative technology solutions designed to
+				propel your business forward.<br>
+				Our expertise spans a wide array of platforms and technologies, ensuring that whether you're a startup
+				or an established enterprise, you receive tailored services that are both efficient and scalable.
+			</p>
+		</div>
+		<!-- CTA cards go here -->
+		<div class="grid-cell cta-card">
+			<h3>Working Together</h3>
+			<p>
+				Interested in collaborating or hiring? Learn more about the developer and discover how we can work
+				together to achieve your goals.
+			</p>
+			<a href="/about/developer" class="cta-btn">
+				Find Out More
+			</a>
+		</div>
+		<div class="grid-cell cta-card">
+			<h3>Our Services</h3>
+			<p>
+				We offer web & graphic development, networking solutions, and computer/server repair & installation. Get
+				reliable, modern IT services for your business or personal needs.
+			</p>
+			<a href="/services" class="cta-btn">
+				Explore Services
+			</a>
+		</div>
+		<div class="grid-cell cta-card">
+			<h3>Projects & Open Source</h3>
+			<p>
+				Check out our latest projects and open source contributions on GitHub. See what we've built and how we
+				support the developer community.
+			</p>
+			<a href="https://github.com/your-github-username" class="cta-btn" target="_blank">
+				View Projects
+			</a>
 		</div>
 	</div>
 
@@ -1186,7 +381,7 @@
                                 <div class="form-group">
                                     <label for="signup-name">Full Name:</label>
                                     <input type="text" id="signup-name" name="name" required>
-                                </div>+
+                                </div>
                                 <div class="form-group">
                                     <label for="signup-email">Email:</label>
                                     <input type="email" id="signup-email" name="email" required>
@@ -1330,6 +525,6 @@
 			renderView('home'); // Load the home page by default
 		});
 	</script>
-</body>
+	</body>
 
-</html>
+	</html>
