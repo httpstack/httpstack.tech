@@ -1,10 +1,13 @@
 <?php
+//define("DOC_ROOT", "/var/www/html");
 define("DOC_ROOT", "/home/u373556446/domains/httpstack.tech/public_html");
 define("APP_ROOT", DOC_ROOT . "/HttpStack/App");
+//define("BASE_URI", "http://localhost/");
 define("BASE_URI", "http://httpstack.tech/");
 
 
-function normalize_path($path) {
+function normalize_path($path)
+{
     $isAbsolute = ($path[0] === '/');
     $segments = explode('/', $path);
     $parts = [];
@@ -23,11 +26,10 @@ function normalize_path($path) {
     $normalized = ($isAbsolute ? '/' : '') . implode('/', $parts);
     return $normalized;
 }
-spl_autoload_register(function($className){
+spl_autoload_register(function ($className) {
     $file = DOC_ROOT . "/" . str_replace('\\', '/', $className) . '.php';
     $file = normalize_path($file);
     if (file_exists($file)) {
         require_once $file;
     }
 });
-?>

@@ -11,7 +11,6 @@ use HttpStack\App\Models\ViewModel;
 //use HttpStack\Template\Template;
 class HomeController
 {
-
     public function __construct()
     {
         app()->getContainer()->bind("viewData", function () {

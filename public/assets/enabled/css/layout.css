@@ -1,0 +1,99 @@
+    .frame-main {
+
+
+        /* START CARD*/
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            grid-column: span 3;
+        }
+
+        .grid-row {
+            grid-column: span 3;
+        }
+    }
+
+    .animated-color {
+        animation: colorCycle 20s linear infinite;
+        transition: font-size 1s;
+    }
+
+    /* Example: 4 colors, change as needed */
+    @keyframes colorCycle {
+        0% {
+            color: black;
+            font-size: xx-large;
+        }
+
+        /* Red */
+        33% {
+            color: orange;
+        }
+
+        /* Green */
+        66% {
+            color: black;
+        }
+
+        /* Blue */
+        100% {
+            color: orange;
+        }
+
+        /* Back to Red */
+    }
+
+    .t1 {
+        font-size: xxx-large;
+    }
+
+    .t2 {
+        font-size: large;
+    }
+
+    .align-2 {
+        text-align: center;
+    }
+
+    .cta-card {
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        padding: 1.5em;
+        margin: 1em 0;
+        text-align: center;
+    }
+
+    .cta-card h3 {
+        margin-top: 0;
+        color: #222;
+        font-size: 1.3em;
+    }
+
+    .cta-card p {
+        color: #444;
+        margin-bottom: 1em;
+    }
+
+    .cta-btn {
+        display: inline-block;
+        padding: 0.75em 1.5em;
+        background: #222;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: background 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        margin: 0.5em 0;
+    }
+
+    .cta-btn:hover,
+    .cta-btn:focus {
+        background: #0056b3;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }

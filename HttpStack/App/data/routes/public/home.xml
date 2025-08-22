@@ -1,4 +1,6 @@
 <home>
+    <heroDescription>View Hero</heroDescription>
+    <heroCtaLabel>Build your stack</heroCtaLabel>
     <header>
         <siteTitle>HttpStack.tech</siteTitle>
         <siteTagline>Empowering Your Digital Presence</siteTagline>
@@ -11,17 +13,22 @@
         <cta>
             <heading>Working Together</heading>
             <text>Interested in collaborating or hiring? Learn more about the developer and discover how we can work together to achieve your goals.</text>
-            <link label="Find Out More" uri="/about/developer"/>
+            <ctaLabel>Find Out More</ctaLabel>
+            <ctaUri>/about/developer</ctaUri>
         </cta>
+
         <cta>
             <heading>Our Services</heading>
             <text>We offer web &amp; graphic development, networking solutions, and computer/server repair &amp; installation. Get reliable, modern IT services for your business or personal needs.</text>
-            <link label="Explore Services" uri="/services"/>
+            <ctaLabel>Explore Services</ctaLabel>
+            <ctaUri>/services</ctaUri>
         </cta>
+
         <cta>
             <heading>Projects &amp; Open Source</heading>
             <text>Check out our latest projects and open source contributions on GitHub. See what we've built and how we support the developer community.</text>
-            <link label="View Projects" uri="https://github.com/your-github-username"/>
+            <ctaLabel>View Projects</ctaLabel>
+            <ctaUri>https://github.com/your-github-username</ctaUri>
         </cta>
     </ctas>
 </home>

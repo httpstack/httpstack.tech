@@ -2,5 +2,6 @@
     "appName": "httpSTACK",
     "appSlogan": "Whats in your stack?",
     "appCopyright": "© 2025 Chris McIntosh. All rights reserved.",
-    "heroTitle": "Chris McIntosh - Developer of httpstack"
+    "heroTitle": "Build your AI prompted stACK",
+    "heroDescription": "With our stack tool you can choose from preset front-end stacks developed by other users, or you can have AI generate your 3 front-end layers."
 }
