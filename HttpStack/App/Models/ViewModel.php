@@ -2,14 +2,13 @@
 
 namespace HttpStack\App\Models;
 
-use Stringable;
 use HttpStack\Model\AbstractModel;
 use HttpStack\Datasource\Contracts\CRUD;
 use HttpStack\App\Datasources\FS\XmlFile;
 
 /**
  * ViewModel class.
- * Represents data for a specific database table, providing structured access
+ * Represents the data 
  * and interaction via a CRUD datasource.
  */
 class ViewModel extends AbstractModel
@@ -21,6 +20,8 @@ class ViewModel extends AbstractModel
     {
         $this->dataSource = $dataSource;
         $this->prepareData();
+        // $baseVars = box("base.vars");
+        //$this->setVars($baseVars);
     }
 
     public function prepareData()
@@ -28,18 +29,11 @@ class ViewModel extends AbstractModel
         $arrXml = $this->dataSource->read(); // Returns an associative array
         $arrTemp = [];
 
-        // Flatten header
-        if (isset($arrXml['header']) && is_array($arrXml['header'])) {
-            foreach ($arrXml['header'] as $strKey => $mixValue) {
+        // Flatten content vars
+        if (isset($arrXml['content']) && is_array($arrXml['content'])) {
+            foreach ($arrXml['content'] as $strKey => $mixValue) {
                 $arrTemp[$strKey] = is_scalar($mixValue) ? $mixValue : null;
             }
-        }
-
-        // Flatten intro
-        if (isset($arrXml['intro'])) {
-            $arrTemp['intro'] = is_scalar($arrXml['intro'])
-                ? trim($arrXml['intro'])
-                : null;
         }
 
         // Prepare CTAs
@@ -58,7 +52,6 @@ class ViewModel extends AbstractModel
                 $arrTemp['ctas'][] = $arrCtaTemp;
             }
         }
-
         $this->data = $arrTemp;
     }
 

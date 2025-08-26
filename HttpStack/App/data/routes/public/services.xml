@@ -1,33 +1,33 @@
 <services>
-    <heroTitle>Our Services</heroTitle>
-    <heroDescription><![CDATA[From conceptualization to deployment, we provide end-to-end solutions that are scalable, secure, and tailored to your unique needs.]]></heroDescription>
-    <ctaLabel>Start a Project</ctaLabel>
-    <ctaUri>/contact</ctaUri>
-    <viewHeading><![CDATA[<h3 class="view-title">A Full-Stack Approach to Your Success</h3><sub>Comprehensive Solutions for a Digital World</sub>]]></viewHeading>
-    <viewSummary><![CDATA[<p>We offer a suite of professional services designed to cover all aspects of modern web development and IT infrastructure. Our goal is to build a solid technological foundation that supports your business's growth and innovation.</p>]]></viewSummary>
-    <serviceList><![CDATA[
-        <div class="services-grid">
-            <div class="service-card">
-                <h3><i class="fa-solid fa-code"></i> Full-Stack Development</h3>
-                <p>Building dynamic web applications from the ground up, including custom backend logic and engaging front-end user interfaces.</p>
-                <a href="/contact" class="cta-button">Learn More</a>
-            </div>
-            <div class="service-card">
-                <h3><i class="fa-solid fa-cloud"></i> Cloud & DevOps</h3>
-                <p>Managing your infrastructure on platforms like AWS, Google Cloud, and Azure, ensuring high availability, security, and scalability.</p>
-                <a href="/contact" class="cta-button">Learn More</a>
-            </div>
-            <div class="service-card">
-                <h3><i class="fa-solid fa-lock"></i> API & Security</h3>
-                <p>Designing robust and secure APIs for seamless data exchange and implementing security best practices to protect your application.</p>
-                <a href="/contact" class="cta-button">Learn More</a>
-            </div>
-            <div class="service-card">
-                <h3><i class="fa-solid fa-mobile-alt"></i> Mobile App Development</h3>
-                <p>Creating cross-platform and native mobile applications that extend your reach and engage users on the go.</p>
-                <a href="/contact" class="cta-button">Learn More</a>
-            </div>
-        </div>
-    ]]></serviceList>
-    <viewCta><![CDATA[<h3>Ready to Get Started?</h3><p>Let's discuss how we can bring your next big idea to life. Your digital future begins here.</p><a href="/contact" class="cta-button">Request a Consultation</a>]]></viewCta>
+  <content>
+    <heroTitle>Our Professional Services</heroTitle>
+    <heroDescription>From web development to IT support, our services are designed to empower your business.</heroDescription>
+    <heroCtaLabel>Explore Services</heroCtaLabel>
+    <pageTitle>Services</pageTitle>
+
+    <intro>
+      Whether you need a custom website, networking support, or IT consulting,
+      we provide scalable and reliable solutions for every stage of growth.
+    </intro>
+  </content>
+  <ctas>
+    <cta>
+      <heading>Web &amp; Graphic Development</heading>
+      <text>Modern, responsive, and beautiful designs for your brand.</text>
+      <ctaLabel>Learn More</ctaLabel>
+      <ctaUri>/services/web</ctaUri>
+    </cta>
+    <cta>
+      <heading>Networking &amp; IT Solutions</heading>
+      <text>Professional installation and maintenance of networks and servers.</text>
+      <ctaLabel>Explore IT Services</ctaLabel>
+      <ctaUri>/services/it</ctaUri>
+    </cta>
+    <cta>
+      <heading>Consultation</heading>
+      <text>Book a one-on-one consultation to discuss your business needs.</text>
+      <ctaLabel>Schedule a Call</ctaLabel>
+      <ctaUri>/services/consultation</ctaUri>
+    </cta>
+  </ctas>
 </services>

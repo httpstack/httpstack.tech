@@ -162,10 +162,11 @@ class App
             $dataDirectory = appPath("dataDir") . "/template";
             $dataSource = new JsonDirectory($dataDirectory, true);
 
-            $t = new TemplateModel($dataSource);
-            return $t;
+            $tm = new TemplateModel($dataSource);
+            //  $this->container->bind("base.vars", fn() => $tm->getAll());
+            return $tm;
         });
-        $this->container->bind(ViewModel::class, function () {
+        $this->container->singleton(ViewModel::class, function () {
             $viewData = $this->container->make("viewData");
             $fl = $this->container->make(FileLoader::class);
             $file = $fl->findFile($viewData, null, "xml");

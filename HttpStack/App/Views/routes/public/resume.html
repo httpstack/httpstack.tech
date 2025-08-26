@@ -1,15 +1,43 @@
 <div class="frame-main">
-    <div class="card-layout">
-        <div class="frame-view highlights">
+    <header class="main-header">
+        <h1 class="site-title">{{pageTitle}}</h1>
+    </header>
+    <div class="grid">
+        <div class="grid-row page-intro align-2">
+            <p>
+                {{intro}}
+            </p>
+
+            <!--LIGHTBOX-->
+            <button onclick="openLightbox()">View My Resume</button>
+            <div id="lightbox" class="lightbox">
+                <div class="lightbox-overlay" onclick="closeLightbox()"></div>
+                <div class="lightbox-content">
+                    <span class="close-btn" onclick="closeLightbox()">&times;</span>
+                    <div class="resume-container">
+                        <embed src="/public/resume.pdf" type="application/pdf" width="100%" height="600px" />
+                    </div>
+                </div>
+            </div>
+            <!--END LIGHTBOX-->
 
         </div>
-    </div>
-</div>
+        <div data-repeat="ctas as cta">
+            <div data-repeat-item="cta" class="grid-cell cta-card">
+                <h3>cta[heading]</h3>
+                <p>cta[text]</p>
+                <a href="cta[ctaUri]" class="cta-btn">cta[ctaLabel]</a>
+            </div>
+        </div>
 
-<!-- Lightbox Modal Structure -->
-<div id="resumeLightbox" class="lightbox-modal">
-    <div class="lightbox-content">
-        <span class="close-button">&times;</span>
-        <iframe name="resumePdfViewer" id="resumePdfViewer" src="" frameborder="0"></iframe>
+
+        <!-- Lightbox Modal Structure -->
+        <div id="resumeLightbox" class="lightbox-modal">
+            <div class="lightbox-content">
+                <span class="close-button">&times;</span>
+                <iframe name="resumePdfViewer" id="resumePdfViewer" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+
     </div>
 </div>

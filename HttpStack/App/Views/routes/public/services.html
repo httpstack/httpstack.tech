@@ -1,8 +1,19 @@
-<link href="/public/assets/enabled/css/_.css" rel="stylesheet" type="text/css">
 <div class="frame-main">
-    <div class="frame-view">
-        <h1>Services</h1>
-        <p>Here you can find information about the services we offer.</p>
-        <!-- Additional content can be added here -->
+    <header class="main-header">
+        <h1 class="site-title">{{pageTitle}}</h1>
+    </header>
+    <div class="grid">
+        <div class="grid-row page-intro align-2">
+            <p>
+                {{intro}}
+            </p>
+        </div>
+        <div data-repeat="ctas as cta">
+            <div data-repeat-item="cta" class="grid-cell cta-card">
+                <h3>cta[heading]</h3>
+                <p>cta[text]</p>
+                <a href="cta[ctaUri]" class="cta-btn">cta[ctaLabel]</a>
+            </div>
+        </div>
     </div>
-</div>q
+</div>

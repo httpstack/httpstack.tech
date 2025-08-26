@@ -55,6 +55,7 @@ class Template extends DOMDocument
 
         $imagePreloadUrls = [];
         $required = ["jquery.js"];
+        $deffered = ["app.js"];
         foreach ($assets as $asset) {
             $strType = pathinfo($asset, PATHINFO_EXTENSION);
             $filename = pathinfo($asset, PATHINFO_BASENAME);
@@ -63,7 +64,6 @@ class Template extends DOMDocument
             $imagesToPreload = [];
             switch ($strType) {
                 case "js":
-
                     $script = $this->createElement("script");
                     $script->setAttribute("type", "text/javascript");
                     if (str_contains($filename, "babel")) {
@@ -73,6 +73,7 @@ class Template extends DOMDocument
                     if ($required) {
                         $head->appendChild($script);
                     } else {
+                        $script->setAttribute("defer", "defer");
                         $body->appendChild($script);
                     }
                     break;
@@ -81,7 +82,7 @@ class Template extends DOMDocument
                     $script = $this->createElement("script");
                     $script->setAttribute("type", "text/babel");
                     $script->setAttribute("src", $src);
-
+                    break;
                 case "css":
                     $link = $this->createElement("link");
                     $link->setAttribute('type', 'text/css');

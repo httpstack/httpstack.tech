@@ -1,0 +1,34 @@
+
+<!-- RESUME PAGE -->
+<resume>
+  <content>
+    <heroTitle>Professional Resume</heroTitle>
+    <heroDescription>Explore my professional background, skills, and experience. Download in multiple formats or view online.</heroDescription>
+    <heroCtaLabel>View Resume</heroCtaLabel>
+    <pageTitle>About the Developer</pageTitle>
+    <intro>
+      My resume highlights years of experience in web development, IT, and technology solutions.
+      Access it in multiple formats or view it in an interactive lightbox.
+    </intro>
+  </content>
+  <ctas>
+    <cta>
+      <heading>Download Resume</heading>
+      <text>Download my resume in PDF, DOCX, or TXT formats.</text>
+      <ctaLabel>Download</ctaLabel>
+      <ctaUri>/resume/download</ctaUri>
+    </cta>
+    <cta>
+      <heading>View in Lightbox</heading>
+      <text>Browse my resume without leaving this page in an interactive lightbox.</text>
+      <ctaLabel>Open Lightbox</ctaLabel>
+      <ctaUri>/resume/view</ctaUri>
+    </cta>
+    <cta>
+      <heading>Request Custom Resume</heading>
+      <text>Need a tailored resume for a specific role or format? Request one here.</text>
+      <ctaLabel>Request Resume</ctaLabel>
+      <ctaUri>/resume/request</ctaUri>
+    </cta>
+  </ctas>
+</resume>

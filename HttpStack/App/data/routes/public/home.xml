@@ -1,14 +1,16 @@
 <home>
-    <heroDescription>View Hero</heroDescription>
-    <heroCtaLabel>Build your stack</heroCtaLabel>
-    <header>
-        <siteTitle>HttpStack.tech</siteTitle>
+    <content>
+        <heroTitle>Build your AI prompted stACK</heroTitle>
+        <heroDescription>With our stack tool you can choose from preset front-end stacks developed by other users, or you can have AI generate your 3 front-end layers.</heroDescription>
+        <heroCtaLabel>Build your stack</heroCtaLabel>
+        <siteTitle>HttpStack</siteTitle>
         <siteTagline>Empowering Your Digital Presence</siteTagline>
-    </header>
-    <intro>
-        At HttpStack.tech, we specialize in delivering robust and innovative technology solutions designed to propel your business forward.
-        Our expertise spans a wide array of platforms and technologies, ensuring that whether you're a startup or an established enterprise, you receive tailored services that are both efficient and scalable.
-    </intro>
+        <intro>
+            At HttpStack.tech, we specialize in delivering robust and innovative technology solutions designed to propel your business forward.
+            Our expertise spans a wide array of platforms and technologies, ensuring that whether you're a startup or an established enterprise, you receive tailored services that are both efficient and scalable.
+        </intro>
+    </content>
+
     <ctas>
         <cta>
             <heading>Working Together</heading>

@@ -1,29 +1,34 @@
+<!-- STACKS PAGE -->
 <stacks>
-<heroTitle>Our Stacks</heroTitle>
-<heroDescription><![CDATA[We leverage the most powerful and flexible technologies to build modern, high-performing applications.]]></heroDescription>
-<ctaLabel>Explore Tech</ctaLabel>
-<ctaUri>/stacks</ctaUri>
-<viewHeading><![CDATA[<h3 class="view-title">The Tools of the Trade</h3><sub>A Peek at Our Technology Stack</sub>]]></viewHeading>
-<viewSummary><![CDATA[<p>Our expertise is built on a foundation of industry-leading technologies. We are proficient in a diverse range of front-end, back-end, database, and DevOps tools to deliver the best possible solutions.</p>]]></viewSummary>
-<stackList><![CDATA[
-<div class="highlight-grid">
-    <div class="highlight-card">
-        <h3><i class="fa-brands fa-js-square"></i> Front-End</h3>
-        <p>React, Vue.js, Svelte, Webpack, Babel, D3.js</p>
-    </div>
-    <div class="highlight-card">
-        <h3><i class="fa-brands fa-node-js"></i> Back-End</h3>
-        <p>Node.js, Express, Python (Django/Flask), PHP, Serverless</p>
-    </div>
-    <div class="highlight-card">
-        <h3><i class="fa-solid fa-database"></i> Databases</h3>
-        <p>PostgreSQL, MongoDB, MySQL, Redis, DynamoDB</p>
-    </div>
-    <div class="highlight-card">
-        <h3><i class="fa-brands fa-aws"></i> DevOps & Cloud</h3>
-        <p>AWS, Docker, Kubernetes, Jenkins, GitHub Actions</p>
-    </div>
-</div>
-]]></stackList>
-<viewCta><![CDATA[<h3>Need a Specific Technology?</h3><p>If your project requires a different stack, chances are we can master it. Let's talk about your needs.</p><a href="/contact" class="cta-button">Inquire Now</a>]]></viewCta>
+  <content>
+    <heroTitle>Build Your Stack</heroTitle>
+    <heroDescription>Choose from curated stacks by the community or generate your own AI-powered front-end stack.</heroDescription>
+    <heroCtaLabel>Create a Stack</heroCtaLabel>
+    <siteTitle>HttpStack</siteTitle>
+    <siteTagline>Custom Tech, Simplified</siteTagline>
+    <intro>
+      Stacks help you launch projects faster. Use presets designed by other developers or
+      let our AI build a stack tailored for you.
+    </intro>
+  </content>
+  <ctas>
+    <cta>
+      <heading>Generate with AI</heading>
+      <text>Let AI build your front-end stack in seconds.</text>
+      <ctaLabel>Generate Stack</ctaLabel>
+      <ctaUri>/stacks/generate</ctaUri>
+    </cta>
+    <cta>
+      <heading>Community Presets</heading>
+      <text>Browse and use stacks created by other developers.</text>
+      <ctaLabel>View Presets</ctaLabel>
+      <ctaUri>/stacks/presets</ctaUri>
+    </cta>
+    <cta>
+      <heading>Save & Share</heading>
+      <text>Save your stack and share it with the community.</text>
+      <ctaLabel>Save My Stack</ctaLabel>
+      <ctaUri>/stacks/save</ctaUri>
+    </cta>
+  </ctas>
 </stacks>

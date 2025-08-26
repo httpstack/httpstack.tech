@@ -1,6 +1,19 @@
+.lt_bx{
+        transform: scale(0.9);
+        opacity: 0;
+        animation: modal-pop-in 0.3s forwards cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: background-color 0.3s ease;
+}
 
-
-   /* Resume Section Specific Styles */
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+  /* Resume Section Specific Styles */
     .resume-section {
         padding: 2rem;
     }

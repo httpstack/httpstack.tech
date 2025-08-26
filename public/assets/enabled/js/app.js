@@ -17,6 +17,27 @@ $(document).ready(function () {
         }
     });
 
+
+    // Get the lightbox element
+    const lightbox = document.getElementById('lightbox');
+
+    // Function to open the lightbox
+    function openLightbox() {
+        lightbox.style.display = 'block';
+    }
+
+    // Function to close the lightbox
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+    }
+
+    // Close the lightbox if the user presses the 'Escape' key
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && lightbox.style.display === 'block') {
+            closeLightbox();
+        }
+    });
+
     // Close navigation if clicking outside on mobile
     $(document).on('click', function (event) {
         if (!$nav.is(event.target) && $nav.has(event.target).length === 0 &&

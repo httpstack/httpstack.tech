@@ -14,7 +14,7 @@ if (!function_exists(function: "consoleLog")) {
     }
 }
 if (!function_exists("box")) {
-    function box(string $make = null, array $params = [])
+    function box(string $make = '', array $params = [])
     {
         // if u pass an abstract to box("myTool") it will return the resolved data
         // otherwise it just returns the container;

@@ -852,6 +852,71 @@ html[data-theme="dark"] .theme-icon-moon {
     }
 
 
+/*LIGHTBOX CLASSES*/
+/* Initially hide the lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ensure it's on top of everything */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scrolling if content is too long */
+}
+
+/* The semi-transparent overlay */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+}
+
+/* The content box */
+.lightbox-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 10% auto; /* Centers the box vertically and horizontally */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Adjust as needed */
+    max-width: 800px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    animation: fadeIn 0.5s;
+}
+
+/* Close button style */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Animation for the pop-up */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Style the embedded resume */
+.resume-container {
+    padding-top: 10px; /* Space below the close button */
+}
+
+.resume-container embed {
+    border: none;
+}
 /* --- Utility Classes (Your original ones, just ensuring they use new variables if applicable) --- */
 pre{
   display:flex;

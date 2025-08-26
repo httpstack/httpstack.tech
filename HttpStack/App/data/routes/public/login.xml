@@ -1,37 +1,33 @@
 <login>
-    <!-- Hero data for the Login page. -->
-
-    <heroTitle>Member Login</heroTitle>
-    <heroDescription>
-        <![CDATA[
-            Welcome back! Please sign in to access your dashboard, projects, and exclusive member content.
-        ]]>
-    </heroDescription>
-    <ctaLabel>Login to Account</ctaLabel>
-    <ctaUri>/login</ctaUri>
-
-    <viewHeading>
-    <![CDATA[
-        <h3 class="view-title">Access Your Account</h3>
-        <sub>Welcome Back, Developer</sub>
-        <p class="view-tagline">
-            Securely sign in to your HttpStack.tech account.
-        </p>
-    ]]>   
-    </viewHeading>
-    <viewSummary>
-    <![CDATA[
-        <p>
-            Your digital presence is just one step away. Please enter your credentials below to continue to your personal dashboard and manage your services.
-        </p>
-    ]]>
-    </viewSummary>
-    <viewCta>
-    <![CDATA[
-        <p>Don't have an account?</p>
-        <a href="/register" class="cta-button">Create New Account</a>
-        <a href="/login/forgot-password" class="cta-button" style="margin-left: 15px;">Forgot Password?</a>
-    ]]>
-    </viewCta>
-    
+  <content>
+    <heroTitle>Welcome Back</heroTitle>
+    <heroDescription>Login to your account to manage your stacks, projects, and services.</heroDescription>
+    <heroCtaLabel>Login</heroCtaLabel>
+    <siteTitle>HttpStack</siteTitle>
+    <siteTagline>Your Digital Workspace</siteTagline>
+    <intro>
+      Securely log in to access your personalized dashboard,
+      saved stacks, and project management tools.
+    </intro>
+  </content>
+  <ctas>
+    <cta>
+      <heading>Login with Email</heading>
+      <text>Use your email and password to log in.</text>
+      <ctaLabel>Login</ctaLabel>
+      <ctaUri>/login/email</ctaUri>
+    </cta>
+    <cta>
+      <heading>Forgot Password</heading>
+      <text>Recover access to your account if you’ve lost your password.</text>
+      <ctaLabel>Reset Password</ctaLabel>
+      <ctaUri>/login/reset</ctaUri>
+    </cta>
+    <cta>
+      <heading>New User?</heading>
+      <text>Don’t have an account? Create one in seconds.</text>
+      <ctaLabel>Sign Up</ctaLabel>
+      <ctaUri>/signup</ctaUri>
+    </cta>
+  </ctas>
 </login>

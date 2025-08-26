@@ -1,0 +1,34 @@
+<resume>
+    <content>
+        <heroTitle>About the developer</heroTitle>
+        <heroDescription>Christopher J. McIntosh is the lead developer of httpstack</heroDescription>
+        <heroCtaLabel>View Resume</heroCtaLabel>
+        <heroCtaUri>/resume</heroCtaUri>
+        <pageTitle>Resume</pageTitle>
+        <intro>
+            This page is a snapshot of my skills, experience, and the passion that drives my work.
+            It's a deep dive into the projects and roles that have shaped me into the developer I am today.
+        </intro>
+    </content>
+n     <ctas>
+        <cta>
+            <heading>Download My Resume</heading>
+            <text>Get a PDF version of my resume to review my qualifications and experience offline.</text>
+            <ctaLabel>Download PDF</ctaLabel>
+            <ctaUri>/files/Chris_McIntosh_Resume.pdf</ctaUri>
+        </cta>
+        <cta>
+            <heading>View Resume</heading>
+            <text>View resume in lightbox</text>
+            <ctaLabel>View LinkedIn</ctaLabel>
+            <ctaUri>https://www.linkedin.com/in/chris-mcintosh-123456789/</ctaUri>
+        </cta>
+        <cta>
+            <heading>Contact Me</heading>
+            <text>If you have any questions or would like to discuss potential opportunities, feel free to reach out.</text>
+            <ctaLabel>Contact</ctaLabel>
+            <ctaUri>/contact</ctaUri>
+        </cta>
+    
+    </ctas>
+</resume>
