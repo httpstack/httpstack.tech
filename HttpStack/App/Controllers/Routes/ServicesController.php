@@ -21,6 +21,7 @@ class ServicesController
     {
         //bind the view data to the container so its available
         //within the ViewModel make
+
         $container->bind("viewData", function () {
             return "public/services";
         });

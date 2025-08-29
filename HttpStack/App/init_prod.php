@@ -5,6 +5,9 @@ define("APP_ROOT", DOC_ROOT . "/HttpStack/App");
 //define("BASE_URI", "http://localhost/");
 define("BASE_URI", "http://httpstack.tech/");
 
+//make this into a directroy loop so it get gets all libs from 
+//an array of folders in the file loadder or somethong
+require_once(DOC_ROOT . "/HttpStack/App/util/helpers.php");
 
 function normalize_path($path)
 {

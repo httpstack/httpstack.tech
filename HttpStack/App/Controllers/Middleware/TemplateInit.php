@@ -27,14 +27,13 @@ class TemplateInit
    */
   public function process(Request $req, Response $res, Container $container)
   {
-    $pm = $container->make(ViewModel::class);
+    //$pm = $container->make(ViewModel::class);
 
     //var_dump($pm);
-    $v = new View($container, $req, $res);
+    $v = $container->make(View::class,  $req, $res);
     //register the view namespace agian, returning this view
     // that has the template object within it.
-    $container->bind("view", function (Container $c, string $view) use ($v) {
-
+    $container->bind(View::class, function (Container $c, string $view) use ($v) {
       $fl = $c->make(FileLoader::class);
       $viewPath = $fl->findFile($view, null, "html");
       // dd($viewPath);

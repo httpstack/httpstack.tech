@@ -3,7 +3,6 @@
 namespace HttpStack\App;
 
 use DBTable;
-use HttpStack\Config\Config;
 use HttpStack\Http\Request;
 use HttpStack\Http\Response;
 use HttpStack\IO\FileLoader;
@@ -11,6 +10,7 @@ use HttpStack\Routing\Route;
 use HttpStack\App\Views\View;
 use HttpStack\Routing\Router;
 use HttpStack\Template\Template;
+use HttpStack\Test\MyClass;
 use HttpStack\Test\MyOtherClass;
 use HttpStack\DataBase\DBConnect;
 use HttpStack\Container\Container;
@@ -21,14 +21,13 @@ use HttpStack\Datasource\FileDatasource;
 use HttpStack\App\Datasources\FS\XmlFile;
 use HttpStack\App\Datasources\DB\ActiveTable;
 use HttpStack\App\Datasources\FS\JsonDirectory;
-use HttpStack\Test\MyClass;
 
 class App
 {
     protected Container $container;
     protected Request $request;
     protected Response $response;
-    protected ?Router $router;
+    protected Router $router;
     protected array $settings = [];
     protected FileLoader $fileLoader;
     public bool $debug = true;
@@ -38,27 +37,21 @@ class App
 
         // Bind the essential instances FIRST
         $this->container->singleton(Container::class, $this->container);
+        $this->container->singleton(self::class, $this);
         $this->container->singleton(App::class, $this);
-        $self = $this;
-        $this->container->singleton(self::class, function () use ($self) {
-            return $self;
+        $this->container->bind(View::class, function (Container $c, $req, $res) {
+            return new View($c, $req, $res);
         });
-        /**
-         * This method will initialiizeall of the services. in order to build , resolve or make
-         * any of the singletons or bindings you must tie the class name or the alias to an 
-         * actula concrete implemtauton
-         */
+        // INIT will bind all other services to the container
         $this->init();
 
-        //with all of the ervices no boud to container you can make them
+        // Now that config is loaded, get settings
         $this->settings = $this->container->make('config')['app'];
         $this->request = $this->container->make(Request::class);
         $this->response = $this->container->make(Response::class);
         $this->router = $this->container->make(Router::class);
-
-        $GLOBALS["app"] = $this;
-
         $this->reportErrors();
+        $GLOBALS["app"] = $this;
     }
     public function getRequest()
     {
@@ -85,16 +78,14 @@ class App
             //dd($routes);
             //LOOP OVER THE ROUTE ARRAYS AND REGISTER THWE ROUTES / MIDDLEWARES
             foreach ($routes as $route) {
-
                 switch ($route->getType()) {
                     case "after":
                         $this->router->after($route);
                         break;
 
                     case "before":
+                        $this->router->before($route);
                         break;
-                        //$this->router->before($route);
-
                 }
             }
         }
@@ -121,7 +112,8 @@ class App
 
     public function init()
     {
-        $this->container->bind('config', function () {
+        // --- 1. Load Configurations and Aliases ---
+        $this->container->singleton('config', function () {
             $configDir = APP_ROOT . "/config";
             $configs = [];
             foreach (glob($configDir . '/*.php') as $file) {
@@ -133,20 +125,71 @@ class App
 
         // Load aliases from the config file into the container
         $aliases = $this->container->make('config')['aliases'] ?? [];
-
         foreach ($aliases as $alias => $fqn) {
-            echo "alias: ${alias} \n fqn: ${fqn}\n";
             $this->container->alias($alias, $fqn);
         }
+
+        // --- 2. Bind Core Services (as Singletons) ---
+        $this->container->singleton(Request::class, fn() => new Request());
+        $this->container->singleton(Response::class, fn() => new Response());
+        $this->container->singleton(Router::class, fn() => new Router());
+        $this->container->singleton(DBConnect::class, fn() => new DBConnect());
+
+        // --- 3. Bind Models and Views (use `bind` for non-singletons) ---
+
+        // Use `bind` because a ViewModel is specific to a request
+        $this->container->singleton(FileLoader::class, function (Container $c) {
+
+            // We need the 'config' service to get the application settings
+            $settings = $c->make('config')['app'];
+            $fl = new FileLoader();
+
+            // Loop over the appPaths and map them, just like in your original code
+            if (!empty($settings['appPaths']) && is_array($settings['appPaths'])) {
+                foreach ($settings['appPaths'] as $name => $path) {
+                    $fl->mapDirectory($name, $path);
+                }
+            }
+
+            return $fl;
+        });
+        $this->container->singleton("template", function () {
+            $tm = $this->container->make(TemplateModel::class);
+            $fl = $this->container->make(FileLoader::class);
+            $baseTemplatePath = $fl->findFile("base.html", null, "html");
+            return new Template($baseTemplatePath, $tm);
+        });
+        // Use a singleton for the TemplateModel if its data is truly global
+        $this->container->singleton(TemplateModel::class, function () {
+            $dataDirectory = appPath("dataDir") . "/template";
+            $dataSource = new JsonDirectory($dataDirectory, true);
+
+            $tm = new TemplateModel($dataSource);
+            //  $this->container->bind("base.vars", fn() => $tm->getAll());
+            return $tm;
+        });
+        /* 
+        $this->container->bind(ViewModel::class, function (Container $c, $data) {
+            //echo $data;
+            $fl = $this->container->make(FileLoader::class);
+            $file = $fl->findFile($data, null, "xml");
+            $dataSource = new XmlFile($file, false);
+            $pm = new ViewModel($dataSource, []);
+            return $pm;
+        });*/
+        $this->container->bind(View::class, function ($c, $req, $res) {
+            return new View($c, $req, $res);
+        });
+        /* */
+        $this->container->bind(MyOtherClass::class, fn() => "im a dep");
+        $this->container->bind(MyClass::class, function ($c, $param1, $param2) {
+            $dependency = $c->make(MyOtherClass::class);
+            return new MyClass($dependency, $param1, $param2);
+        });
+        $instance = $this->container->make(MyClass::class, 'value1', 'value2');
     }
     public function run()
     {
-        /*
-        $this->container->bind('MyClass', fn($c, $p) => $p);
-        $cfg = $this->container->make('MyClass', "test");
-        $this->container->singleton('MyClass', function () {});
-        dd($cfg);
-        */
         $this->router->dispatch($this->request, $this->response, $this->container);
     }
 }

@@ -7,6 +7,9 @@ use HttpStack\Http\Response;
 use HttpStack\Container\Container;
 use HttpStack\Model\AbstractModel;
 use HttpStack\App\Models\ViewModel;
+use HttpStack\App\Views\View;
+
+use HttpStack\Test\MyClass;
 
 //use HttpStack\Template\Template;
 class HomeController
@@ -28,10 +31,10 @@ class HomeController
     }
     public function home($req, $res, $container, $matches)
     {
-        $m = $container->make(ViewModel::class);
+        //$m = $container->make(ViewModel::class, $container, "public/home");
 
-        $v = $container->make("view", "public/home");
-        $v->model($m);
+        $v = $container->make(View::class, "public/home");
+        //$v->model($m);
 
         $v->render();
         if (!$res->sent) {

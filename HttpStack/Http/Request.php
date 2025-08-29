@@ -73,7 +73,10 @@ class Request implements RequestInterface
     {
         return $this->params;
     }
-
+    public function getUriParts()
+    {
+        return explode("/", $_SERVER['REQUEST_URI']);
+    }
     public function getParam(string $key): ?string
     {
         return $this->params[$key] ?? null;

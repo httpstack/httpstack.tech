@@ -3,8 +3,12 @@ define("DOC_ROOT", "/var/www/html");
 define("APP_ROOT", DOC_ROOT . "/HttpStack/App");
 define("BASE_URI", "http://localhost/");
 
+//make this into a directroy loop so it get gets all libs from 
+//an array of folders in the file loadder or something
+require_once(DOC_ROOT . "/HttpStack/App/util/helpers.php");
 
-function normalize_path($path) {
+function normalize_path($path)
+{
     $isAbsolute = ($path[0] === '/');
     $segments = explode('/', $path);
     $parts = [];
@@ -23,11 +27,10 @@ function normalize_path($path) {
     $normalized = ($isAbsolute ? '/' : '') . implode('/', $parts);
     return $normalized;
 }
-spl_autoload_register(function($className){
+spl_autoload_register(function ($className) {
     $file = DOC_ROOT . "/" . str_replace('\\', '/', $className) . '.php';
     $file = normalize_path($file);
     if (file_exists($file)) {
         require_once $file;
     }
 });
-?>
