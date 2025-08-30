@@ -5,7 +5,6 @@
 require_once(__DIR__ . "/../HttpStack/App/init_dev.php");
 
 use HttpStack\App\App;
-
 $app = new App();
 
 /* 

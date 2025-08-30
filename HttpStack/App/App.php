@@ -32,17 +32,14 @@ class App
     protected array $settings = [];
     protected FileLoader $fileLoader;
     public bool $debug = true;
-    public function __construct(string $appPath = "/var/www/html/App/app")
+    public function __construct()
     {
         $this->container = new Container();
 
         // Bind the essential instances FIRST
         $this->container->singleton(Container::class, $this->container);
         $this->container->singleton(App::class, $this);
-        $self = $this;
-        $this->container->singleton(self::class, function () use ($self) {
-            return $self;
-        });
+        $this->container->singleton(self::class, $this);
         /**
          * This method will initialiizeall of the services. in order to build , resolve or make
          * any of the singletons or bindings you must tie the class name or the alias to an 
@@ -55,10 +52,10 @@ class App
         $this->request = $this->container->make(Request::class);
         $this->response = $this->container->make(Response::class);
         $this->router = $this->container->make(Router::class);
-
+        $this->reportErrors();
         $GLOBALS["app"] = $this;
 
-        $this->reportErrors();
+        
     }
     public function getRequest()
     {
@@ -135,7 +132,7 @@ class App
         $aliases = $this->container->make('config')['aliases'] ?? [];
 
         foreach ($aliases as $alias => $fqn) {
-            echo "alias: ${alias} \n fqn: ${fqn}\n";
+            //echo "alias: ${alias} \n fqn: ${fqn}\n";
             $this->container->alias($alias, $fqn);
         }
     }
