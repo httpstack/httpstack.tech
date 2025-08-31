@@ -88,6 +88,13 @@ class Router {
             }
         }
     }
+
+    public function getRoutes(){
+        return (array)$this->after;
+    }
+    public function getMiddleWares(){
+        return $this->before;
+    }
 }
 
 ?>

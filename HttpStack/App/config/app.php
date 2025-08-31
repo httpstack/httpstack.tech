@@ -1,9 +1,9 @@
 <?php
 $settings = [
     "appName" => "HTTpstACK",
-    "appVersion" => "",
-    "appAuthor" => "",
-    "appContact" => "",
+    "appVersion" => "1.0",
+    "appAuthor" => "Christopher McIntosh",
+    "appContact" => "chris@httpstack.tech",
     "docRoot" => DOC_ROOT,
     "appRoot" => APP_ROOT,
     "uriRoot" => "/",

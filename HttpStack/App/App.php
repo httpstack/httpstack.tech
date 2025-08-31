@@ -73,6 +73,7 @@ class App
     public function loadRoutes()
     {
         $routesDir = $this->settings['appPaths']['routesDir'];
+        echo $routesDir;
         $configs = [];
         //LOOP OVER THE ROUTES DIRECTORY
         //AND GET ROUTE ARRAYS FROM THE FILES
@@ -82,16 +83,14 @@ class App
             //dd($routes);
             //LOOP OVER THE ROUTE ARRAYS AND REGISTER THWE ROUTES / MIDDLEWARES
             foreach ($routes as $route) {
-
                 switch ($route->getType()) {
                     case "after":
                         $this->router->after($route);
                         break;
 
                     case "before":
+                        $this->router->before($route);
                         break;
-                        //$this->router->before($route);
-
                 }
             }
         }
@@ -118,32 +117,42 @@ class App
 
     public function init()
     {
-        $this->container->bind('config', function () {
-            $configDir = APP_ROOT . "/config";
-            $configs = [];
-            foreach (glob($configDir . '/*.php') as $file) {
-                $key = basename($file, '.php');
-                $configs[$key] = include $file;
-            }
-            return $configs;
+        // --- 1. Load Configurations and Aliases ---
+        $this->container->singleton("config", function () {
+            $cfg = new Config(APP_ROOT . "/config");
+            return $cfg->getSettings();
         });
 
         // Load aliases from the config file into the container
         $aliases = $this->container->make('config')['aliases'] ?? [];
-
         foreach ($aliases as $alias => $fqn) {
-            //echo "alias: ${alias} \n fqn: ${fqn}\n";
             $this->container->alias($alias, $fqn);
         }
+
+        // --- 2. Bind Core Services (as Singletons) ---
+        $this->container->bind(Request::class, fn() => new Request());
+        $this->container->bind(Response::class, fn() => new Response());
+        $this->container->singleton(Router::class, fn() => new Router());
+
+        $this->container->singleton(FileLoader::class, function (Container $c) {
+            // We need the 'config' service to get the application settings
+            $settings = $c->make('config')['app'];
+            $fl = new FileLoader();
+            // Loop over the appPaths and map them, just like in your original code
+            if (!empty($settings['appPaths']) && is_array($settings['appPaths'])) {
+                foreach ($settings['appPaths'] as $name => $path) {
+                    $fl->mapDirectory($name, $path);
+                }
+            }
+            return $fl;
+        });
     }
-    public function run()
-    {
-        /*
-        $this->container->bind('MyClass', fn($c, $p) => $p);
-        $cfg = $this->container->make('MyClass', "test");
-        $this->container->singleton('MyClass', function () {});
-        dd($cfg);
-        */
-        $this->router->dispatch($this->request, $this->response, $this->container);
+
+    public function run(){
+        $cfg = $this->container->make("config");
+        $req = $this->container->make(Request::class);
+        $res = $this->container->make(Response::class);
+        $router = $this->container->make(Router::class);
+        dd($router->getRoutes());
     }
 }

@@ -29,8 +29,11 @@ function normalize_path($path)
 }
 spl_autoload_register(function ($className) {
     $file = DOC_ROOT . "/" . str_replace('\\', '/', $className) . '.php';
+    
     $file = normalize_path($file);
+    
     if (file_exists($file)) {
+        //secho $file;
         require_once $file;
     }
 });

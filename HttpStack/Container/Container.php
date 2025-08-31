@@ -147,7 +147,7 @@ class Container implements ContainerInterface {
         {
             // Resolve alias if it exists
             $abstract = $this->aliases[$abstract] ?? $abstract;
-
+           // dd($this->bindings[$abstract]);
             // Get the concrete implementation from bindings.
             // If not bound, we'll assume the abstract is a concrete class we can auto-wire.
             $concrete = $this->bindings[$abstract] ?? $abstract;
@@ -177,6 +177,8 @@ class Container implements ContainerInterface {
     {
         try {
             $reflector = new ReflectionClass($concrete);
+
+            //dd($reflector);
         } catch (ReflectionException $e) {
             throw new AppException("Class {$concrete} does not exist.");
         }
