@@ -1,7 +1,10 @@
 <?php
+
 namespace HttpStack\Routing;
+
 use \Closure;
 use HttpStack\Contracts\RouteInterface;
+
 class Route implements RouteInterface
 {
     protected string $method;
@@ -44,4 +47,3 @@ class Route implements RouteInterface
         return $this->type;
     }
 }
-?>

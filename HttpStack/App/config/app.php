@@ -22,7 +22,9 @@ $settings = [
     "routeDefs" => "/routes/public.php",
     "template" => [
         "baseLayout" => "base.html",
-        "baseTemplatePath" => APP_ROOT . "/Views/templates/_base.html"
-    ]
+        "baseTemplatePath" => APP_ROOT . "/Views/templates/_base.html",
+        "templateDataPath" => APP_ROOT . "/data/template",
+        "assetTypes" => ["js", "css", "woff", "woff2", "otf", "ttf", "jpg", "jsx"]
+    ],
 ];
 return $settings;

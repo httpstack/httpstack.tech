@@ -76,8 +76,12 @@ function dd(mixed $data)
     $debug = app()->debug;
 
     if ($debug) {
-
         echo "<hr/><pre>";
+        if (is_array($data)) {
+            echo "<b>Array Count:";
+            echo count($data);
+            echo "</b>";
+        }
         print_r($data);
         echo "</pre><hr/>";
     }

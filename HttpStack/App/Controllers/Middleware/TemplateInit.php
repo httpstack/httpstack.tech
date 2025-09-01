@@ -9,6 +9,8 @@ use HttpStack\App\Views\View;
 use HttpStack\Template\Template;
 use HttpStack\Container\Container;
 use HttpStack\App\Models\ViewModel;
+use HttpStack\App\Models\TemplateModel;
+use HttpStack\App\Datasources\FS\JsonDirectory;
 
 class TemplateInit
 {
@@ -27,12 +29,15 @@ class TemplateInit
    */
   public function process(Request $req, Response $res, Container $container)
   {
+
+
     //$pm = $container->make(ViewModel::class);
 
     //var_dump($pm);
-    $v = $container->make(View::class,  $req, $res);
+    //$v = $container->make(View::class,  $req, $res);
     //register the view namespace agian, returning this view
     // that has the template object within it.
+    /*
     $container->bind(View::class, function (Container $c, string $view) use ($v) {
       $fl = $c->make(FileLoader::class);
       $viewPath = $fl->findFile($view, null, "html");
@@ -40,5 +45,6 @@ class TemplateInit
       $v->loadView($view);
       return $v;
     });
+    */
   }
 }

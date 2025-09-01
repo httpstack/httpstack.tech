@@ -12,6 +12,7 @@ use HttpStack\Container\Container;
 use HttpStack\Model\AbstractModel;
 use HttpStack\App\Models\ViewModel;
 use HttpStack\App\Models\TemplateModel;
+use HttpStack\App\Datasources\FS\JsonDirectory;
 
 class View
 {
@@ -30,18 +31,29 @@ class View
         //box(abstract) is a helper for $container->make(abstract);
         $this->container = $container;
         $this->response = $res;
-        $assetTypes = ["js", "css", "woff", "woff2", "otf", "ttf", "jpg", "jsx"];
-        $this->template = $container->make("template");
+        $settings = $container->make('config')['app']['template'];
 
-        flog("debug",$assetTypes);
-        $this->template->setVar("data", "a value for this parameter");
-        $this->template->addFunction("myFunc", function ($myparam) {
-            return date("y m");
-        });
+        $dataDir = $settings['templateDataPath'];
+        $ds = $container->make(JsonDirectory::class, $dataDir, true);
+        $tm = $container->make(TemplateModel::class, $ds);
+        $this->template = $container->make(Template::class, $settings['baseLayout'], $tm);
+
+        $assetTypes = $settings['assetTypes'];
+        $baseTemplateFile = $settings['baseLayout'];
+        $dataDir = $settings['templateDataPath'];
+        echo $dataDir;
+
+        // $dataDir = appPath("dataDir") . "/
+        //$this->template = $container->make(Template::class, $baseTemplateFile, $dataDir);
+        flog("debug", $ds);
+        //$this->template->setVar("data", "a value for this parameter");
+        // $this->template->addFunction("myFunc", function ($myparam) {
+        //    return date("y m");
+        //});
 
         $fl = $container->make(FileLoader::class);
         $assets = $fl->findFilesByExtension($assetTypes, null);
-        $this->template->bindAssets($assets);
+        //$this->template->bindAssets($assets);
         /*
         //example of defining a function with parameter
         $this->template->define("myFunc", function($myparam){

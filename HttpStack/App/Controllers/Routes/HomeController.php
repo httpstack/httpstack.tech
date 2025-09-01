@@ -31,9 +31,8 @@ class HomeController
     }
     public function home($req, $res, $container, $matches)
     {
-        //$m = $container->make(ViewModel::class, $container, "public/home");
-
         $v = $container->make(View::class, "public/home");
+        //$m = $container->make(ViewModel::class, $container, "public/home");
         //$v->model($m);
 
         $v->render();

@@ -153,16 +153,16 @@ class App
 
             return $fl;
         });
-        $this->container->singleton("template", function () {
-            $tm = $this->container->make(TemplateModel::class);
+        $this->container->singleton(Template::class, function (Container $c, string $baseTemplateFile, string $dataDir) {
+            $tm = $this->container->make(TemplateModel::class, $dataDir);
             $fl = $this->container->make(FileLoader::class);
-            $baseTemplatePath = $fl->findFile("base.html", null, "html");
+            $baseTemplatePath = $fl->findFile($baseTemplateFile, null, "html");
             return new Template($baseTemplatePath, $tm);
         });
         // Use a singleton for the TemplateModel if its data is truly global
-        $this->container->singleton(TemplateModel::class, function () {
-            $dataDirectory = appPath("dataDir") . "/template";
-            $dataSource = new JsonDirectory($dataDirectory, true);
+        $this->container->singleton(TemplateModel::class, function (Container $c, string $dataDir) {
+
+            $dataSource = new JsonDirectory($dataDir, true);
 
             $tm = new TemplateModel($dataSource);
             //  $this->container->bind("base.vars", fn() => $tm->getAll());

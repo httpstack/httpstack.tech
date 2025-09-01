@@ -1,8 +1,9 @@
 <?php
+
 namespace HttpStack\App\Models;
 
 use Stringable;
-use HttpStack\Model\AbstractModel; 
+use HttpStack\Model\AbstractModel;
 use HttpStack\Datasource\Contracts\CRUD;
 //Import your specific datasource
 
@@ -24,24 +25,26 @@ class TemplateModel extends AbstractModel implements Stringable // Added Stringa
      * @param string $templateName The logical name or identifier for this template's data.
      * @param array $initialData Optional initial data for the model.
      */
-    public function __construct(CRUD $datasource, array $initialData = [])
+    public function __construct(CRUD $datasource)
     {
-        parent::__construct($datasource, $initialData);
+        parent::__construct($datasource);
         // 1.)  Pass the array of assets you want URLS for to the fileloader
         //put generated links array into bindAssets
         $temp = [];
         $temp['links'] = $this->getLinks("main");
-        foreach($this->getVariables() as $key => $value){
+        foreach ($this->getVariables() as $key => $value) {
             $temp[$key] = $value;
         }
-        
+
         $this->setAll($temp);
     }
-    public function getVariables(){
+    public function getVariables()
+    {
         return $this->get('base.json');
     }
- 
-    public function getLinks($which){
+
+    public function getLinks($which)
+    {
         return $this->getAll()['links.json'][$which];
     }
 
@@ -51,12 +54,13 @@ class TemplateModel extends AbstractModel implements Stringable // Added Stringa
      *
      * @return string
      */
-    protected function processArray($a){
+    protected function processArray($a)
+    {
         $str = "";
-        foreach($a as $k => $v){
-            if(is_array($v)){
+        foreach ($a as $k => $v) {
+            if (is_array($v)) {
                 $str .= $this->processArray($v);
-            }else{
+            } else {
                 $str .= "Key: $k Value: $v \n<br/>";
             }
         }
