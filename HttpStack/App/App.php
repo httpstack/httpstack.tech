@@ -20,7 +20,8 @@ use HttpStack\App\Models\TemplateModel;
 use HttpStack\Datasource\FileDatasource;
 use HttpStack\App\Datasources\FS\XmlFile;
 use HttpStack\App\Datasources\DB\ActiveTable;
-use HttpStack\App\Datasources\FS\JsonDirectory;
+use HttpStack\App\Datasources\FS\JsonDirectory; 
+use HttpStack\Credential\MySQLCredentials;
 use HttpStack\Test\MyClass;
 
 class App
@@ -124,7 +125,7 @@ class App
         $this->container->singleton(Container::class, fn() => $this->container);
         $this->container->singleton(App::class, fn() => $this);
         $this->container->singleton(Router::class, fn() => new Router());
-        $this->container->singleton(FileLoader::class, function (Container $c) {
+        $this->container->singleton(FileLoader::class, function () {
             // We need the 'config' service to get the application settings
             $fl = new FileLoader();
             // Loop over the appPaths and map them, just like in your original code
@@ -137,8 +138,23 @@ class App
         });
 
         //bind Data services
+        $this->container->singleton(DBConnect::class, function() {
+            return new DBConnect();
+        });
+        $this->container->bind(ActiveTable::class, function($c, $db, $table){
+            return new ActiveTable($db, $table);
+        });
         $this->container->bind(TemplateModel::class, function ($c, $ds) {
             return new TemplateModel($ds);
+        });
+        $this->container->bind(ViewModel::class, function($c, $dataPath){
+            $fl = $c->make(FileLoader::class);
+            $xmlFile = $fl->findFile($dataPath, null, "xml"); 
+            $dataSource = $c->make(XmlFile::class, $xmlFile, true);  
+            return new ViewModel($dataSource);
+        });
+        $this->container->bind(XmlFile::class, function ($c, $filePath, $readOnly) {
+            return new XmlFile($filePath, $readOnly);
         });
         $this->container->bind(JsonDirectory::class, function ($c, $dataDir, $readOnly) {
             return new JsonDirectory($dataDir, true);
@@ -152,7 +168,7 @@ class App
             return new View($c, $req, $res);
         });
     }
-
+            
     public function run()
     {
         $this->router->dispatch($this->request, $this->response, $this->container);

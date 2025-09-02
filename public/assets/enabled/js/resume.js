@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     // --- Resume Download Form Logic ---
     $('.download-form').on('submit', function (e) {
         e.preventDefault(); // Prevent default form submission

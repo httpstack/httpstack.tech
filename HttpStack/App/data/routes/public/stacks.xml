@@ -1,4 +1,3 @@
-<!-- STACKS PAGE -->
 <stacks>
   <content>
     <heroTitle>Build Your Stack</heroTitle>
@@ -25,7 +24,7 @@
       <ctaUri>/stacks/presets</ctaUri>
     </cta>
     <cta>
-      <heading>Save & Share</heading>
+      <heading>Save &amp; Share</heading>
       <text>Save your stack and share it with the community.</text>
       <ctaLabel>Save My Stack</ctaLabel>
       <ctaUri>/stacks/save</ctaUri>

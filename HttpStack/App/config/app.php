@@ -1,6 +1,5 @@
 <?php
 $settings = [
-    "appName" => "HTTpstACK",
     "appVersion" => "1.0",
     "appAuthor" => "Christopher McIntosh",
     "appContact" => "chris@httpstack.tech",
@@ -22,9 +21,9 @@ $settings = [
     "routeDefs" => "/routes/public.php",
     "template" => [
         "baseLayout" => "base.html",
-        "baseTemplatePath" => APP_ROOT . "/Views/templates/_base.html",
-        "templateDataPath" => APP_ROOT . "/data/template",
-        "assetTypes" => ["js", "css", "woff", "woff2", "otf", "ttf", "jpg", "jsx"]
+        "basePath" => APP_ROOT . "/Views/templates/base.html",
+        "dataDir" => APP_ROOT . "/data/template",
+        "assetTypes" => ["js", "css", "woff", "woff2", "otf", "ttf", "jpg", "jstack"]
     ],
 ];
-return $settings;
+return $settings;                                                                               

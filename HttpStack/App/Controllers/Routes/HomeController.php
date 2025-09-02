@@ -9,35 +9,30 @@ use HttpStack\Model\AbstractModel;
 use HttpStack\App\Models\ViewModel;
 use HttpStack\App\Views\View;
 
-use HttpStack\Test\MyClass;
 
 //use HttpStack\Template\Template;
 class HomeController
 {
-    public function __construct()
-    {
-        app()->getContainer()->bind("viewData", function () {
-            return "public/home";
-        });
-    }
+    protected ViewModel $viewModel;
+    public function __construct(){}
     public function index(Request $req, Response $res, Container $container, $matches)
     {
+        $this->viewModel = $container->make(ViewModel::class, "public/home");
         //bind the view data to the container so its available
         //within the ViewModel make
-        $container->bind("viewData", function () {
-            return "public/home";
-        });
+        //$res->setHeader("X-Controller-index", "homeController::index");
         $this->home($req, $res, $container, $matches);
     }
     public function home($req, $res, $container, $matches)
     {
         $v = $container->make(View::class, "public/home");
-        //$m = $container->make(ViewModel::class, $container, "public/home");
-        //$v->model($m);
-
+        $v->model($this->viewModel);
         $v->render();
+        /**/
+        //$res->setHeader("X-Controller-home", "homeController::home");
         if (!$res->sent) {
             $res->send();
+            $res->sent = true;
         }
     }
 }

@@ -3,6 +3,7 @@ define("DOC_ROOT", "/var/www/html");
 define("APP_ROOT", DOC_ROOT . "/HttpStack/App");
 define("BASE_URI", "http://localhost/");
 
+
 //make this into a directroy loop so it get gets all libs from 
 //an array of folders in the file loadder or something
 require_once(DOC_ROOT . "/HttpStack/App/util/helpers.php");

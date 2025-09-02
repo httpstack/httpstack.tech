@@ -59,7 +59,7 @@ class Template extends DOMDocument
         foreach ($assets as $asset) {
             $strType = pathinfo($asset, PATHINFO_EXTENSION);
             $filename = pathinfo($asset, PATHINFO_BASENAME);
-            $required = str_contains($filename, "required");
+            $required = str_contains($filename, "required") || str_contains($filename, "cmp-");
             $src = str_replace(DOC_ROOT, "", $asset);
             $imagesToPreload = [];
             switch ($strType) {
@@ -73,7 +73,7 @@ class Template extends DOMDocument
                     if ($required) {
                         $head->appendChild($script);
                     } else {
-                        $script->setAttribute("defer", "defer");
+                        //$script->setAttribute("defer", "defer");
                         $body->appendChild($script);
                     }
                     break;
@@ -82,6 +82,7 @@ class Template extends DOMDocument
                     $script = $this->createElement("script");
                     $script->setAttribute("type", "text/babel");
                     $script->setAttribute("src", $src);
+                    $head->appendChild($script);
                     break;
                 case "css":
                     $link = $this->createElement("link");

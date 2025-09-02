@@ -19,52 +19,46 @@ class View
 
     protected Template $template;
     protected Response $response;
+    protected Request $request;
     protected string $view;
     protected Container $container;
+    protected array $settings;
+    protected FileLoader $fl;
 
     protected ViewModel $viewModel;
 
     public function __construct(Container $container, Request $req, Response $res)
     {
-        // make sure templateModel is foing the logic of preparing the model since 
-        // it is the concrete model 
-        //box(abstract) is a helper for $container->make(abstract);
         $this->container = $container;
         $this->response = $res;
-        $settings = $container->make('config')['app']['template'];
-
-        $dataDir = $settings['templateDataPath'];
-        $ds = $container->make(JsonDirectory::class, $dataDir, true);
-        $tm = $container->make(TemplateModel::class, $ds);
-        $this->template = $container->make(Template::class, $settings['baseLayout'], $tm);
-
-        $assetTypes = $settings['assetTypes'];
-        $baseTemplateFile = $settings['baseLayout'];
-        $dataDir = $settings['templateDataPath'];
-        echo $dataDir;
-
-        // $dataDir = appPath("dataDir") . "/
-        //$this->template = $container->make(Template::class, $baseTemplateFile, $dataDir);
-        flog("debug", $ds);
-        //$this->template->setVar("data", "a value for this parameter");
-        // $this->template->addFunction("myFunc", function ($myparam) {
-        //    return date("y m");
-        //});
-
-        $fl = $container->make(FileLoader::class);
-        $assets = $fl->findFilesByExtension($assetTypes, null);
-        //$this->template->bindAssets($assets);
-        /*
-        //example of defining a function with parameter
-        $this->template->define("myFunc", function($myparam){
-            return $myparam;
-        });
-        */
+        $this->request = $req;
+        $this->settings = $container->make('config')['app']['template'];
+        $this->fl = $container->make(FileLoader::class);
+        $this->init();
     }
-    public function loadView(string $filePath)
+    protected function init(){
+        //Get a Datasource for the DataModel
+        $dataDir = $this->settings['dataDir'];
+        $dataSource = $this->container->make(JsonDirectory::class, $dataDir, true);
+        $dataModel = $this->container->make(TemplateModel::class, $dataSource);
+
+        //Make the Template from the container
+        $basePath = $this->settings['basePath'];
+        $this->template = $this->container->make(Template::class, $basePath, $dataModel);
+        //Bind and preload the asssets based on the types of assets 
+        //wanted from the file loader
+        $assetTypes = $this->settings['assetTypes'];///config/app.php to modify asset types
+        $assets = $this->fl->findFilesByExtension($assetTypes);
+        $this->template->bindAssets($assets);
+    
+        //$this->response->setBody($thistemplate->saveHtml  ());
+    }
+    public function loadView(string $view)
     {
         $fl = $this->container->make(FileLoader::class);
-        $fileContent = $fl->readFile($filePath);
+     
+        $fileContent = $fl->readFile($view);
+
         $viewNode = $this->toDomObject($fileContent);
         $frag = $this->template->createDocumentFragment();
         foreach (iterator_to_array($viewNode->childNodes) as $childNode) {

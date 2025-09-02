@@ -14,7 +14,7 @@ class SessionController{
         } 
     }
      public function process($req,$res,$matches){
-        $res->setHeader("Middleware", "Session Started");
+        //$res->setHeader("Middleware", "Session Started");
      }
 }
 ?>

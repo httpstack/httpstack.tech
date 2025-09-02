@@ -13,6 +13,12 @@ if (!function_exists(function: "consoleLog")) {
         //echo "<script> console.log(\'$text\');</script>";
     }
 }
+if(!function_exists('is_html')){
+    function is_html(string $string): bool
+    {
+        return preg_match('/<[^>]+>/', $string) === 1;
+    }
+}
 if (!function_exists("box")) {
     function box(string $make = '', array $params = [])
     {

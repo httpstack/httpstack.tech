@@ -14,7 +14,7 @@ use HttpStack\App\Datasources\FS\JsonDirectory; // For __toString() if desired
  * Represents the data specific to a template, providing structured access
  * to common template data elements like assets and links.
  */
-class TemplateModel extends AbstractModel implements Stringable // Added Stringable for demonstration
+class TemplateModel extends AbstractModel // Added Stringable for demonstration
 {
     protected string $templateName;
 
@@ -30,8 +30,10 @@ class TemplateModel extends AbstractModel implements Stringable // Added Stringa
         parent::__construct($datasource);
         // 1.)  Pass the array of assets you want URLS for to the fileloader
         //put generated links array into bindAssets
+        //dd($datasource->read()['links']);
         $temp = [];
-        $temp['links'] = $this->getLinks("main");
+        //dd($this->getAll()['links']['main']);
+        $temp['links'] = $this->getAll()['links']['main'];
         foreach ($this->getVariables() as $key => $value) {
             $temp[$key] = $value;
         }
@@ -40,12 +42,12 @@ class TemplateModel extends AbstractModel implements Stringable // Added Stringa
     }
     public function getVariables()
     {
-        return $this->get('base.json');
+        return $this->get('base');
     }
 
     public function getLinks($which)
     {
-        return $this->getAll()['links.json'][$which];
+        return $this->getAll()['links'][$which];
     }
 
 

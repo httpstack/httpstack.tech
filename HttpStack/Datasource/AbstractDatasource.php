@@ -57,10 +57,10 @@ abstract class AbstractDatasource implements Datasource
      * @method update
      * @method delete
      * @param array $data
-     */
-    abstract public function read(array $query= []): array;
-    abstract public function create(array $payload):mixed;
-    abstract public function update(array $payload):mixed;
+     */ 
+    abstract public function create(array $query, array $data): mixed;
+    abstract public function read(array $payload = []): mixed;
+    abstract public function update(array $where, array $payload): mixed;
     abstract public function delete(array $payload):mixed;
 }
 ?>

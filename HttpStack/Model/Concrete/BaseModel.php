@@ -9,7 +9,9 @@ class BaseModel{
 
     public function __construct(array $initialData = []){
         $this->attributes = new KeyStore();
+       
         ($initialData)?$this->setAll($initialData):null;
+         //dd($this->attributes);
     }
 
     public function set(string $strKey, mixed $mixValue): void{

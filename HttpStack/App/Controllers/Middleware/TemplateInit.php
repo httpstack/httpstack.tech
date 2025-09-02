@@ -29,8 +29,17 @@ class TemplateInit
    */
   public function process(Request $req, Response $res, Container $container)
   {
+    $view = $container->make(View::class, $req, $res);
+    $container->bind(View::class, function($c, $viewDirFile) use($view){
+      $view->loadView($viewDirFile);
+      return $view;
+    });
+    //dd($view);
+    //make a view object
 
-
+    //re-register View class to accept a view/data path for html and xml files
+    //needed for rendering
+  
     //$pm = $container->make(ViewModel::class);
 
     //var_dump($pm);

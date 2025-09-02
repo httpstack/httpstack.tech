@@ -13,6 +13,6 @@ interface DatasourceInterface {
      * @param mixed $var The variable to delete.
      * @return void
      */
-    public function delete(mixed $var):void;
+    //public function delete(mixed $var):mixed;
 }
 ?>

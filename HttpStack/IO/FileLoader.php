@@ -344,6 +344,15 @@ class FileLoader
 
         return $this;
     }
+    public function exists(string $path): bool
+    {
+        // Resolve the path if it's a mapped directory
+        if (isset($this->mappedDirectories[$path])) {
+            $path = $this->mappedDirectories[$path];
+        }
+
+        return is_file($path);
+    }
 
     /**
      * Handle duplicate files.

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     // Hamburger menu functionality
     const $hamburger = $('.hamburger-menu');
     const $nav = $('.header-nav');

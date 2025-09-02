@@ -1,114 +1,141 @@
 <?php
 namespace HttpStack\App\Datasources\FS;
-use HttpStack\Datasource\Contracts\CRUD;
+
+use HttpStack\Contracts\DatasourceInterface;
 use HttpStack\Datasource\AbstractDatasource;
-class JsonDirectory extends AbstractDatasource implements CRUD
+use HttpStack\Datasource\Contracts\CRUD;
+class JsonDirectory implements CRUD
 {
-    protected string $jsonDirectory;
-    protected array $dataCache = [];
-    protected bool $isCacheValid = false;   
-    /**
-     * Constructor to initialize the JsonDirectory datasource
-     *
-     * @param array $config Configuration array containing 'crudHandlers', 'readOnly', and 'endPoint'
-     * @throws \InvalidArgumentException if the configuration is not provided or invalid
-     */
-    public function __construct(string $dirPath,bool $readOnly)
+    protected string $file;
+    protected array $data = [];
+
+    public function __construct(string $file)
     {
-        parent::__construct($readOnly);
-        $this->jsonDirectory = $dirPath ?? '';
-        if (!$this->jsonDirectory || !is_dir($this->jsonDirectory)) {
-            throw new \InvalidArgumentException("Invalid JSON directory path provided.");
-        }
-        $this->dataCache = $this->read();
+        $this->file = $file;
+        $this->load();
     }
-    /**
-     * Read data from the JSON directory
-     *
-     * @param array $query Query parameters to filter the data
-     * @return array The data read from the JSON directory
-     */
-    public function read(array $query = []): array{
-        if(empty($this->jsonDirectory) || !is_dir($this->jsonDirectory)) {
-            return [];
+
+protected function load()
+{
+    if (is_dir($this->file)) {
+        $this->data = [];
+        foreach (glob($this->file . '/*.json') as $jsonFile) {
+            $key = basename($jsonFile, '.json');
+            $json = file_get_contents($jsonFile);
+            $this->data[$key] = json_decode($json, true) ?? [];
         }
-        if($this->dataCache && $this->isCacheValid) {
-            // If cache has the data, return it
-            return $this->dataCache;
+    } elseif (is_file($this->file)) {
+        $json = file_get_contents($this->file);
+        $this->data = json_decode($json, true) ?? [];
+    }
+}
+    public function fetch(string|array|null $key): array
+    {
+        if ($key === null) {
+            return $this->data;
         }
-        $files = [];
-        foreach (scandir($this->jsonDirectory) as $file) {
-            if ($file !== '.' && $file !== '..') {
-                $absPath = realpath($this->jsonDirectory . '/' . $file);
-                if (is_file($absPath) && pathinfo($absPath, 4) === 'json') {
-                    $content = file_get_contents($absPath);
-                    if ($content !== false) {
-                        //GET BASENAME AND MAKE IT THE KEY
-                        $fileName = pathinfo($absPath, PATHINFO_BASENAME);
-                        $files[$fileName] = json_decode($content, true);
-                    }
+        if (is_array($key)) {
+            return $this->read($key);
+        }
+        return $this->data[$key] ?? [];
+    }
+    protected function saveData()
+    {
+        file_put_contents($this->file, json_encode($this->data, JSON_PRETTY_PRINT));
+    }
+
+    // Recursive search for nested queries
+    protected function recursiveFind($data, $query)
+    {
+        if (empty($query)) return $data;
+
+        foreach ($query as $key => $val) {
+            if (is_array($val)) {
+                if (isset($data[$key])) {
+                    return $this->recursiveFind($data[$key], $val);
+                }
+                return [];
+            } else {
+                // $val is a value, filter array of objects
+                if (isset($data[$key]) && is_array($data[$key])) {
+                    return array_filter($data[$key], function ($item) use ($val, $key) {
+                        return isset($item[$key]) && $item[$key] == $val;
+                    });
+                } elseif (is_array($data)) {
+                    // If $data is an array of objects
+                    return array_filter($data, function ($item) use ($key, $val) {
+                        return isset($item[$key]) && $item[$key] == $val;
+                    });
                 }
             }
         }
-        if (count($query) > 0) {
-            // Filter files based on the query keys
-            $files = array_intersect_key($files, array_flip($query));
-        }
-        $this->dataCache = $files;
-        //if cache has the data send it
-       return $this->dataCache;
-    }
-    // Additional methods specific to JsonDirectory can be added here
-    //after ANY C.U.D. operation, the cache should be invalidated
-    public function create(array $payload): mixed{
-        list($fileName, $data) = $payload;
-        $filePath = $this->jsonDirectory . '/' . $fileName;
-        if (file_exists($filePath)) {
-            throw new \RuntimeException("File already exists: $fileName");
-        }
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot create data in a read-only datasource."); 
-        }
-        $jsonData = json_encode($data, 128);
-        if (file_put_contents($filePath, $jsonData) === false) {
-            throw new \RuntimeException("Failed to write data to file: $fileName"); 
-        }
-        $this->isCacheValid = false; // Invalidate cache after creation
-        return true;
+        return [];
     }
 
-    public function update(array $payload): mixed{
-        list($fileName, $data) = $payload;
-        $filePath = $this->jsonDirectory . '/' . $fileName;
-        if (!file_exists($filePath)) {
-            throw new \RuntimeException("File does not exist: $fileName");
+    // Unified read
+    public function read(array $query = [], array $columns = []): array
+    {
+        $result = $this->recursiveFind($this->data, $query);
+
+        // If columns specified, filter columns
+        if ($columns && is_array($result)) {
+            $result = array_map(function ($item) use ($columns) {
+                return array_intersect_key($item, array_flip($columns));
+            }, $result);
         }
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot update data in a read-only datasource.");
-        }
-        $jsonData = json_encode($data, 128);
-        if (file_put_contents($filePath, $jsonData) === false) {
-            throw new \RuntimeException("Failed to write data to file: $fileName");
-        }
-        $this->isCacheValid = false; // Invalidate cache after update
-        return true;
+        return $result;
     }
-    public function delete(array $payload): mixed{
-        list($fileName) = $payload;
-        $filePath = $this->jsonDirectory . '/' . $fileName;
-        if (!file_exists($filePath)) {
-            throw new \RuntimeException("File does not exist: $fileName");
+
+    // Unified create (append to array)
+    public function create(array $query, array $data): mixed
+    {
+        $ref = &$this->data;
+        foreach ($query as $key => $val) {
+            if (!isset($ref[$key])) $ref[$key] = [];
+            $ref = &$ref[$key];
         }
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot delete data in a read-only datasource.");
+        if (is_array($ref)) {
+            $ref[] = $data;
+            $this->saveData();
+            return true;
         }
-        if (!unlink($filePath)) {
-            throw new \RuntimeException("Failed to delete file: $fileName");
+        return false;
+    }
+
+    // Unified update
+    public function update(array $query, array $data): bool
+    {
+        $ref = &$this->recursiveFind($this->data, $query);
+        if (is_array($ref)) {
+            foreach ($ref as &$item) {
+                foreach ($data as $k => $v) {
+                    $item[$k] = $v;
+                }
+            }
+            $this->saveData();
+            return true;
         }
-        $this->isCacheValid = false; // Invalidate cache after deletion
-        return true;
+        return false;
+    }
+
+    // Unified delete
+    public function delete(array $query): bool
+    {
+        $ref = &$this->recursiveFind($this->data, $query);
+        if (is_array($ref)) {
+            foreach ($ref as $i => $item) {
+                unset($ref[$i]);
+            }
+            $this->saveData();
+            return true;
+        }
+        return false;
+    }
+
+    // Save all data
+    public function save(array $data): void
+    {
+        $this->data = $data;
+        $this->saveData();
     }
 }
-
-
-?>

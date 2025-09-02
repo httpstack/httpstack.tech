@@ -8,5 +8,6 @@ return [
     "ctrl.routes.services" => \HttpStack\App\Controllers\Routes\ServicesController::class,
     "ctrl.routes.resume" => \HttpStack\App\Controllers\Routes\ResumeController::class,
     "ctrl.routes.stack" => \HttpStack\App\Controllers\Routes\StackController::class,
-    "ctrl.routes.login" => \HttpStack\App\Controllers\Routes\LoginController::class
+    "ctrl.routes.login" => \HttpStack\App\Controllers\Routes\LoginController::class,
+    "ctrl.routes.test" => \HttpStack\App\Controllers\Routes\TestController::class
 ];

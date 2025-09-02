@@ -1,0 +1,22 @@
+<div class="frame-main">
+    <header class="main-header">
+        <h1 class="site-title">{{siteTitle}}</h1>
+        <div class="site-tagline">
+            {{siteTagline}}
+        </div>
+    </header>
+    <div class="grid">
+        <div class="grid-row page-intro align-2">
+            <p>
+                {{intro}}
+            </p>
+        </div>
+        <div data-repeat="ctas as cta">
+            <div data-repeat-item="cta" class="grid-cell cta-card">
+                <h3>cta[heading]</h3>
+                <p>cta[text]</p>
+                <a href="cta[ctaUri]" class="cta-btn">cta[ctaLabel]</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,178 +1,119 @@
 <?php
+
 namespace HttpStack\App\Datasources\DB;
 
-use PDOException;
-use HttpStack\DataBase\DBConnect; // Corrected namespace if needed
-use HttpStack\Datasource\Contracts\CRUD; // Import the CRUD interface
-use HttpStack\Datasource\AbstractDatasource; // Import PDOException for specific error handling
-
-class ActiveTable extends AbstractDatasource implements CRUD
+use HttpStack\DataBase\DBConnect;
+use HttpStack\Datasource\Contracts\CRUD;
+use PDO;
+class ActiveTable implements CRUD
 {
-    protected DBConnect $conn;
-    protected string $page;
-    protected string $table = "pages";
+    protected DBConnect $db;
+    protected string $table;
+    protected array $columns = [];
+    protected string $primaryKeyField = 'id';
+    protected int $lastInsertId;
+    protected array $data = [];
 
-    /**
-     * Constructor for the DBDatasource.
-     *
-     * @param DBConnect $conn The database connection instance.
-     * @param string $table The name of the database table to operate on.
-     * @param bool $readOnly Whether this datasource instance is read-only.
-     */
-    public function __construct(DBConnect $conn, string $page, bool $readOnly = true)
+    public function __construct(DBConnect $db, string $table)
     {
-        parent::__construct($readOnly);
-        $this->conn = $conn;
-        $this->page = $page;
+        $this->db = $db;
+        $this->table = $table;
+        $this->loadColumns();
     }
 
-    /**
-     * Creates a new record in the database table.
-     *
-     * @param array $payload An associative array of data to insert (column => value).
-     * @return mixed The ID of the newly inserted row, or true on success.
-     * @throws \RuntimeException If the operation fails or is not allowed in read-only mode.
-     */
-    public function create(array $payload): mixed
+    protected function loadColumns()
     {
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot create data in a read-only datasource.");
+        $sql = "SHOW COLUMNS FROM {$this->table}";
+        $result = $this->db->query($sql);
+        foreach ($result as $row) {
+            $this->columns[] = $row['Field'];
+            $this->data[$row['Field']] = null;
         }
-
-        if (empty($payload)) {
-            throw new \InvalidArgumentException("Payload for create operation cannot be empty.");
+    }
+    public function fetch(string|array|null $key): array
+    {
+        // If $key is null, return all rows
+        if ($key === null) {
+            return $this->read();
         }
+        // If $key is an array, treat as where clause
+        if (is_array($key)) {
+            return $this->read($key);
+        }
+        // If $key is a string, treat as primary key or unique column
+        return $this->read([$this->columns[0] => $key]); // Assumes first column is PK
+    }
+    public function __get($name)
+    {
+        return $this->data[$name] ?? null;
+    }
 
-        $columns = implode(', ', array_keys($payload));
-        $placeholders = ':' . implode(', :', array_keys($payload));
+    public function __set($name, $value)
+    {
+        if (in_array($name, $this->columns)) {
+            $this->data[$name] = $value;
+        }
+    }
 
-        $sql = "INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})";
+    // Read: $table->read(['email' => 'chris@httpstack.tech'])
 
-        try {
-            $stmt = $this->conn->prepare($sql);
-            foreach ($payload as $key => &$value) {
-                $stmt->bindValue(':' . $key, $value);
+
+    // Create: $table->create(['email' => ..., ...])
+    public function create(array $query, array $data): mixed
+    {
+        $cols = array_keys($data);
+        $placeholders = array_fill(0, count($cols), '?');
+        $sql = "INSERT INTO {$this->table} (`" . implode('`,`', $cols) . "`) VALUES (" . implode(',', $placeholders) . ")";
+        return $this->db->execute($sql, array_values($data));
+    }
+    public function read(array $where = [], array $columns = []): mixed
+    {
+        $cols = $columns ? '`' . implode('`,`', $columns) . '`' : '*';
+        $sql = "SELECT $cols FROM {$this->table}";
+        $params = [];
+        if ($where) {
+            $clauses = [];
+            foreach ($where as $col => $val) {
+                $clauses[] = "`$col` = ?";
+                $params[] = $val;
             }
-            $stmt->execute();
-
-            // Return the last inserted ID if available, otherwise true
-            return $this->conn->lastInsertId() ?: true;
-        } catch (PDOException $e) {
-            throw new \RuntimeException("Database create operation failed: " . $e->getMessage(), (int)$e->getCode(), $e);
-        }
+            $sql .= " WHERE " . implode(' AND ', $clauses);
+        };
+        return $this->db->prepared($sql,$params);
     }
-
-    /**
-     * Reads data from the database table.
-     *
-     * @param array $query An associative array of query parameters (column => value) for filtering.
-     * If empty, all records are returned.
-     * @return array An array of associative arrays, where each inner array represents a record.
-     * @throws \RuntimeException If the read operation fails.
-     */
-    public function read(array $query = []): array
+    // Update: $table->update(['email' => ...], ['user_level' => 'admin'])
+    public function update(array $where, array $data): mixed
     {
-        $sql = "SELECT * FROM {$this->table}";
-        $conditions = [];
+        $set = [];
         $params = [];
-
-        foreach ($query as $column => $value) {
-            $conditions[] = "{$column} = :{$column}";
-            $params[":{$column}"] = $value;
+        foreach ($data as $col => $val) {
+            $set[] = "`$col` = ?";
+            $params[] = $val;
         }
-
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $set);
+        if ($where) {
+            $clauses = [];
+            foreach ($where as $col => $val) {
+                $clauses[] = "`$col` = ?";
+                $params[] = $val;
+            }
+            $sql .= " WHERE " . implode(' AND ', $clauses);
         }
-
-        try {
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->fetchAll();
-        } catch (PDOException $e) {
-            throw new \RuntimeException("Database read operation failed: " . $e->getMessage(), (int)$e->getCode(), $e);
-        }
+        return $this->db->execute($sql, $params);
     }
-
-    /**
-     * Updates existing records in the database table.
-     *
-     * @param array $payload An associative array with 'data' (column => new_value) and 'where' (column => value) keys.
-     * 'where' is used to specify which records to update.
-     * @return bool True on success, false on failure.
-     * @throws \RuntimeException If the operation fails or is not allowed in read-only mode.
-     * @throws \InvalidArgumentException If 'data' or 'where' keys are missing or empty.
-     */
-    public function update(array $payload): bool
+    // Delete: $table->delete(['email' => ...])
+    public function delete(array $where): mixed
     {
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot update data in a read-only datasource.");
-        }
-
-        if (!isset($payload['data']) || !is_array($payload['data']) || empty($payload['data'])) {
-            throw new \InvalidArgumentException("Update payload must contain non-empty 'data' array.");
-        }
-        if (!isset($payload['where']) || !is_array($payload['where']) || empty($payload['where'])) {
-            throw new \InvalidArgumentException("Update payload must contain non-empty 'where' array for conditions.");
-        }
-
-        $setClauses = [];
+        $sql = "DELETE FROM {$this->table}";
         $params = [];
-        foreach ($payload['data'] as $column => $value) {
-            $setClauses[] = "{$column} = :set_{$column}";
-            $params[":set_{$column}"] = $value;
+        if ($where) {
+            $clauses = [];
+            foreach ($where as $col => $val) {
+                $clauses[] = "`$col` = ?";
+                $params[] = $val;
+            }
+            $sql .= " WHERE " . implode(' AND ', $clauses);
         }
-
-        $whereClauses = [];
-        foreach ($payload['where'] as $column => $value) {
-            $whereClauses[] = "{$column} = :where_{$column}";
-            $params[":where_{$column}"] = $value;
-        }
-
-        $sql = "UPDATE {$this->table} SET " . implode(', ', $setClauses) . " WHERE " . implode(' AND ', $whereClauses);
-
-        try {
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->rowCount() > 0; // Return true if at least one row was affected
-        } catch (PDOException $e) {
-            throw new \RuntimeException("Database update operation failed: " . $e->getMessage(), (int)$e->getCode(), $e);
-        }
-    }
-
-    /**
-     * Deletes records from the database table.
-     *
-     * @param array $payload An associative array of query parameters (column => value) to identify records to delete.
-     * @return bool True on success, false on failure.
-     * @throws \RuntimeException If the operation fails or is not allowed in read-only mode.
-     * @throws \InvalidArgumentException If the payload is empty.
-     */
-    public function delete(array $payload): bool
-    {
-        if ($this->isReadOnly()) {
-            throw new \RuntimeException("Cannot delete data in a read-only datasource.");
-        }
-
-        if (empty($payload)) {
-            throw new \InvalidArgumentException("Payload for delete operation cannot be empty (must specify conditions).");
-        }
-
-        $conditions = [];
-        $params = [];
-        foreach ($payload as $column => $value) {
-            $conditions[] = "{$column} = :{$column}";
-            $params[":{$column}"] = $value;
-        }
-
-        $sql = "DELETE FROM {$this->table} WHERE " . implode(' AND ', $conditions);
-
-        try {
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute($params);
-            return $stmt->rowCount() > 0; // Return true if at least one row was affected
-        } catch (PDOException $e) {
-            throw new \RuntimeException("Database delete operation failed: " . $e->getMessage(), (int)$e->getCode(), $e);
-        }
+        return $this->db->execute($sql, $params);
     }
 }

@@ -1,0 +1,36 @@
+<test>
+    <content>
+        <heroTitle>Test</heroTitle>
+        <heroDescription>Testing</heroDescription>
+        <heroCtaLabel>Build your stack</heroCtaLabel>
+        <siteTitle>HttpStack</siteTitle>
+        <siteTagline>Empowering Your Digital Presence</siteTagline>
+        <intro>
+            At HttpStack.tech, we specialize in delivering robust and innovative technology solutions designed to propel your business forward.
+            Our expertise spans a wide array of platforms and technologies, ensuring that whether you're a startup or an established enterprise, you receive tailored services that are both efficient and scalable.
+        </intro>
+    </content>
+
+    <ctas>
+        <cta>
+            <heading>Working Together</heading>
+            <text>Interested in collaborating or hiring? Learn more about the developer and discover how we can work together to achieve your goals.</text>
+            <ctaLabel>Find Out More</ctaLabel>
+            <ctaUri>/about/developer</ctaUri>
+        </cta>
+
+        <cta>
+            <heading>Our Services</heading>
+            <text>We offer web &amp; graphic development, networking solutions, and computer/server repair &amp; installation. Get reliable, modern IT services for your business or personal needs.</text>
+            <ctaLabel>Explore Services</ctaLabel>
+            <ctaUri>/services</ctaUri>
+        </cta>
+
+        <cta>
+            <heading>Projects &amp; Open Source</heading>
+            <text>Check out our latest projects and open source contributions on GitHub. See what we've built and how we support the developer community.</text>
+            <ctaLabel>View Projects</ctaLabel>
+            <ctaUri>https://github.com/your-github-username</ctaUri>
+        </cta>
+    </ctas>
+</test>

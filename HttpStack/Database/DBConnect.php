@@ -9,10 +9,10 @@ class DBConnect extends PDO
     protected PDO $dbConnect;
 
     public function __construct(
-        string $dsn = 'mysql:host=localhost;dbname=cmcintosh;charset=utf8mb4',
-        string $user = 'http_user',
-        string $pass = 'bf6912'
-    ) { 
+        $dsn = "mysql:host=localhost;dbname=cmcintosh;charset=utf8mb4", 
+        $user = "http_user",
+        $pass = "bf6912")
+    { 
         try {
             parent::__construct($dsn, $user, $pass, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -22,5 +22,11 @@ class DBConnect extends PDO
         } catch (PDOException $e) {
             throw new \RuntimeException('DB Connection failed: ' . $e->getMessage());
         }
+    }
+    public function prepared($sql, $params = [])
+    {
+        $stmt = $this->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

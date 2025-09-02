@@ -60,27 +60,29 @@ class Router
         /**
          * LOOP MIDDLEWARES
          */
-        foreach ($this->before[$method] as $pattern => $handlers) {
-            // Convert {param} to regex
-            $regex = preg_replace('/\{\w+\}/', '([^/]+)', $pattern);
-            // Convert wildcard * to regex
-            $regex = str_replace('*', '.*', $regex);
-            // Allow full match for .*
-            if ($regex === '.*') {
-                $regex = '.*';
-            }
-            $matches = [];
-            if (preg_match("#^$regex$#", $uri)) {
-                foreach ($handlers as $middleware) {
-                    if (is_array($middleware)) {
-                        list($className, $methodName) = $middleware;
-                        //$instance = new $className();
-                        $callable = [$className, $methodName];
-                    } else {
-                        $callable = $middleware;
+        if(isset($this->before[$method])){
+            foreach ($this->before[$method] as $pattern => $handlers) {
+                // Convert {param} to regex
+                $regex = preg_replace('/\{\w+\}/', '([^/]+)', $pattern);
+                // Convert wildcard * to regex
+                $regex = str_replace('*', '.*', $regex);
+                // Allow full match for .*
+                if ($regex === '.*') {
+                    $regex = '.*';
+                }
+                $matches = [];
+                if (preg_match("#^$regex$#", $uri)) {
+                    foreach ($handlers as $middleware) {
+                        if (is_array($middleware)) {
+                            list($className, $methodName) = $middleware;
+                            //$instance = new $className();
+                            $callable = [$className, $methodName];
+                        } else {
+                            $callable = $middleware;
+                        }
+                        //dd($className);
+                        call_user_func_array($callable, [$request, $response, $container, $matches]);
                     }
-                    //dd($className);
-                    call_user_func_array($callable, [$request, $response, $container, $matches]);
                 }
             }
         }
