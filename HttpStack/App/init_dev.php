@@ -47,7 +47,7 @@ function require_all_files_in(string $dir): void
 // An array of base directories for autoloading.
 // The autoloader will look for classes in these directories, maintaining the namespace structure.
 $autoload_paths = [
-    APP_ROOT,
+    DOC_ROOT,
     // You can add more paths here, for example:
     // DOC_ROOT . '/libs',
 ];
@@ -58,17 +58,17 @@ spl_autoload_register(function ($className) use ($autoload_paths) {
     $class_file = str_replace('\\', '/', $className) . '.php';
 
 
-    foreach ($autoload_paths as $base_path) {
-        $file = $base_path . '/' . $class_file;
 
-        // Normalize the path
-        $file = str_replace(['\\', '//'], '/', $file);
+    $file = DOC_ROOT . '/' . $class_file;
 
-        if (file_exists($file)) {
-            require_once $file;
-            return; // Stop searching after the class is found
-        }
+    // Normalize the path
+    $file = str_replace(['\\', '//'], '/', $file);
+    $file = normalize_path($file);
+    if (file_exists($file)) {
+        require_once $file;
+        return; // Stop searching after the class is found
     }
+
 
     // If the class is not found in any of the paths:
     error_log("Autoload failed for class: $className"); // Log the error

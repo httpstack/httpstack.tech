@@ -6,7 +6,16 @@ class Router
 {
     public $after = [];
     private $before = [];
-
+    public function get($uri, $handle): void
+    {
+        $r = new Route("GET", $uri, $handle, "after");
+        $this->after($r);
+    }
+    public function post($uri, $handle): void
+    {
+        $r = new Route("POST", $uri, $handle, "after");
+        $this->after($r);
+    }
     public function after(Route $route)
     {
 
@@ -60,7 +69,7 @@ class Router
         /**
          * LOOP MIDDLEWARES
          */
-        if(isset($this->before[$method])){
+        if (isset($this->before[$method])) {
             foreach ($this->before[$method] as $pattern => $handlers) {
                 // Convert {param} to regex
                 $regex = preg_replace('/\{\w+\}/', '([^/]+)', $pattern);

@@ -20,7 +20,7 @@ use HttpStack\App\Models\TemplateModel;
 use HttpStack\Datasource\FileDatasource;
 use HttpStack\App\Datasources\FS\XmlFile;
 use HttpStack\App\Datasources\DB\ActiveTable;
-use HttpStack\App\Datasources\FS\JsonDirectory; 
+use HttpStack\App\Datasources\FS\JsonDirectory;
 use HttpStack\Credential\MySQLCredentials;
 use HttpStack\Test\MyClass;
 
@@ -138,19 +138,19 @@ class App
         });
 
         //bind Data services
-        $this->container->singleton(DBConnect::class, function() {
+        $this->container->singleton(DBConnect::class, function () {
             return new DBConnect();
         });
-        $this->container->bind(ActiveTable::class, function($c, $db, $table){
+        $this->container->bind(ActiveTable::class, function ($c, $db, $table) {
             return new ActiveTable($db, $table);
         });
         $this->container->bind(TemplateModel::class, function ($c, $ds) {
             return new TemplateModel($ds);
         });
-        $this->container->bind(ViewModel::class, function($c, $dataPath){
+        $this->container->bind(ViewModel::class, function ($c, $dataPath) {
             $fl = $c->make(FileLoader::class);
-            $xmlFile = $fl->findFile($dataPath, null, "xml"); 
-            $dataSource = $c->make(XmlFile::class, $xmlFile, true);  
+            $xmlFile = $fl->findFile($dataPath, null, "xml");
+            $dataSource = $c->make(XmlFile::class, $xmlFile, true);
             return new ViewModel($dataSource);
         });
         $this->container->bind(XmlFile::class, function ($c, $filePath, $readOnly) {
@@ -168,7 +168,7 @@ class App
             return new View($c, $req, $res);
         });
     }
-            
+
     public function run()
     {
         $this->router->dispatch($this->request, $this->response, $this->container);

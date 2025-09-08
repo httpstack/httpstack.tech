@@ -1,4 +1,25 @@
 <?php
+function normalize_path($path)
+{
+    $isAbsolute = ($path[0] === '/');
+    $segments = explode('/', $path);
+    $parts = [];
+    foreach ($segments as $segment) {
+        if ($segment === '' || $segment === '.') {
+            continue;
+        }
+        if ($segment === '..') {
+            if (!empty($parts)) {
+                array_pop($parts);
+            }
+        } else {
+            $parts[] = $segment;
+        }
+    }
+    $normalized = ($isAbsolute ? '/' : '') . implode('/', $parts);
+    return $normalized;
+}
+
 if (!function_exists("app")) {
     function app()
     {
@@ -13,7 +34,7 @@ if (!function_exists(function: "consoleLog")) {
         //echo "<script> console.log(\'$text\');</script>";
     }
 }
-if(!function_exists('is_html')){
+if (!function_exists('is_html')) {
     function is_html(string $string): bool
     {
         return preg_match('/<[^>]+>/', $string) === 1;
