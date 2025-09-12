@@ -33,8 +33,9 @@ class App
     protected array $settings = [];
     protected FileLoader $fileLoader;
     public bool $debug = true;
-    public function __construct()
+    public function __construct(Request $req)
     {
+
         $this->container = new Container();
 
         /**
@@ -107,7 +108,6 @@ class App
     {
         // --- 1. Load Configurations and Aliases ---
         $this->container->singleton("config", function () {
-
             $cfg = new Config(APP_ROOT . "/config");
             return $cfg->getSettings();
         });

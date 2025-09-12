@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>httpstack - Community Driven, Commercially Focused</title>
+    <meta name="description"
+        content="httpstack: The platform where community-driven development meets commercial success. Define, share, and build better software stacks." />
+    <link rel="stylesheet" href="src/index.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        (function () {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+    <script type="module" src="src/main.js"></script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-200 font-sans transition-colors duration-300">
+
+    <!-- Header & Sticky Nav -->
+    <header id="header"
+        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg sticky top-0 z-50 transition-shadow duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/index.html"
+                class="flex items-center gap-2 text-2xl font-bold text-gray-800 dark:text-white hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="text-cyan-500 dark:text-cyan-400">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span>httpstack</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html"
+                    class="nav-link text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Home</a>
+                <a href="stack-spec.html"
+                    class="nav-link text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Stack
+                    Spec</a>
+                <a href="resume.html"
+                    class="nav-link text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Resume</a>
+                <a href="services.html"
+                    class="nav-link text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Services</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="login.html"
+                    class="hidden md:inline-block px-4 py-2 text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors">Login</a>
+                <a href="register.html"
+                    class="hidden md:inline-block px-4 py-2 text-lg font-medium text-white bg-cyan-500 rounded-lg hover:bg-cyan-600 transition-colors shadow">Register</a>
+                <button id="theme-toggle"
+                    class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="hidden">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                    <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                    </svg>
+                </button>
+                <button id="mobile-menu-btn"
+                    class="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" x2="20" y1="12" y2="12"></line>
+                        <line x1="4" x2="20" y1="6" y2="6"></line>
+                        <line x1="4" x2="20" y1="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 flex flex-col space-y-4">
+                <a href="/index.html"
+                    class="nav-link-mobile text-lg text-center font-medium text-gray-600 dark:text-gray-300">Home</a>
+                <a href="/stack-spec.html"
+                    class="nav-link-mobile text-lg text-center font-medium text-gray-600 dark:text-gray-300">Stack
+                    Spec</a>
+                <a href="/resume.html"
+                    class="nav-link-mobile text-lg text-center font-medium text-gray-600 dark:text-gray-300">Resume</a>
+                <a href="/services.html"
+                    class="nav-link-mobile text-lg text-center font-medium text-gray-600 dark:text-gray-300">Services</a>
+                <a href="/login.html"
+                    class="w-full text-center px-4 py-2 text-lg font-medium rounded-lg border border-cyan-500 text-cyan-500">Login</a>
+                <a href="/register.html"
+                    class="w-full text-center px-4 py-2 text-lg font-medium text-white bg-cyan-500 rounded-lg">Register</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section with Slideshow -->
+        <section id="hero" class="relative w-full h-[70vh] md:h-[90vh] overflow-hidden text-white">
+            <div id="slideshow-container" class="w-full h-full">
+                <!-- Slide 1 -->
+                <div
+                    class="slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img alt="Abstract network of interconnected nodes" class="w-full h-full object-cover"
+                        src="https://images.unsplash.com/photo-1691996072414-523ce9110a93" />
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
+                        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">Define Your Stack.
+                            Own Your Architecture.</h1>
+                        <p class="mt-4 text-lg md:text-2xl max-w-3xl drop-shadow-md">httpstack helps you create,
+                            document, and share verifiable software stacks.</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div
+                    class="slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img alt="Collaborative team working on a digital whiteboard" class="w-full h-full object-cover"
+                        src="https://images.unsplash.com/photo-1603201667141-5a2d4c673378" />
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
+                        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">Community Driven,
+                            Commercially Focused.</h1>
+                        <p class="mt-4 text-lg md:text-2xl max-w-3xl drop-shadow-md">Join a movement of 'Specifiers'
+                            building the next generation of industry standards.</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div
+                    class="slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out opacity-0">
+                    <img alt="Futuristic code interface with data streams" class="w-full h-full object-cover"
+                        src="https://images.unsplash.com/photo-1526925539332-aa3b66e35444" />
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6">
+                        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">From Concept to
+                            Code with Confidence.</h1>
+                        <p class="mt-4 text-lg md:text-2xl max-w-3xl drop-shadow-md">Go beyond READMEs with the 12-Layer
+                            Stack Spec system.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-3" id="slideshow-dots"></div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 md:py-32 bg-white dark:bg-gray-800">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12">Why <span
+                        class="text-cyan-500 dark:text-cyan-400">httpstack</span>?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="p-8 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Standardize</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Create a single source of truth for your entire tech
+                            stack, reducing ambiguity and onboarding time.</p>
+                    </div>
+                    <div class="p-8 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Collaborate</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Share your specifications with the community,
+                            discover innovative stacks, and contribute to open standards.</p>
+                    </div>
+                    <div class="p-8 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold mb-4">Validate</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Leverage our tools to check for compatibility and
+                            maintain documentation integrity automatically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 dark:bg-black text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 httpstack. All rights reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">Connecting Developers, Empowering Businesses.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
