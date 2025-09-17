@@ -20,18 +20,20 @@ class HomeController
             return "public/home";
         });
     }
-    public function index(Request $req, Response $res, Container $container, $matches)
+    public function index(Container $c, $matches)
     {
         //bind the view data to the container so its available
         //within the ViewModel make
-        $container->bind("viewData", function () {
+        $c->bind("viewData", function () {
             return "public/home";
         });
-        $this->home($req, $res, $container, $matches);
+        $this->home($c, $matches);
     }
-    public function home($req, $res, $container, $matches)
+    public function home($c, $matches)
     {
-        $v = $container->make(View::class, "public/home");
+        /* 
+        //$v = $container->make(View::class, "public/home");
+        $v = $c->make(View::class);
         //$m = $container->make(ViewModel::class, $container, "public/home");
         //$v->model($m);
 
@@ -39,5 +41,6 @@ class HomeController
         if (!$res->sent) {
             $res->send();
         }
+            */
     }
 }

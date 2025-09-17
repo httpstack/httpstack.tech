@@ -2,6 +2,10 @@
 
 namespace HttpStack\Routing;
 
+use HttpStack\Container\Container;
+use HttpStack\Http\Request;
+
+
 class Router
 {
     public $after = [];
@@ -15,6 +19,11 @@ class Router
     {
         $r = new Route("POST", $uri, $handle, "after");
         $this->after($r);
+    }
+    public function mw($method, $uri, $handle): void
+    {
+        $r = new Route($method, $uri, $handle, "before");
+        $this->before($r);
     }
     public function after(Route $route)
     {
@@ -61,8 +70,11 @@ class Router
                 break;
         }
     }
-    public function dispatch($request, $response, $container)
+
+
+    public function dispatch(Container $c)
     {
+        $request = $c->make(Request::class);
         $method = $request->getMethod();
         $uri = $request->getUri();
         //dd($this->before);
@@ -90,7 +102,7 @@ class Router
                             $callable = $middleware;
                         }
                         //dd($className);
-                        call_user_func_array($callable, [$request, $response, $container, $matches]);
+                        call_user_func_array($callable, [$c, $matches]);
                     }
                 }
             }
@@ -112,7 +124,7 @@ class Router
                     } else {
                         $callable = $afterWare;
                     }
-                    call_user_func_array($callable, [$request, $response, $container, $matches]);
+                    call_user_func_array($callable, [$c, $matches]);
                 }
                 //$container->call($this->after[$method][$key], [$request, $response, $container, $matches]);
 

@@ -27,7 +27,7 @@ class TemplateInit
    * @param mixed $container The dependency injection container.
    * @return void
    */
-  public function process(Request $req, Response $res, Container $container)
+  public function process(Container $container)
   {
 
 

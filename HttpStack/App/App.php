@@ -27,13 +27,12 @@ use HttpStack\Test\MyClass;
 class App
 {
     protected Container $container;
-    protected Request $request;
     protected Response $response;
     protected ?Router $router;
     protected array $settings = [];
     protected FileLoader $fileLoader;
     public bool $debug = true;
-    public function __construct(Request $req)
+    public function __construct(protected Request $request)
     {
 
         $this->container = new Container();
@@ -42,6 +41,7 @@ class App
          * This method will initialiizeall of the services. in order to build , resolve or make
          * any of the singletons or bindings you must tie the class name or the alias to an 
          * actula concrete implemtauton
+         * i did add a static array to the container class
          */
         $this->init();
 
@@ -112,18 +112,14 @@ class App
             return $cfg->getSettings();
         });
 
-        // Load aliases from the config file into the container
-        $aliases = $this->container->make('config')['aliases'] ?? [];
-        foreach ($aliases as $alias => $fqn) {
-            $this->container->alias($alias, $fqn);
-        }
+
         //BIND MANY RESPONSE AND REQUEST
-        $this->container->bind(Request::class, Request::class);
+        $this->container->bind(Request::class, $this->request);
         $this->container->bind(Response::class, Response::class);
 
+
         // --- 2. Bind Core Services (as Singletons) ---
-        $this->container->singleton(Container::class, fn() => $this->container);
-        $this->container->singleton(App::class, fn() => $this);
+
         $this->container->singleton(Router::class, fn() => new Router());
         $this->container->singleton(FileLoader::class, function () {
             // We need the 'config' service to get the application settings
@@ -147,6 +143,7 @@ class App
         $this->container->bind(TemplateModel::class, function ($c, $ds) {
             return new TemplateModel($ds);
         });
+
         $this->container->bind(ViewModel::class, function ($c, $dataPath) {
             $fl = $c->make(FileLoader::class);
             $xmlFile = $fl->findFile($dataPath, null, "xml");
@@ -164,14 +161,12 @@ class App
         });
         //$dataSource = $this->container->make(JsonDirectory::class, $dataDir, true);
         //BIND VIEW SERVICES
-        $this->container->bind(View::class, function (Container $c, Request $req, Response $res) {
-            return new View($c, $req, $res);
-        });
+
     }
 
     public function run()
     {
-        $this->router->dispatch($this->request, $this->response, $this->container);
+        $this->router->dispatch($this->container);
     }
 
     public function createRoute($method, $uri, $handlers, $type = "after")

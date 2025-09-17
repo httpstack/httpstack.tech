@@ -25,10 +25,13 @@ class View
     protected array $settings;
     protected FileLoader $fl;
 
-    protected ViewModel $viewModel;
 
-    public function __construct(Container $container, Request $req, Response $res)
+
+    public function __construct(protected ?AbstractModel $viewModel)
     {
+        if ($viewModel) {
+            $this->model($viewModel);
+        }
         $this->container = $container;
         $this->response = $res;
         $this->request = $req;
@@ -36,7 +39,8 @@ class View
         $this->fl = $container->make(FileLoader::class);
         $this->init();
     }
-    protected function init(){
+    protected function init()
+    {
         //Get a Datasource for the DataModel
         $dataDir = $this->settings['dataDir'];
         $dataSource = $this->container->make(JsonDirectory::class, $dataDir, true);
@@ -47,16 +51,16 @@ class View
         $this->template = $this->container->make(Template::class, $basePath, $dataModel);
         //Bind and preload the asssets based on the types of assets 
         //wanted from the file loader
-        $assetTypes = $this->settings['assetTypes'];///config/app.php to modify asset types
+        $assetTypes = $this->settings['assetTypes']; ///config/app.php to modify asset types
         $assets = $this->fl->findFilesByExtension($assetTypes);
         $this->template->bindAssets($assets);
-    
+
         //$this->response->setBody($thistemplate->saveHtml  ());
     }
     public function loadView(string $view)
     {
         $fl = $this->container->make(FileLoader::class);
-     
+
         $fileContent = $fl->readFile($view);
 
         $viewNode = $this->toDomObject($fileContent);

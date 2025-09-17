@@ -1,5 +1,18 @@
 {
     "appName": "HttpStack",
     "appSlogan": "Empowering Your Digital Presence",
-    "appCopyright": "© 2025 Chris McIntosh. All rights reserved."
+    "appCopyright": "© 2025 Chris McIntosh. All rights reserved.",
+    "baseLayout": "base.html",
+    "basePath": "/Views/templates/base.html",
+    "dataDir": "/data/template",
+    "assetTypes": [
+        "js",
+        "css",
+        "woff",
+        "woff2",
+        "otf",
+        "ttf",
+        "jpg",
+        "jstack"
+    ]
 }

@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 namespace HttpStack\Container;
+
 use Closure;
 use ReflectionClass;
 use ReflectionParameter;
@@ -7,36 +9,57 @@ use ReflectionException;
 use HttpStack\Exceptions\AppException;
 use HttpStack\Contracts\ContainerInterface;
 
-class Container implements ContainerInterface {
+class Container implements ContainerInterface
+{
     protected $bindings = [];
     protected $instances = [];
     private array $props = [];
     protected $aliases = [];
 
 
-    public function __construct() {
-
+    public function __construct()
+    {
+        $aliases = [
+            "ctrl.mw.session" => \HttpStack\App\Controllers\Middleware\SessionController::class,
+            "ctrl.mw.template" => \HttpStack\App\Controllers\Middleware\TemplateInit::class,
+            "ctrl.routes.public" => \HttpStack\App\Controllers\Routes\PublicController::class,
+            "ctrl.routes.home" => \HttpStack\App\Controllers\Routes\HomeController::class,
+            "ctrl.routes.contact" => \HttpStack\App\Controllers\Routes\ContactController::class,
+            "ctrl.routes.services" => \HttpStack\App\Controllers\Routes\ServicesController::class,
+            "ctrl.routes.resume" => \HttpStack\App\Controllers\Routes\ResumeController::class,
+            "ctrl.routes.stack" => \HttpStack\App\Controllers\Routes\StackController::class,
+            "ctrl.routes.login" => \HttpStack\App\Controllers\Routes\LoginController::class,
+            "ctrl.routes.test" => \HttpStack\App\Controllers\Routes\TestController::class
+        ];
+        $this->aliases = $aliases;
     }
-
     /**
      * NEW: Add an alias for a class FQN.
      */
-    public function alias(string $alias, string $fqn): void
+    public function alias(string|array  $alias, string $fqn): void
     {
+        if (is_array($alias)) {
+            foreach ($alias as $a => $fqn) {
+                $this->aliases[$a] = $fqn;
+            }
+        }
         $this->aliases[$alias] = $fqn;
     }
 
-    public function bind(string $abstract, $concrete): void {
+    public function bind(string $abstract, $concrete): void
+    {
         $this->bindings[$abstract] = $concrete;
     }
 
 
-    public function singleton(string $abstract, $concrete) {
+    public function singleton(string $abstract, $concrete)
+    {
         $this->bindings[$abstract] = $concrete;
         $this->instances[$abstract] = null; // Mark it as a singleton
     }
 
-    public function make(string $abstract, mixed ...$params): mixed {
+    public function make(string $abstract, mixed ...$params): mixed
+    {
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
         }
@@ -44,54 +67,58 @@ class Container implements ContainerInterface {
         return $this->resolve($abstract, $params);
     }
 
-    public function addProperty(string $name, $value) {
+    public function addProperty(string $name, $value)
+    {
         $this->props[$name] = $value;
     }
 
-    public function removeProperty(string $name) {
+    public function removeProperty(string $name)
+    {
         unset($this->props[$name]);
     }
 
-    public function getProperty(string $name) {
+    public function getProperty(string $name)
+    {
         return $this->props[$name] ?? null;
     }
 
-    public function hasProperty(string $name) {
+    public function hasProperty(string $name)
+    {
         return isset($this->props[$name]);
     }
     protected function resolveDependencies(array $dependencies, array $parameters): array
     {
         $results = [];
-        
+
         foreach ($dependencies as $dependency) {
             // If the parameter is in the given parameters, use it
             if (array_key_exists($dependency->name, $parameters)) {
                 $results[] = $parameters[$dependency->name];
                 continue;
             }
-            
+
             // If the parameter is a class, resolve it from the container
             $results[] = $this->resolveClass($dependency);
         }
-        
+
         return $results;
     }
     protected function resolveClass(ReflectionParameter $parameter): mixed
     {
         $type = $parameter->getType();
-        
+
         // If the parameter doesn't have a type hint or is a built-in type, 
         // and is optional, use the default value
         if (!$type || $type->isBuiltin()) {
             if ($parameter->isDefaultValueAvailable()) {
                 return $parameter->getDefaultValue();
             }
-            
+
             throw new AppException(
                 "Unresolvable dependency: $parameter in class {$parameter->getDeclaringClass()->getName()}"
             );
         }
-        
+
         try {
             // Use the ReflectionNamedType API which works in PHP 7.4+
             $typeName = $type instanceof \ReflectionNamedType ? $type->getName() : (string)$type;
@@ -102,7 +129,7 @@ class Container implements ContainerInterface {
             if ($parameter->isDefaultValueAvailable()) {
                 return $parameter->getDefaultValue();
             }
-            
+
             throw $e;
         }
     }
@@ -113,65 +140,65 @@ class Container implements ContainerInterface {
             if (is_string($callback[0])) {
                 $callback[0] = $this->make($callback[0]);
             }
-            
+
             $reflectionMethod = new \ReflectionMethod($callback[0], $callback[1]);
             $dependencies = $reflectionMethod->getParameters();
-            
+
             $parameters = $this->resolveDependencies($dependencies, $parameters);
-            
+
             return $reflectionMethod->invokeArgs($callback[0], $parameters);
         }
-        
+
         if ($callback instanceof Closure) {
             $reflectionFunction = new \ReflectionFunction($callback);
             $dependencies = $reflectionFunction->getParameters();
-            
+
             $parameters = $this->resolveDependencies($dependencies, $parameters);
-            
+
             return $reflectionFunction->invokeArgs($parameters);
         }
-        
+
         if (is_string($callback) && strpos($callback, '::') !== false) {
             list($class, $method) = explode('::', $callback);
             return $this->call([$class, $method], $parameters);
         }
-        
+
         if (is_string($callback) && method_exists($callback, '__invoke')) {
             $instance = $this->make($callback);
             return $this->call([$instance, '__invoke'], $parameters);
         }
-        
+
         throw new AppException("Invalid callback provided to container->call()");
     }
-        public function resolve(string $abstract, array $params = [])
-        {
-            // Resolve alias if it exists
-            $abstract = $this->aliases[$abstract] ?? $abstract;
-           // dd($this->bindings[$abstract]);
-            // Get the concrete implementation from bindings.
-            // If not bound, we'll assume the abstract is a concrete class we can auto-wire.
-            $concrete = $this->bindings[$abstract] ?? $abstract;
+    public function resolve(string $abstract, array $params = [])
+    {
+        // Resolve alias if it exists
+        $abstract = $this->aliases[$abstract] ?? $abstract;
+        // dd($this->bindings[$abstract]);
+        // Get the concrete implementation from bindings.
+        // If not bound, we'll assume the abstract is a concrete class we can auto-wire.
+        $concrete = $this->bindings[$abstract] ?? $abstract;
 
-            if ($concrete instanceof Closure) {
-                return $concrete($this, ...$params);
-            }
-            
-            if (is_object($concrete)) {
-                return $concrete;
-            }
-
-            // If it's a string (class name), build it.
-            if (is_string($concrete)) {
-                try {
-                    return $this->build($concrete, $params);
-                } catch (AppException $e) {
-                    // Re-throw with more context
-                    throw new AppException("Failed to resolve '{$abstract}'. " . $e->getMessage());
-                }
-            }
-            
-            throw new AppException("Unresolvable dependency type for '{$abstract}'");
+        if ($concrete instanceof Closure) {
+            return $concrete($this, ...$params);
         }
+
+        if (is_object($concrete)) {
+            return $concrete;
+        }
+
+        // If it's a string (class name), build it.
+        if (is_string($concrete)) {
+            try {
+                return $this->build($concrete, $params);
+            } catch (AppException $e) {
+                // Re-throw with more context
+                throw new AppException("Failed to resolve '{$abstract}'. " . $e->getMessage());
+            }
+        }
+
+        throw new AppException("Unresolvable dependency type for '{$abstract}'");
+    }
 
     public function build(string $concrete, array $params = []): object
     {
@@ -221,7 +248,8 @@ class Container implements ContainerInterface {
         return $reflector->newInstanceArgs($resolvedDependencies);
     }
 
-    public function makeCallable($handler): callable {
+    public function makeCallable($handler): callable
+    {
         // If the handler is already callable, return it as-is
         if (is_callable($handler)) {
             return $handler;
@@ -253,4 +281,3 @@ class Container implements ContainerInterface {
         throw new AppException('Invalid handler provided');
     }
 }
-?>

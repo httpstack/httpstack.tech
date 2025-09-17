@@ -53,11 +53,9 @@ $autoload_paths = [
 ];
 
 
-spl_autoload_register(function ($className) use ($autoload_paths) {
+spl_autoload_register(function ($className) {
     // Convert namespace backslashes to directory separators
     $class_file = str_replace('\\', '/', $className) . '.php';
-
-
 
     $file = DOC_ROOT . '/' . $class_file;
 
@@ -68,7 +66,6 @@ spl_autoload_register(function ($className) use ($autoload_paths) {
         require_once $file;
         return; // Stop searching after the class is found
     }
-
 
     // If the class is not found in any of the paths:
     error_log("Autoload failed for class: $className"); // Log the error
